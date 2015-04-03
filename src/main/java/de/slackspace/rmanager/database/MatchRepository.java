@@ -3,12 +3,10 @@ package de.slackspace.rmanager.database;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.transaction.annotation.Transactional;
 
-import de.slackspace.rmanager.domain.Game;
+import de.slackspace.rmanager.domain.GameMatch;
 
-@Transactional
-public interface GameRepository extends CrudRepository<Game, Long> {
+public interface MatchRepository extends CrudRepository<GameMatch, String> {
 
-	Page<Game> findAll(Pageable pageable);
+	Page<GameMatch> findAll(Pageable pageable);
 }
