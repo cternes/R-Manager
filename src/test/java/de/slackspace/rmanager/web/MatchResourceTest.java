@@ -12,6 +12,7 @@ import de.slackspace.rmanager.domain.GameMatch;
 import de.slackspace.rmanager.domain.MatchStatus;
 import de.slackspace.rmanager.domain.Player;
 import de.slackspace.rmanager.exception.DuplicatePlayerException;
+import de.slackspace.rmanager.exception.InvalidMatchStateException;
 import de.slackspace.rmanager.exception.UnknownMatchException;
 import de.slackspace.rmanager.exception.UnknownPlayerException;
 
@@ -124,6 +125,27 @@ public class MatchResourceTest {
 		cut.joinMatch(matchId, playerId);
 		
 		Mockito.verify(cut.matchRepo).save(match);
+	}
+	
+	@Test(expected=InvalidMatchStateException.class)
+	public void whenJoinMatchWithAlreadyFullMatchShouldThrowException() {
+		MatchResource cut = createMatchResource();
+		String matchId = UUID.randomUUID().toString();
+		String playerOneId = UUID.randomUUID().toString();
+		String playerTwoId = UUID.randomUUID().toString();
+		String playerThreeId = UUID.randomUUID().toString();
+		
+		Player playerOne = new Player("test");
+		playerOne.setId(playerOneId);
+		GameMatch match = new GameMatch(playerOne);
+		
+		Player playerTwo = new Player("test two");
+		playerTwo.setId(playerTwoId);
+		match.setPlayer2(playerTwo);
+
+		Mockito.when(cut.matchRepo.findOne(matchId)).thenReturn(match);
+		
+		cut.joinMatch(matchId, playerThreeId);
 	}
 	
 	private MatchResource createMatchResource() {

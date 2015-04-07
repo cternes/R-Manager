@@ -14,6 +14,7 @@ import de.slackspace.rmanager.domain.GameMatch;
 import de.slackspace.rmanager.domain.MatchStatus;
 import de.slackspace.rmanager.domain.Player;
 import de.slackspace.rmanager.exception.DuplicatePlayerException;
+import de.slackspace.rmanager.exception.InvalidMatchStateException;
 import de.slackspace.rmanager.exception.UnknownMatchException;
 import de.slackspace.rmanager.exception.UnknownPlayerException;
 
@@ -60,6 +61,10 @@ public class MatchResource {
 		
 		if(match == null) {
 			throw new UnknownMatchException();
+		}
+		
+		if(match.getPlayer1() != null && match.getPlayer2() != null) {
+			throw new InvalidMatchStateException();
 		}
 		
 		if(playerId.equals(match.getPlayer1().getId())) {
