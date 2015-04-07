@@ -7,12 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 
 import de.slackspace.rmanager.database.MatchRepository;
 import de.slackspace.rmanager.database.PlayerRepository;
 import de.slackspace.rmanager.domain.GameMatch;
 import de.slackspace.rmanager.domain.Player;
+import de.slackspace.rmanager.exception.DuplicatePlayerException;
+import de.slackspace.rmanager.exception.UnknownMatchException;
 import de.slackspace.rmanager.exception.UnknownPlayerException;
 
 @RestController
@@ -21,10 +22,10 @@ import de.slackspace.rmanager.exception.UnknownPlayerException;
 public class MatchResource {
 
 	@Autowired
-	private MatchRepository matchRepo;
+	MatchRepository matchRepo;
 	
 	@Autowired
-	private PlayerRepository playerRepo;
+	PlayerRepository playerRepo;
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
@@ -41,13 +42,37 @@ public class MatchResource {
 	
 	@RequestMapping(method=RequestMethod.GET, value = "{id}")
 	@ResponseBody
-	public GameMatch getMatch(@PathVariable String id) throws NoSuchRequestHandlingMethodException {
+	public GameMatch getMatch(@PathVariable String id) {
 		GameMatch match = matchRepo.findOne(id);
 		
 		if(match == null) {
-			throw new UnknownPlayerException();
+			throw new UnknownMatchException();
 		}
 		
 		return match;
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, value = "{id}/join")
+	@ResponseBody
+	public GameMatch joinMatch(@PathVariable String id, String playerId) {
+		GameMatch match = matchRepo.findOne(id);
+		
+		if(match == null) {
+			throw new UnknownMatchException();
+		}
+		
+		if(match.getPlayer1().getId() == playerId) {
+			throw new DuplicatePlayerException();
+		}
+		
+		Player player2 = playerRepo.findOne(playerId);
+		
+		if(player2 == null) {
+			throw new UnknownPlayerException();
+		}
+		
+		match.setPlayer2(player2);
+		
+		return matchRepo.save(match);
 	}
 }

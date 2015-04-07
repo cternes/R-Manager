@@ -17,7 +17,7 @@ import de.slackspace.rmanager.exception.DuplicatePlayerException;
 public class PlayerResource {
 
 	@Autowired
-	private PlayerRepository playerRepo;
+	PlayerRepository playerRepo;
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
