@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import de.slackspace.rmanager.database.MatchRepository;
 import de.slackspace.rmanager.database.PlayerRepository;
 import de.slackspace.rmanager.domain.GameMatch;
+import de.slackspace.rmanager.domain.MatchStatus;
 import de.slackspace.rmanager.domain.Player;
 import de.slackspace.rmanager.exception.DuplicatePlayerException;
 import de.slackspace.rmanager.exception.UnknownMatchException;
@@ -72,6 +73,7 @@ public class MatchResource {
 		}
 		
 		match.setPlayer2(player2);
+		match.setStatus(MatchStatus.TURNP1);
 		
 		return matchRepo.save(match);
 	}

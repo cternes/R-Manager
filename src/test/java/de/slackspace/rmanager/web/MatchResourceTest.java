@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import de.slackspace.rmanager.database.MatchRepository;
 import de.slackspace.rmanager.database.PlayerRepository;
 import de.slackspace.rmanager.domain.GameMatch;
+import de.slackspace.rmanager.domain.MatchStatus;
 import de.slackspace.rmanager.domain.Player;
 import de.slackspace.rmanager.exception.DuplicatePlayerException;
 import de.slackspace.rmanager.exception.UnknownMatchException;
@@ -105,6 +106,7 @@ public class MatchResourceTest {
 		cut.joinMatch(matchId, playerTwoId);
 		
 		Mockito.verify(cut.matchRepo).save(match);
+		Assert.assertEquals(match.getStatus(), MatchStatus.TURNP1);
 	}
 	
 	@Test(expected=DuplicatePlayerException.class)
