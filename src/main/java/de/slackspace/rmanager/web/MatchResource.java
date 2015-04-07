@@ -53,7 +53,7 @@ public class MatchResource {
 		return match;
 	}
 	
-	@RequestMapping(method=RequestMethod.GET, value = "{id}/join")
+	@RequestMapping(method=RequestMethod.POST, value = "{id}/join")
 	@ResponseBody
 	public GameMatch joinMatch(@PathVariable String id, String playerId) {
 		GameMatch match = matchRepo.findOne(id);
@@ -62,7 +62,7 @@ public class MatchResource {
 			throw new UnknownMatchException();
 		}
 		
-		if(match.getPlayer1().getId() == playerId) {
+		if(playerId.equals(match.getPlayer1().getId())) {
 			throw new DuplicatePlayerException();
 		}
 		
