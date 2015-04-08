@@ -11,10 +11,8 @@ import de.slackspace.rmanager.database.PlayerRepository;
 import de.slackspace.rmanager.domain.GameMatch;
 import de.slackspace.rmanager.domain.MatchStatus;
 import de.slackspace.rmanager.domain.Player;
-import de.slackspace.rmanager.exception.DuplicatePlayerException;
-import de.slackspace.rmanager.exception.InvalidMatchStateException;
-import de.slackspace.rmanager.exception.UnknownMatchException;
-import de.slackspace.rmanager.exception.UnknownPlayerException;
+import de.slackspace.rmanager.exception.InvalidOperationException;
+import de.slackspace.rmanager.exception.UnknownObjectException;
 
 public class MatchResourceTest {
 
@@ -34,7 +32,7 @@ public class MatchResourceTest {
 		Mockito.verify(matchRepository).save(Mockito.any(GameMatch.class));
 	}
 	
-	@Test(expected=UnknownPlayerException.class)
+	@Test(expected=UnknownObjectException.class)
 	public void whenCreateMatchIsCalledWithUnknownPlayerShouldThrowException() {
 		MatchResource cut = createMatchResource();
 		String playerId = UUID.randomUUID().toString();
@@ -56,7 +54,7 @@ public class MatchResourceTest {
 		Mockito.verify(cut.matchRepo).findOne(matchId);
 	}
 	
-	@Test(expected=UnknownMatchException.class)
+	@Test(expected=UnknownObjectException.class)
 	public void whenGetMatchWithUnknownIdShouldThrowException() {
 		MatchResource cut = createMatchResource();
 		String matchId = UUID.randomUUID().toString();
@@ -64,7 +62,7 @@ public class MatchResourceTest {
 		cut.getMatch(matchId);
 	}
 	
-	@Test(expected=UnknownMatchException.class)
+	@Test(expected=UnknownObjectException.class)
 	public void whenJoinMatchWithUnknownMatchIdShouldThrowException() {
 		MatchResource cut = createMatchResource();
 		String matchId = UUID.randomUUID().toString();
@@ -73,7 +71,7 @@ public class MatchResourceTest {
 		cut.joinMatch(matchId, playerId);
 	}
 	
-	@Test(expected=UnknownPlayerException.class)
+	@Test(expected=UnknownObjectException.class)
 	public void whenJoinMatchWithUnknownPlayerShouldThrowException() {
 		MatchResource cut = createMatchResource();
 		String matchId = UUID.randomUUID().toString();
@@ -110,7 +108,7 @@ public class MatchResourceTest {
 		Assert.assertEquals(match.getStatus(), MatchStatus.TURNP1);
 	}
 	
-	@Test(expected=DuplicatePlayerException.class)
+	@Test(expected=InvalidOperationException.class)
 	public void whenJoinMatchWithSamePlayerAsPlayer1ShouldThrowException() {
 		MatchResource cut = createMatchResource();
 		String matchId = UUID.randomUUID().toString();
@@ -127,7 +125,7 @@ public class MatchResourceTest {
 		Mockito.verify(cut.matchRepo).save(match);
 	}
 	
-	@Test(expected=InvalidMatchStateException.class)
+	@Test(expected=InvalidOperationException.class)
 	public void whenJoinMatchWithAlreadyFullMatchShouldThrowException() {
 		MatchResource cut = createMatchResource();
 		String matchId = UUID.randomUUID().toString();

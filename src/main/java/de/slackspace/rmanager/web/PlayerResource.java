@@ -1,6 +1,7 @@
 package de.slackspace.rmanager.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.slackspace.rmanager.database.PlayerRepository;
 import de.slackspace.rmanager.domain.Player;
-import de.slackspace.rmanager.exception.DuplicatePlayerException;
+import de.slackspace.rmanager.exception.InvalidOperationException;
 
 @RestController
 @RequestMapping("/players")
@@ -25,7 +26,7 @@ public class PlayerResource {
 		Player player = playerRepo.findByName(name);
 		
 		if(player != null) {
-			throw new DuplicatePlayerException();
+			throw new InvalidOperationException(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "A player with this name already exists.");
 		}
 		
 		return playerRepo.save(new Player(name));
