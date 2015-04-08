@@ -23,6 +23,10 @@ public class PlayerResource {
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
 	public Player createPlayer(String name) {
+		if(name == null || name.isEmpty()) {
+			throw new InvalidOperationException(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "A player must have a name.");
+		}
+		
 		Player player = playerRepo.findByName(name);
 		
 		if(player != null) {

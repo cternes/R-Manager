@@ -23,6 +23,22 @@ public class PlayerResourceTest {
 	}
 	
 	@Test(expected=InvalidOperationException.class)
+	public void whenNameIsEmptyShouldThrowException() {
+		PlayerRepository playerRepository = Mockito.mock(PlayerRepository.class);
+		cut.playerRepo = playerRepository;
+		
+		cut.createPlayer("");
+	}
+	
+	@Test(expected=InvalidOperationException.class)
+	public void whenNameIsNullShouldThrowException() {
+		PlayerRepository playerRepository = Mockito.mock(PlayerRepository.class);
+		cut.playerRepo = playerRepository;
+		
+		cut.createPlayer(null);
+	}
+	
+	@Test(expected=InvalidOperationException.class)
 	public void whenDuplicateNameIsGivenShouldThrowException() {
 		PlayerRepository playerRepository = Mockito.mock(PlayerRepository.class);
 		cut.playerRepo = playerRepository;
