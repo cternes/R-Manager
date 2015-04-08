@@ -1,14 +1,19 @@
 package de.slackspace.rmanager.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.slackspace.rmanager.database.MatchRepository;
 import de.slackspace.rmanager.database.PlayerRepository;
+import de.slackspace.rmanager.domain.GameMatch;
 import de.slackspace.rmanager.domain.Player;
 import de.slackspace.rmanager.exception.InvalidOperationException;
 
@@ -17,6 +22,9 @@ import de.slackspace.rmanager.exception.InvalidOperationException;
 @Transactional
 public class PlayerResource {
 
+	@Autowired
+	MatchRepository matchRepo;
+	
 	@Autowired
 	PlayerRepository playerRepo;
 	
@@ -34,5 +42,11 @@ public class PlayerResource {
 		}
 		
 		return playerRepo.save(new Player(name));
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, value = "{id}/matches")
+	@ResponseBody
+	public List<GameMatch> getActiveMatchesByPlayer(@PathVariable(value = "id") String id) {
+		return matchRepo.findActiveMatchesByPlayer(id);
 	}
 }

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,16 +35,22 @@ public class MatchResource {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
-	public GameMatch createMatch(String player1Id) {
-		Player player1 = playerRepo.findOne(player1Id);
+	public GameMatch createMatch(@RequestParam String playerId) {
+		Player player1 = playerRepo.findOne(playerId);
 		
 		if(player1 == null) {
-			logger.warn("The requested player '"+ player1Id +"' could not be found");
-			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested player '"+ player1Id +"' could not be found");
+			logger.warn("The requested player '"+ playerId +"' could not be found");
+			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested player '"+ playerId +"' could not be found");
 		}
 		
 		GameMatch match = new GameMatch(player1);
 		return matchRepo.save(match);
+	}
+	
+	@RequestMapping(method=RequestMethod.GET)
+	@ResponseBody
+	public GameMatch getWaitingForPlayersMatches() {
+		return matchRepo.findByPlayer2IsNull();
 	}
 	
 	@RequestMapping(method=RequestMethod.GET, value = "{id}")
