@@ -49,7 +49,7 @@ public class MatchResource {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	@ResponseBody
-	public GameMatch getWaitingForPlayersMatches() {
+	public GameMatch getsMatchesWaitingForPlayer() {
 		return matchRepo.findByPlayer2IsNull();
 	}
 	

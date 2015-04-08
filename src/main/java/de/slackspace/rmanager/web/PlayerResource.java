@@ -46,7 +46,7 @@ public class PlayerResource {
 	
 	@RequestMapping(method=RequestMethod.GET, value = "{id}/matches")
 	@ResponseBody
-	public List<GameMatch> getActiveMatchesByPlayer(@PathVariable(value = "id") String id) {
+	public List<GameMatch> getActiveMatches(@PathVariable(value = "id") String id) {
 		return matchRepo.findActiveMatchesByPlayer(id);
 	}
 }
