@@ -1,5 +1,7 @@
 package de.slackspace.rmanager.web;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,8 @@ import de.slackspace.rmanager.exception.UnknownObjectException;
 @Transactional
 public class MatchResource {
 
+	private Log logger = LogFactory.getLog(getClass());
+	
 	@Autowired
 	MatchRepository matchRepo;
 	
@@ -34,7 +38,8 @@ public class MatchResource {
 		Player player1 = playerRepo.findOne(player1Id);
 		
 		if(player1 == null) {
-			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested player could not be found");
+			logger.warn("The requested player '"+ player1Id +"' could not be found");
+			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested player '"+ player1Id +"' could not be found");
 		}
 		
 		GameMatch match = new GameMatch(player1);
@@ -47,7 +52,8 @@ public class MatchResource {
 		GameMatch match = matchRepo.findOne(id);
 		
 		if(match == null) {
-			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested match could not be found");
+			logger.warn("The requested match '"+ id +"' could not be found");
+			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested match '"+ id +"' could not be found");
 		}
 		
 		return match;
@@ -59,21 +65,25 @@ public class MatchResource {
 		GameMatch match = matchRepo.findOne(id);
 		
 		if(match == null) {
-			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested match could not be found");
+			logger.warn("The requested match '"+ id +"' could not be found");
+			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested match '"+ id +"' could not be found");
 		}
 		
 		if(match.getPlayer1() != null && match.getPlayer2() != null) {
-			throw new InvalidOperationException(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "The requested match cannot be joined, because it is already full.");
+			logger.warn("The requested match '"+ id + "'cannot be joined, because it is already full.");
+			throw new InvalidOperationException(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "The requested match '"+ id +"'cannot be joined, because it is already full.");
 		}
 		
 		if(playerId.equals(match.getPlayer1().getId())) {
-			throw new InvalidOperationException(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "The requested match cannot be joined, because the player has already joined.");
+			logger.warn("The requested match "+ id +"' cannot be joined, because the player '"+ playerId +"' has already joined.");
+			throw new InvalidOperationException(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "The requested match "+ id +"' cannot be joined, because the player '"+ playerId +"' has already joined.");
 		}
 		
 		Player player2 = playerRepo.findOne(playerId);
 		
 		if(player2 == null) {
-			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested player could not be found");
+			logger.warn("The requested player '"+ playerId +"' could not be found");
+			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested player '"+ playerId +"' could not be found");
 		}
 		
 		match.setPlayer2(player2);
