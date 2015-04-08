@@ -14,16 +14,16 @@ import de.slackspace.rmanager.domain.ApplicationError;
 @ControllerAdvice
 public class WebExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler
+	@ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleInvalidRequest(RuntimeException e, WebRequest request) {
 		HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 		
         ApplicationError error;
         
-		if(e instanceof UnknownObjectException) {
+		if(e instanceof GeneralWebException) {
 			//TODO: Log exception
-			UnknownObjectException exception = (UnknownObjectException) e;
+			GeneralWebException exception = (GeneralWebException) e;
 			error = new ApplicationError(exception.getStatus(), exception.getName(), exception.getMessage());
 		}
 		else {

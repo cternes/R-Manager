@@ -9,6 +9,8 @@ public class GeneralWebException extends RuntimeException {
 	
 	public GeneralWebException(HttpStatus status, String name, String message) {
 		super(message);
+		setStatus(status);
+		setName(name);
 	}
 
 	public String getName() {
