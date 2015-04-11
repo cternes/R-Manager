@@ -7,4 +7,5 @@ import de.slackspace.rmanager.domain.Player;
 public interface PlayerRepository extends CrudRepository<Player, String> {
 
 	Player findByName(String name);
+	Player findByToken(String token);
 }

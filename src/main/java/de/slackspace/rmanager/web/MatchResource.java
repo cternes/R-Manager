@@ -35,12 +35,12 @@ public class MatchResource {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
-	public GameMatch createMatch(@RequestParam String playerId) {
-		Player player1 = playerRepo.findOne(playerId);
+	public GameMatch createMatch(@RequestParam String playerToken) {
+		Player player1 = playerRepo.findByToken(playerToken);
 		
 		if(player1 == null) {
-			logger.warn("The requested player '"+ playerId +"' could not be found");
-			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested player '"+ playerId +"' could not be found");
+			logger.warn("The requested player '"+ playerToken +"' could not be found");
+			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested player '"+ playerToken +"' could not be found");
 		}
 		
 		GameMatch match = new GameMatch(player1);
@@ -56,7 +56,7 @@ public class MatchResource {
 	@RequestMapping(method=RequestMethod.GET, value = "{id}")
 	@ResponseBody
 	public GameMatch getMatch(@PathVariable String id) {
-		GameMatch match = matchRepo.findOne(id);
+		GameMatch match = matchRepo.findByToken(id);
 		
 		if(match == null) {
 			logger.warn("The requested match '"+ id +"' could not be found");
@@ -68,8 +68,8 @@ public class MatchResource {
 	
 	@RequestMapping(method=RequestMethod.POST, value = "{id}/join")
 	@ResponseBody
-	public GameMatch joinMatch(@PathVariable String id, String playerId) {
-		GameMatch match = matchRepo.findOne(id);
+	public GameMatch joinMatch(@PathVariable String id, @RequestParam String playerId) {
+		GameMatch match = matchRepo.findByToken(id);
 		
 		if(match == null) {
 			logger.warn("The requested match '"+ id +"' could not be found");
@@ -81,12 +81,12 @@ public class MatchResource {
 			throw new InvalidOperationException(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "The requested match '"+ id +"'cannot be joined, because it is already full.");
 		}
 		
-		if(playerId.equals(match.getPlayer1().getId())) {
+		if(playerId.equals(match.getPlayer1().getToken())) {
 			logger.warn("The requested match "+ id +"' cannot be joined, because the player '"+ playerId +"' has already joined.");
 			throw new InvalidOperationException(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "The requested match "+ id +"' cannot be joined, because the player '"+ playerId +"' has already joined.");
 		}
 		
-		Player player2 = playerRepo.findOne(playerId);
+		Player player2 = playerRepo.findByToken(playerId);
 		
 		if(player2 == null) {
 			logger.warn("The requested player '"+ playerId +"' could not be found");

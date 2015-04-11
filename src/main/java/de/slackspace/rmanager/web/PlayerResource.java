@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +31,7 @@ public class PlayerResource {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
-	public Player createPlayer(String name) {
+	public Player createPlayer(@RequestParam String name) {
 		if(name == null || name.isEmpty()) {
 			throw new InvalidOperationException(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "A player must have a name.");
 		}
@@ -46,7 +47,10 @@ public class PlayerResource {
 	
 	@RequestMapping(method=RequestMethod.GET, value = "{id}/matches")
 	@ResponseBody
-	public List<GameMatch> getActiveMatches(@PathVariable(value = "id") String id) {
-		return matchRepo.findActiveMatchesByPlayer(id);
+	public List<GameMatch> getActiveMatches(@PathVariable String id) {
+		
+		Player player = playerRepo.findByToken(id);
+		
+		return matchRepo.findActiveMatchesByPlayer(player.getId());
 	}
 }

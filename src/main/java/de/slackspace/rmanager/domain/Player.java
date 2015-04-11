@@ -1,13 +1,13 @@
 package de.slackspace.rmanager.domain;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Player {
@@ -16,9 +16,8 @@ public class Player {
 	@GeneratedValue(strategy=GenerationType.AUTO) 
 	private long id;
 	
-	@GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
 	@NotNull
+	@Size(max=36)
 	private String token;
 	
 	@Size(max=255)
@@ -33,11 +32,12 @@ public class Player {
 	@NotNull
 	private int draws;
 	
-	public Player() {
+	protected Player() {
 	}
 	
 	public Player(String name) {
 		setName(name);
+		setToken(UUID.randomUUID().toString());
 	}
 
 	public long getId() {

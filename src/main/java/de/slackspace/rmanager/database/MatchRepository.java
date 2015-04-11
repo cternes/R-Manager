@@ -23,7 +23,9 @@ public interface MatchRepository extends CrudRepository<GameMatch, String> {
 	 * @return a list of active matches
 	 */
 	@Query("SELECT m FROM GameMatch m WHERE (m.player1.id = :playerId OR m.player2.id = :playerId) AND m.status IN (0,1,2)")
-    public List<GameMatch> findActiveMatchesByPlayer(@Param("playerId") String playerId);
+    public List<GameMatch> findActiveMatchesByPlayer(@Param("playerId") long playerId);
 
 	GameMatch findByPlayer2IsNull();
+	
+	GameMatch findByToken(String token);
 }

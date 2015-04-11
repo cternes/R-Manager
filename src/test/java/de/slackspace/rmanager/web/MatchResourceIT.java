@@ -34,7 +34,7 @@ public class MatchResourceIT {
 	public void whenCreateMatchWithValidPlayerShouldStoreMatch() {
 		Player playerOne = playerResource.createPlayer("p1");
 		
-		GameMatch match = cut.createMatch(playerOne.getId());
+		GameMatch match = cut.createMatch(playerOne.getToken());
 		
 		assertThat(match.getPlayer1().getId(), is(equalTo(playerOne.getId())));
 		assertThat(match.getPlayer2(), is(nullValue()));
@@ -46,8 +46,8 @@ public class MatchResourceIT {
 		Player playerOne = playerResource.createPlayer("player1");
 		Player playerTwo = playerResource.createPlayer("player2");
 		
-		GameMatch match = cut.createMatch(playerOne.getId());
-		match = cut.joinMatch(match.getId(), playerTwo.getId());
+		GameMatch match = cut.createMatch(playerOne.getToken());
+		match = cut.joinMatch(match.getToken(), playerTwo.getToken());
 		
 		assertThat(match.getPlayer1().getId(), is(equalTo(playerOne.getId())));
 		assertThat(match.getPlayer2().getId(), is(equalTo(playerTwo.getId())));

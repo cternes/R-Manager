@@ -2,6 +2,7 @@ package de.slackspace.rmanager.domain;
 
 import java.util.Calendar;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.GenericGenerator;
-
 @Entity
 public class GameMatch {
 
@@ -21,9 +20,8 @@ public class GameMatch {
 	@GeneratedValue(strategy=GenerationType.AUTO) 
 	private long id;
 	
-	@GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
 	@NotNull
+	@Size(max=36)
 	private String token;
 	
 	@NotNull
@@ -47,11 +45,12 @@ public class GameMatch {
 	@Size(max=500)
 	private String message;
 
-	public GameMatch() {
+	protected GameMatch() {
 	}
 	
 	public GameMatch(Player player) {
 		setPlayer1(player);
+		setToken(UUID.randomUUID().toString());
     }
 	
 	public long getId() {
