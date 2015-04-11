@@ -49,8 +49,8 @@ public class MatchResource {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	@ResponseBody
-	public GameMatch getsMatchesWaitingForPlayer() {
-		return matchRepo.findByPlayer2IsNull();
+	public GameMatch getMatchesWaitingForPlayer() {
+		return matchRepo.findTop1ByPlayer2IsNull();
 	}
 	
 	@RequestMapping(method=RequestMethod.GET, value = "{id}")
@@ -74,6 +74,11 @@ public class MatchResource {
 		if(match == null) {
 			logger.warn("The requested match '"+ id +"' could not be found");
 			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested match '"+ id +"' could not be found");
+		}
+		
+		if(playerId == null || playerId.isEmpty()) {
+			logger.warn("The parameter playerId must no be empty");
+			throw new InvalidOperationException(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "The playerId must be set");
 		}
 		
 		if(match.getPlayer1() != null && match.getPlayer2() != null) {
