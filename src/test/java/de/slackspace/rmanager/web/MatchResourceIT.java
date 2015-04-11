@@ -53,4 +53,22 @@ public class MatchResourceIT {
 		assertThat(match.getPlayer2().getId(), is(equalTo(playerTwo.getId())));
 		assertThat(match.getStatus(), is(equalTo(MatchStatus.TURNP1)));
 	}
+	
+	@Test
+	public void whenSingleMatchIsWaitingForPlayerGetMatchesShouldReturnOne() {
+		Player playerOne = playerResource.createPlayer("player1");
+		GameMatch match = cut.createMatch(playerOne.getToken());
+		
+		assertThat(match.getId(), is(equalTo(cut.getMatchesWaitingForPlayer().getId())));
+	}
+	
+	@Test
+	public void whenMultipleMatchesWaitingForPlayerGetMatchesShouldReturnOne() {
+		Player playerOne = playerResource.createPlayer("player1");
+		GameMatch matchOne = cut.createMatch(playerOne.getToken());
+		cut.createMatch(playerOne.getToken());
+		cut.createMatch(playerOne.getToken());
+		
+		assertThat(matchOne.getId(), is(equalTo(cut.getMatchesWaitingForPlayer().getId())));
+	}
 }
