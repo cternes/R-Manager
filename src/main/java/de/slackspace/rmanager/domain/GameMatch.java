@@ -3,11 +3,14 @@ package de.slackspace.rmanager.domain;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -15,9 +18,13 @@ import org.hibernate.annotations.GenericGenerator;
 public class GameMatch {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO) 
+	private long id;
+	
 	@GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-	private String id;
+	@NotNull
+	private String token;
 	
 	@NotNull
 	private Calendar createdDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
@@ -31,6 +38,14 @@ public class GameMatch {
 	
 	@NotNull
 	private MatchStatus status = MatchStatus.WAITINGFORPLAYERS;
+	
+	@Column(name="match_data",columnDefinition="blob")
+	private byte[] matchData;
+	
+	private MatchResult matchResult;
+	
+	@Size(max=500)
+	private String message;
 
 	public GameMatch() {
 	}
@@ -39,7 +54,7 @@ public class GameMatch {
 		setPlayer1(player);
     }
 	
-	public String getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -73,6 +88,38 @@ public class GameMatch {
 
 	public void setPlayer2(Player player2) {
 		this.player2 = player2;
+	}
+	
+	public byte[] getMatchData() {
+		return matchData;
+	}
+
+	public void setMatchData(byte[] matchData) {
+		this.matchData = matchData;
+	}
+
+	public MatchResult getMatchResult() {
+		return matchResult;
+	}
+
+	public void setMatchResult(MatchResult matchResult) {
+		this.matchResult = matchResult;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 }

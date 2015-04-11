@@ -1,14 +1,22 @@
-create table player (
-    id varchar(255) not null PRIMARY KEY,
-    name varchar(255) not null
+CREATE TABLE player (
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    token VARCHAR(36) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    wins INTEGER NOT NULL,
+    losses INTEGER NOT NULL,
+    draws INTEGER NOT NULL
 );
 
-create table game_match (
-    id varchar(255) not null PRIMARY KEY,
-    created_date datetime not null,
-	status int not null,
-	player1 varchar(255) not null ,
-	player2 varchar(255) null,
+CREATE TABLE game_match (
+	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	token VARCHAR(36) NOT NULL,
+	created_date DATETIME NOT NULL,
+	status INT NOT NULL,
+	player1 BIGINT NOT NULL,
+	player2 BIGINT NULL,
+	match_result INTEGER NULL,
+	message VARCHAR(500) NULL,
+	match_data BLOB NULL,
 	FOREIGN KEY(player1) REFERENCES player(id),
 	FOREIGN KEY(player2) REFERENCES player(id)
 );
