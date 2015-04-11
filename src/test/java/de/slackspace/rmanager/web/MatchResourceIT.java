@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import de.slackspace.rmanager.RManagerApplication;
@@ -19,6 +21,7 @@ import de.slackspace.rmanager.domain.Player;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = RManagerApplication.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class MatchResourceIT {
 
 	@Autowired
@@ -56,7 +59,7 @@ public class MatchResourceIT {
 	
 	@Test
 	public void whenSingleMatchIsWaitingForPlayerGetMatchesShouldReturnOne() {
-		Player playerOne = playerResource.createPlayer("player1");
+		Player playerOne = playerResource.createPlayer("p1");
 		GameMatch match = cut.createMatch(playerOne.getToken());
 		
 		assertThat(match.getId(), is(equalTo(cut.getMatchesWaitingForPlayer().getId())));
@@ -64,7 +67,7 @@ public class MatchResourceIT {
 	
 	@Test
 	public void whenMultipleMatchesWaitingForPlayerGetMatchesShouldReturnOne() {
-		Player playerOne = playerResource.createPlayer("player1");
+		Player playerOne = playerResource.createPlayer("p1");
 		GameMatch matchOne = cut.createMatch(playerOne.getToken());
 		cut.createMatch(playerOne.getToken());
 		cut.createMatch(playerOne.getToken());
