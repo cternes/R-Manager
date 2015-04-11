@@ -42,7 +42,7 @@ public class GameMatch {
 	@NotNull
 	private MatchStatus status = MatchStatus.WAITINGFORPLAYERS;
 	
-	@Column(name="match_data",columnDefinition="blob")
+	@Column(name="match_data", columnDefinition="blob")
 	private byte[] matchData;
 	
 	private MatchResult matchResult;

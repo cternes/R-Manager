@@ -43,15 +43,14 @@ public class MatchResourceTest {
 	@Test
 	public void whenGetMatchWithValidIdShouldReturnMatch() {
 		MatchResource cut = createMatchResource();
-		String matchToken = UUID.randomUUID().toString();
 		
 		GameMatch mockMatch = new GameMatch(new Player(""));
-		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(mockMatch);
+		Mockito.when(cut.matchRepo.findByToken(mockMatch.getToken())).thenReturn(mockMatch);
 		
-		GameMatch match = cut.getMatch(matchToken);
+		GameMatch match = cut.getMatch(mockMatch.getToken());
 		
 		Assert.assertEquals(mockMatch, match);
-		Mockito.verify(cut.matchRepo).findByToken(matchToken);
+		Mockito.verify(cut.matchRepo).findByToken(mockMatch.getToken());
 	}
 	
 	@Test(expected=UnknownObjectException.class)
@@ -74,35 +73,41 @@ public class MatchResourceTest {
 	@Test(expected=UnknownObjectException.class)
 	public void whenJoinMatchWithUnknownPlayerShouldThrowException() {
 		MatchResource cut = createMatchResource();
-		String matchToken = UUID.randomUUID().toString();
 		String playerToken = UUID.randomUUID().toString();
 		
 		Player player = new Player("test");
 		GameMatch match = new GameMatch(player);
-		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(match);
+		Mockito.when(cut.matchRepo.findByToken(match.getToken())).thenReturn(match);
 		
-		cut.joinMatch(matchToken, playerToken);
+		cut.joinMatch(match.getToken(), playerToken);
+	}
+	
+	@Test(expected=InvalidOperationException.class)
+	public void whenJoinMatchWithPlayerNull() {
+		MatchResource cut = createMatchResource();
+		
+		Player player = new Player("test");
+		GameMatch match = new GameMatch(player);
+		
+		Mockito.when(cut.matchRepo.findByToken(match.getToken())).thenReturn(match);
+		
+		cut.joinMatch(match.getToken(), null);
 	}
 	
 	@Test
 	public void whenJoinMatchWithValidPlayerShouldReturnMatch() {
 		MatchResource cut = createMatchResource();
 		String matchToken = UUID.randomUUID().toString();
-		String playerOneToken = UUID.randomUUID().toString();
-		String playerTwoToken = UUID.randomUUID().toString();
 		
 		Player playerOne = new Player("test");
-		playerOne.setToken(playerOneToken);
-		
 		Player playerTwo = new Player("p2");
-		playerTwo.setToken(playerTwoToken);
 		
 		GameMatch match = new GameMatch(playerOne);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(match);
-		Mockito.when(cut.playerRepo.findByToken(playerOneToken)).thenReturn(playerOne);
-		Mockito.when(cut.playerRepo.findByToken(playerTwoToken)).thenReturn(playerTwo);
+		Mockito.when(cut.playerRepo.findByToken(playerOne.getToken())).thenReturn(playerOne);
+		Mockito.when(cut.playerRepo.findByToken(playerTwo.getToken())).thenReturn(playerTwo);
 		
-		cut.joinMatch(matchToken, playerTwoToken);
+		cut.joinMatch(matchToken, playerTwo.getToken());
 		
 		Mockito.verify(cut.matchRepo).save(match);
 		Assert.assertEquals(match.getStatus(), MatchStatus.TURNP1);
@@ -112,15 +117,13 @@ public class MatchResourceTest {
 	public void whenJoinMatchWithSamePlayerAsPlayer1ShouldThrowException() {
 		MatchResource cut = createMatchResource();
 		String matchToken = UUID.randomUUID().toString();
-		String playerToken = UUID.randomUUID().toString();
 		
 		Player player = new Player("test");
-		player.setToken(playerToken);
 		GameMatch match = new GameMatch(player);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(match);
-		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
+		Mockito.when(cut.playerRepo.findByToken(player.getToken())).thenReturn(player);
 		
-		cut.joinMatch(matchToken, playerToken);
+		cut.joinMatch(matchToken, player.getToken());
 		
 		Mockito.verify(cut.matchRepo).save(match);
 	}
@@ -129,16 +132,12 @@ public class MatchResourceTest {
 	public void whenJoinMatchWithAlreadyFullMatchShouldThrowException() {
 		MatchResource cut = createMatchResource();
 		String matchId = UUID.randomUUID().toString();
-		String playerOneToken = UUID.randomUUID().toString();
-		String playerTwoToken = UUID.randomUUID().toString();
 		String playerThreeToken = UUID.randomUUID().toString();
 		
 		Player playerOne = new Player("test");
-		playerOne.setToken(playerOneToken);
 		GameMatch match = new GameMatch(playerOne);
 		
 		Player playerTwo = new Player("test two");
-		playerTwo.setToken(playerTwoToken);
 		match.setPlayer2(playerTwo);
 
 		Mockito.when(cut.matchRepo.findByToken(matchId)).thenReturn(match);
