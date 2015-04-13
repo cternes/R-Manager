@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import de.slackspace.rmanager.domain.GameMatch;
 
-public interface MatchRepository extends CrudRepository<GameMatch, String> {
+public interface MatchRepository extends CrudRepository<GameMatch, Long> {
 
 	Page<GameMatch> findAll(Pageable pageable);
 	
