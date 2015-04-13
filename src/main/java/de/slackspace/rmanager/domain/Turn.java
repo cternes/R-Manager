@@ -35,7 +35,12 @@ public class Turn {
 	@NotNull
 	private Calendar createdDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 	
-	public Turn() {
+	protected Turn() {
+	}
+	
+	public Turn(GameMatch match, Player player) {
+		this.gameMatch = match;
+		this.player = player;
 	}
 
 	public long getId() {
