@@ -38,9 +38,10 @@ public class Turn {
 	protected Turn() {
 	}
 	
-	public Turn(GameMatch match, Player player) {
-		this.gameMatch = match;
-		this.player = player;
+	public Turn(GameMatch match, Player player, byte[] turnData) {
+		setGameMatch(match);
+		setPlayer(player);
+		setTurnData(turnData);
 	}
 
 	public long getId() {
