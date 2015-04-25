@@ -19,6 +19,7 @@ import de.slackspace.rmanager.domain.MatchStatus;
 import de.slackspace.rmanager.domain.Player;
 import de.slackspace.rmanager.exception.InvalidOperationException;
 import de.slackspace.rmanager.exception.UnknownObjectException;
+import de.slackspace.rmanager.game.GameEngine;
 
 @RestController
 @RequestMapping("/matches")
@@ -33,6 +34,9 @@ public class MatchResource {
 	@Autowired
 	PlayerRepository playerRepo;
 	
+	@Autowired
+	GameEngine gameEngine;
+	
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
 	public GameMatch createMatch(@RequestParam String playerToken) {
@@ -43,7 +47,7 @@ public class MatchResource {
 			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested player '"+ playerToken +"' could not be found");
 		}
 		
-		GameMatch match = new GameMatch(player1);
+		GameMatch match = new GameMatch(player1, gameEngine.startNewGame());
 		return matchRepo.save(match);
 	}
 	
