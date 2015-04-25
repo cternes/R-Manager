@@ -44,7 +44,7 @@ public class MatchResourceTest {
 	public void whenGetMatchWithValidIdShouldReturnMatch() {
 		MatchResource cut = createMatchResource();
 		
-		GameMatch mockMatch = new GameMatch(new Player(""));
+		GameMatch mockMatch = new GameMatch(new Player(""), new byte[0]);
 		Mockito.when(cut.matchRepo.findByToken(mockMatch.getToken())).thenReturn(mockMatch);
 		
 		GameMatch match = cut.getMatch(mockMatch.getToken());
@@ -76,7 +76,7 @@ public class MatchResourceTest {
 		String playerToken = UUID.randomUUID().toString();
 		
 		Player player = new Player("test");
-		GameMatch match = new GameMatch(player);
+		GameMatch match = new GameMatch(player, new byte[0]);
 		Mockito.when(cut.matchRepo.findByToken(match.getToken())).thenReturn(match);
 		
 		cut.joinMatch(match.getToken(), playerToken);
@@ -87,7 +87,7 @@ public class MatchResourceTest {
 		MatchResource cut = createMatchResource();
 		
 		Player player = new Player("test");
-		GameMatch match = new GameMatch(player);
+		GameMatch match = new GameMatch(player, new byte[0]);
 		
 		Mockito.when(cut.matchRepo.findByToken(match.getToken())).thenReturn(match);
 		
@@ -102,7 +102,7 @@ public class MatchResourceTest {
 		Player playerOne = new Player("test");
 		Player playerTwo = new Player("p2");
 		
-		GameMatch match = new GameMatch(playerOne);
+		GameMatch match = new GameMatch(playerOne, new byte[0]);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(match);
 		Mockito.when(cut.playerRepo.findByToken(playerOne.getToken())).thenReturn(playerOne);
 		Mockito.when(cut.playerRepo.findByToken(playerTwo.getToken())).thenReturn(playerTwo);
@@ -119,7 +119,7 @@ public class MatchResourceTest {
 		String matchToken = UUID.randomUUID().toString();
 		
 		Player player = new Player("test");
-		GameMatch match = new GameMatch(player);
+		GameMatch match = new GameMatch(player, new byte[0]);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(match);
 		Mockito.when(cut.playerRepo.findByToken(player.getToken())).thenReturn(player);
 		
@@ -135,7 +135,7 @@ public class MatchResourceTest {
 		String playerThreeToken = UUID.randomUUID().toString();
 		
 		Player playerOne = new Player("test");
-		GameMatch match = new GameMatch(playerOne);
+		GameMatch match = new GameMatch(playerOne, new byte[0]);
 		
 		Player playerTwo = new Player("test two");
 		match.setPlayer2(playerTwo);
