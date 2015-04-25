@@ -53,8 +53,9 @@ public class GameMatch {
 	protected GameMatch() {
 	}
 	
-	public GameMatch(Player player) {
+	public GameMatch(Player player, byte[] matchData) {
 		setPlayer1(player);
+		setMatchData(matchData);
 		setToken(UUID.randomUUID().toString());
     }
 	
