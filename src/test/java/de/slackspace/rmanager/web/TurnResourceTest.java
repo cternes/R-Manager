@@ -2,6 +2,7 @@ package de.slackspace.rmanager.web;
 
 import java.util.UUID;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -9,10 +10,12 @@ import de.slackspace.rmanager.database.MatchRepository;
 import de.slackspace.rmanager.database.PlayerRepository;
 import de.slackspace.rmanager.database.TurnRepository;
 import de.slackspace.rmanager.domain.GameMatch;
+import de.slackspace.rmanager.domain.MatchResult;
 import de.slackspace.rmanager.domain.Player;
 import de.slackspace.rmanager.exception.InvalidOperationException;
 import de.slackspace.rmanager.exception.UnknownObjectException;
 import de.slackspace.rmanager.game.GameEngine;
+import de.slackspace.rmanager.game.TurnResult;
 
 public class TurnResourceTest {
 
@@ -46,6 +49,46 @@ public class TurnResourceTest {
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(new GameMatch(player, new byte[0]));
 		
 		cut.takeTurn(matchToken, playerToken, new byte[0]);
+	}
+	
+	@Test
+	public void whenTakeTurnReturnsPlayer1WinsThenMatchShouldBeSavedAndMatchResultEqualsPlayer1Wins() {
+		TurnResource cut = createTurnResource();
+		
+		String playerToken = UUID.randomUUID().toString();
+		String matchToken = UUID.randomUUID().toString();
+		
+		Player player = new Player("test");
+		GameMatch gameMatch = new GameMatch(player, new byte[0]);
+		
+		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
+		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
+		Mockito.when(cut.gameEngine.makeTurn(new byte[0], new byte[0], true)).thenReturn(new TurnResult(new byte[0], MatchResult.PLAYER1WINS));
+		
+		cut.takeTurn(matchToken, playerToken, new byte[0]);
+		
+		Mockito.verify(cut.matchRepo).save(gameMatch);
+		Assert.assertEquals(gameMatch.getMatchResult(), MatchResult.PLAYER1WINS);
+	}
+	
+	@Test
+	public void whenTakeTurnReturnsDrawThenMatchShouldBeSavedAndMatchResultEqualsPlayer1Wins() {
+		TurnResource cut = createTurnResource();
+		
+		String playerToken = UUID.randomUUID().toString();
+		String matchToken = UUID.randomUUID().toString();
+		
+		Player player = new Player("test");
+		GameMatch gameMatch = new GameMatch(player, new byte[0]);
+		
+		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
+		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
+		Mockito.when(cut.gameEngine.makeTurn(new byte[0], new byte[0], true)).thenReturn(new TurnResult(new byte[0], MatchResult.DRAW));
+		
+		cut.takeTurn(matchToken, playerToken, new byte[0]);
+		
+		Mockito.verify(cut.matchRepo).save(gameMatch);
+		Assert.assertEquals(gameMatch.getMatchResult(), MatchResult.DRAW);
 	}
 	
 	private TurnResource createTurnResource() {
