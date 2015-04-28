@@ -19,6 +19,7 @@ import de.slackspace.rmanager.database.TurnRepository;
 import de.slackspace.rmanager.domain.GameMatch;
 import de.slackspace.rmanager.domain.Player;
 import de.slackspace.rmanager.domain.Turn;
+import de.slackspace.rmanager.exception.InvalidOperationException;
 import de.slackspace.rmanager.exception.UnknownObjectException;
 import de.slackspace.rmanager.game.GameEngine;
 import de.slackspace.rmanager.game.TurnResult;
@@ -64,6 +65,10 @@ public class TurnResource {
 		turnRepo.save(new Turn(match, player, decodedTurnData));
 		
 		TurnResult turnResult = gameEngine.makeTurn(match.getMatchData(), decodedTurnData, match.getPlayer1().equals(player));
+		
+		if(turnResult == null) {
+			throw new InvalidOperationException(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_ERROR", "GameEngine has returned an unexpected result");
+		}
 		
 		if(turnResult.hasMatchEnded()) {
 			match.setMatchResult(turnResult.getMatchResult());
