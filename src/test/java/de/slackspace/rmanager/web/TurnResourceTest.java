@@ -11,6 +11,7 @@ import de.slackspace.rmanager.database.PlayerRepository;
 import de.slackspace.rmanager.database.TurnRepository;
 import de.slackspace.rmanager.domain.GameMatch;
 import de.slackspace.rmanager.domain.MatchResult;
+import de.slackspace.rmanager.domain.MatchStatus;
 import de.slackspace.rmanager.domain.Player;
 import de.slackspace.rmanager.exception.InvalidOperationException;
 import de.slackspace.rmanager.exception.UnknownObjectException;
@@ -60,6 +61,7 @@ public class TurnResourceTest {
 		
 		Player player = new Player("test");
 		GameMatch gameMatch = new GameMatch(player, new byte[0]);
+		gameMatch.setStatus(MatchStatus.TURNP1);
 		
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
@@ -80,6 +82,7 @@ public class TurnResourceTest {
 		
 		Player player = new Player("test");
 		GameMatch gameMatch = new GameMatch(player, new byte[0]);
+		gameMatch.setStatus(MatchStatus.TURNP1);
 		
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
@@ -89,6 +92,23 @@ public class TurnResourceTest {
 		
 		Mockito.verify(cut.matchRepo).save(gameMatch);
 		Assert.assertEquals(gameMatch.getMatchResult(), MatchResult.DRAW);
+	}
+	
+	@Test(expected=InvalidOperationException.class)
+	public void whenMatchIsWaitingForPlayersShouldThrowException() {
+		TurnResource cut = createTurnResource();
+		
+		String playerToken = UUID.randomUUID().toString();
+		String matchToken = UUID.randomUUID().toString();
+		
+		Player player = new Player("test");
+		GameMatch gameMatch = new GameMatch(player, new byte[0]);
+		
+		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
+		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
+		Mockito.when(cut.gameEngine.makeTurn(new byte[0], new byte[0], true)).thenReturn(new TurnResult(new byte[0], MatchResult.DRAW));
+		
+		cut.takeTurn(matchToken, playerToken, new byte[0]);
 	}
 	
 	private TurnResource createTurnResource() {

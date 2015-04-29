@@ -17,6 +17,7 @@ import de.slackspace.rmanager.database.MatchRepository;
 import de.slackspace.rmanager.database.PlayerRepository;
 import de.slackspace.rmanager.database.TurnRepository;
 import de.slackspace.rmanager.domain.GameMatch;
+import de.slackspace.rmanager.domain.MatchStatus;
 import de.slackspace.rmanager.domain.Player;
 import de.slackspace.rmanager.domain.Turn;
 import de.slackspace.rmanager.exception.InvalidOperationException;
@@ -58,6 +59,11 @@ public class TurnResource {
 		if(match == null) {
 			logger.warn("The match '"+ id +"' could not be found");
 			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The match '"+ id +"' could not be found");
+		}
+		
+		if(match.getStatus() == MatchStatus.WAITINGFORPLAYERS) {
+			logger.warn("The match '"+ id +"' is waiting for players, taking a turn is not allowed");
+			throw new InvalidOperationException(HttpStatus.METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED", "The match '"+ id +"' is waiting for players, taking a turn is not allowed");
 		}
 		
 		byte[] decodedTurnData = Base64.decodeBase64(turnData);
