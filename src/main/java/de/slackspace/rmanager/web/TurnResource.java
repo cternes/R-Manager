@@ -61,9 +61,17 @@ public class TurnResource {
 			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The match '"+ id +"' could not be found");
 		}
 		
+		// validate waiting status
 		if(match.getStatus() == MatchStatus.WAITINGFORPLAYERS) {
 			logger.warn("The match '"+ id +"' is waiting for players, taking a turn is not allowed");
 			throw new InvalidOperationException(HttpStatus.METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED", "The match '"+ id +"' is waiting for players, taking a turn is not allowed");
+		}
+		
+		// validate turn status
+		if(match.getStatus() == MatchStatus.TURNP1 && !player.getToken().equals(match.getPlayer1().getToken()) 
+				|| match.getStatus() == MatchStatus.TURNP2 && !player.getToken().equals(match.getPlayer2().getId())) {
+			logger.warn("The match '"+ id +"' is expecting another player to take a turn. Player '"+ player.getToken() + "' is not allowed to take a turn");
+			throw new InvalidOperationException(HttpStatus.METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED", "The match '"+ id +"' is expecting another player to take a turn. Player '"+ player.getToken() + "' is not allowed to take a turn");
 		}
 		
 		byte[] decodedTurnData = Base64.decodeBase64(turnData);

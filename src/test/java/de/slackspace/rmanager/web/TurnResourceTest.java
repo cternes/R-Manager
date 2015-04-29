@@ -106,9 +106,28 @@ public class TurnResourceTest {
 		
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
-		Mockito.when(cut.gameEngine.makeTurn(new byte[0], new byte[0], true)).thenReturn(new TurnResult(new byte[0], MatchResult.DRAW));
 		
 		cut.takeTurn(matchToken, playerToken, new byte[0]);
+	}
+	
+	@Test(expected=InvalidOperationException.class)
+	public void whenWrongPlayerIsTakingATurnShouldThrowException() {
+		TurnResource cut = createTurnResource();
+		
+		String playerOneToken = UUID.randomUUID().toString();
+		String matchToken = UUID.randomUUID().toString();
+		
+		Player playerOne = new Player("p1");
+		Player playerTwo = new Player("p2");
+		GameMatch gameMatch = new GameMatch(playerOne, new byte[0]);
+		gameMatch.setPlayer2(playerTwo);
+		gameMatch.setStatus(MatchStatus.TURNP2);
+		
+		Mockito.when(cut.playerRepo.findByToken(playerOneToken)).thenReturn(playerOne);
+		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
+		Mockito.when(cut.gameEngine.makeTurn(new byte[0], new byte[0], true)).thenReturn(new TurnResult(new byte[0], MatchResult.DRAW));
+		
+		cut.takeTurn(matchToken, playerOneToken, new byte[0]);
 	}
 	
 	private TurnResource createTurnResource() {
