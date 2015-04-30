@@ -47,7 +47,7 @@ public class MatchResource {
 			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested player '"+ playerToken +"' could not be found");
 		}
 		
-		GameMatch match = new GameMatch(player1, gameEngine.startNewGame());
+		GameMatch match = new GameMatch(player1);
 		return matchRepo.save(match);
 	}
 	
@@ -103,6 +103,7 @@ public class MatchResource {
 		}
 		
 		match.setPlayer2(player2);
+		match.setMatchData(gameEngine.startNewGame(match.getPlayer1().getName(), player2.getName()));
 		match.setStatus(MatchStatus.TURNP1);
 		
 		return matchRepo.save(match);

@@ -47,7 +47,7 @@ public class TurnResourceTest {
 		
 		Player player = new Player("test");
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
-		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(new GameMatch(player, new byte[0]));
+		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(new GameMatch(player));
 		
 		cut.takeTurn(matchToken, playerToken, new byte[0]);
 	}
@@ -60,7 +60,8 @@ public class TurnResourceTest {
 		String matchToken = UUID.randomUUID().toString();
 		
 		Player player = new Player("test");
-		GameMatch gameMatch = new GameMatch(player, new byte[0]);
+		GameMatch gameMatch = new GameMatch(player);
+		gameMatch.setMatchData(new byte[0]);
 		gameMatch.setStatus(MatchStatus.TURNP1);
 		
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
@@ -81,7 +82,8 @@ public class TurnResourceTest {
 		String matchToken = UUID.randomUUID().toString();
 		
 		Player player = new Player("test");
-		GameMatch gameMatch = new GameMatch(player, new byte[0]);
+		GameMatch gameMatch = new GameMatch(player);
+		gameMatch.setMatchData(new byte[0]);
 		gameMatch.setStatus(MatchStatus.TURNP1);
 		
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
@@ -102,7 +104,7 @@ public class TurnResourceTest {
 		String matchToken = UUID.randomUUID().toString();
 		
 		Player player = new Player("test");
-		GameMatch gameMatch = new GameMatch(player, new byte[0]);
+		GameMatch gameMatch = new GameMatch(player);
 		
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
@@ -119,7 +121,7 @@ public class TurnResourceTest {
 		
 		Player playerOne = new Player("p1");
 		Player playerTwo = new Player("p2");
-		GameMatch gameMatch = new GameMatch(playerOne, new byte[0]);
+		GameMatch gameMatch = new GameMatch(playerOne);
 		gameMatch.setPlayer2(playerTwo);
 		gameMatch.setStatus(MatchStatus.TURNP2);
 		
