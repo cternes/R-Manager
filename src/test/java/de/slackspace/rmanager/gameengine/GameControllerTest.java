@@ -12,6 +12,7 @@ import de.slackspace.rmanager.gameengine.action.GameAction;
 import de.slackspace.rmanager.gameengine.domain.Estate;
 import de.slackspace.rmanager.gameengine.domain.GameState;
 import de.slackspace.rmanager.gameengine.domain.RManagerPlayer;
+import de.slackspace.rmanager.gameengine.exception.GameException;
 
 public class GameControllerTest {
 
@@ -42,7 +43,7 @@ public class GameControllerTest {
 	}
 	
 	@Test
-	public void whenEndingTurnShouldReturnValidGameState() {
+	public void whenEndingTurnWithCommandsShouldValidateCommandsAndExecute() {
 		GameController cut = GameControllerFactory.getGameControllerInstance();
 		GameState gameState = cut.startNewGame("p1", "p2");
 		
@@ -57,5 +58,36 @@ public class GameControllerTest {
 		Assert.assertEquals(expectedMoney, updatedState.getPlayerOne().getMoney());
 		Assert.assertEquals(estateToBuy.getId(), updatedState.getPlayerOne().getEstates().get(0).getId());
 		Assert.assertEquals(1, updatedState.getPlayerOne().getEstates().size());
+	}
+	
+	@Test(expected=GameException.class)
+	public void whenEndingTurnWithInvalidIdInCommandShouldThrowException() {
+		GameController cut = GameControllerFactory.getGameControllerInstance();
+		GameState gameState = cut.startNewGame("p1", "p2");
+		
+		List<GameAction> actions = new ArrayList<>();
+		actions.add(new BuyEstateAction("abcd"));
+		
+		cut.endTurn(gameState, "p1", actions);
+	}
+	
+	@Test(expected=GameException.class)
+	public void whenEndingTurnWithNegativeMoneyShouldThrowException() {
+		GameController cut = GameControllerFactory.getGameControllerInstance();
+		GameState gameState = cut.startNewGame("p1", "p2");
+		
+		List<GameAction> actions = new ArrayList<>();
+		actions.add(new BuyEstateAction(gameState.getCities().get(0).getEstates().get(3).getId()));
+		actions.add(new BuyEstateAction(gameState.getCities().get(1).getEstates().get(3).getId()));
+		actions.add(new BuyEstateAction(gameState.getCities().get(2).getEstates().get(3).getId()));
+		actions.add(new BuyEstateAction(gameState.getCities().get(3).getEstates().get(3).getId()));
+		actions.add(new BuyEstateAction(gameState.getCities().get(4).getEstates().get(3).getId()));
+		actions.add(new BuyEstateAction(gameState.getCities().get(5).getEstates().get(3).getId()));
+		actions.add(new BuyEstateAction(gameState.getCities().get(6).getEstates().get(3).getId()));
+		actions.add(new BuyEstateAction(gameState.getCities().get(7).getEstates().get(3).getId()));
+		
+		cut.endTurn(gameState, "p1", actions);
+		
+		System.out.println(gameState.getPlayerOne().getMoney());
 	}
 }

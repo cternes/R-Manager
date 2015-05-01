@@ -49,7 +49,7 @@ public class RManagerPlayer {
 	public boolean canBuy(BigDecimal price) {
 		BigDecimal tmpMoney = money.subtract(price);
 		
-		if(tmpMoney.compareTo(BigDecimal.ZERO) == 0) {
+		if(tmpMoney.compareTo(BigDecimal.ZERO) == -1) {
 			return false;
 		}
 		
