@@ -1,6 +1,7 @@
 package de.slackspace.rmanager.gameengine.service;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,21 +35,29 @@ public class CityService {
 	
 	private List<Estate> createCityEstates(BigDecimal rateOfPriceIncrease) {
 		List<Estate> estates = new ArrayList<>();
+		SecureRandom random = new SecureRandom();
 		
 		// create must have estates
-		estates.add(new Estate(EstateType.ONE_PARCEL, rateOfPriceIncrease));
-		estates.add(new Estate(EstateType.TWO_PARCEL, rateOfPriceIncrease));
-		estates.add(new Estate(EstateType.THREE_PARCEL, rateOfPriceIncrease));
-		estates.add(new Estate(EstateType.FOUR_PARCEL, rateOfPriceIncrease));
+		estates.add(new Estate(EstateType.ONE_PARCEL, rateOfPriceIncrease, createRandomPriceVariation(random)));
+		estates.add(new Estate(EstateType.TWO_PARCEL, rateOfPriceIncrease, createRandomPriceVariation(random)));
+		estates.add(new Estate(EstateType.THREE_PARCEL, rateOfPriceIncrease, createRandomPriceVariation(random)));
+		estates.add(new Estate(EstateType.FOUR_PARCEL, rateOfPriceIncrease, createRandomPriceVariation(random)));
 
-		SecureRandom random = new SecureRandom();
 		int additionalEstates = random.nextInt(12);
 
 		// create randomly optional estates
 		for (int i = 0; i < additionalEstates; i++) {
-			estates.add(new Estate(EstateType.randomType(), rateOfPriceIncrease));
+			estates.add(new Estate(EstateType.randomType(), rateOfPriceIncrease, createRandomPriceVariation(random)));
 		}
 		
 		return estates;
+	}
+
+	private BigDecimal createRandomPriceVariation(SecureRandom random) {
+		double nextDouble = random.nextDouble();
+		
+		BigDecimal rounded = new BigDecimal(nextDouble).round(new MathContext(1));
+		
+		return rounded.add(new BigDecimal("1.0"));
 	}
 }

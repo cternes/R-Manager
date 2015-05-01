@@ -8,11 +8,11 @@ public class Estate {
 	
 	private BigDecimal pricePerSquareMeter;
 	
-	public Estate(EstateType estateType, BigDecimal rateOfPriceIncrease) {
+	public Estate(EstateType estateType, BigDecimal rateOfPriceIncrease, BigDecimal rateOfPriceVariation) {
 		setEstateType(estateType);
 		
 		// calculate price per square meter
-		pricePerSquareMeter = rateOfPriceIncrease.multiply(estateType.getSquareMeters());
+		pricePerSquareMeter = EstateType.getMeanPricePerSquareMeter().multiply(rateOfPriceIncrease).multiply(rateOfPriceVariation);
 	}
 	
 	public BigDecimal getSquareMeter() {

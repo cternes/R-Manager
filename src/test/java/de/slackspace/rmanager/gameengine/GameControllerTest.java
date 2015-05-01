@@ -27,7 +27,16 @@ public class GameControllerTest {
 		Assert.assertEquals("Munich", playerTwo.getCurrentCity().getName());
 		Assert.assertEquals("p2", playerTwo.getName());
 		
-		System.out.println(gameState.getCities());
+		// just for debug
+//		for (City city : gameState.getCities()) {
+//			System.out.println("");
+//			System.out.println(city.getName());
+//			System.out.println("===========");
+//			
+//			for (Estate estate: city.getEstates()) {
+//				System.out.println("" + estate.getEstateType() + ":" + estate.getTotalPrice());
+//			}
+//		}
 	}
 	
 	@Test

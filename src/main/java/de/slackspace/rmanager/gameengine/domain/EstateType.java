@@ -32,4 +32,8 @@ public enum EstateType {
 	public static EstateType randomType()  {
 		return VALUES.get(RANDOM.nextInt(SIZE));
 	}
+	
+	public static BigDecimal getMeanPricePerSquareMeter() {
+		return new BigDecimal("100");
+	}
 }
