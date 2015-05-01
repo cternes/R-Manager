@@ -1,18 +1,21 @@
 package de.slackspace.rmanager.gameengine;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import de.slackspace.rmanager.gameengine.domain.City;
+import de.slackspace.rmanager.gameengine.domain.GameAction;
 import de.slackspace.rmanager.gameengine.domain.GameState;
 import de.slackspace.rmanager.gameengine.domain.RManagerPlayer;
+import de.slackspace.rmanager.gameengine.service.CityService;
 
 public class GameController {
 
+	CityService cityService = new CityService();
+	
 	public GameState startNewGame(String playerOneName, String playerTwoName) {
 		GameState state = new GameState();
-		state.setCities(createCities());
+		state.setCities(cityService.createCities());
 
 		RManagerPlayer playerOne = new RManagerPlayer();
 		playerOne.setMoney(new BigDecimal(1_500_000));
@@ -29,18 +32,9 @@ public class GameController {
 		return state;
 	}
 	
-	private List<City> createCities() {
-		List<City> cities = new ArrayList<>();
-		cities.add(new City("Berlin"));
-		cities.add(new City("Bonn"));
-		cities.add(new City("Erfurt"));
-		cities.add(new City("Frankfurt"));
-		cities.add(new City("Hamburg"));
-		cities.add(new City("Munich"));
-		cities.add(new City("Nuremberg"));
-		cities.add(new City("Stuttgart"));
-
-		return cities;
+	public GameState endTurn(GameState state, String playerName, List<GameAction> actions) {
+		
+		return state;
 	}
 	
 	private City getCity(GameState state, String cityName) {
