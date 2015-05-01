@@ -28,26 +28,26 @@ public class CityService {
 	
 	protected City createCity(String name, BigDecimal rateOfPriceIncrease) {
 		City city = new City(name, rateOfPriceIncrease);
-		city.getEstates().addAll(createCityEstates(city.getRateOfPriceIncrease()));
+		city.getEstates().addAll(createCityEstates(city.getRateOfPriceIncrease(), city.getId()));
 		
 		return city;
 	}
 	
-	private List<Estate> createCityEstates(BigDecimal rateOfPriceIncrease) {
+	private List<Estate> createCityEstates(BigDecimal rateOfPriceIncrease, String cityId) {
 		List<Estate> estates = new ArrayList<>();
 		SecureRandom random = new SecureRandom();
 		
 		// create must have estates
-		estates.add(new Estate(EstateType.ONE_PARCEL, rateOfPriceIncrease, createRandomPriceVariation(random)));
-		estates.add(new Estate(EstateType.TWO_PARCEL, rateOfPriceIncrease, createRandomPriceVariation(random)));
-		estates.add(new Estate(EstateType.THREE_PARCEL, rateOfPriceIncrease, createRandomPriceVariation(random)));
-		estates.add(new Estate(EstateType.FOUR_PARCEL, rateOfPriceIncrease, createRandomPriceVariation(random)));
+		estates.add(new Estate(EstateType.ONE_PARCEL, rateOfPriceIncrease, createRandomPriceVariation(random), cityId));
+		estates.add(new Estate(EstateType.TWO_PARCEL, rateOfPriceIncrease, createRandomPriceVariation(random), cityId));
+		estates.add(new Estate(EstateType.THREE_PARCEL, rateOfPriceIncrease, createRandomPriceVariation(random), cityId));
+		estates.add(new Estate(EstateType.FOUR_PARCEL, rateOfPriceIncrease, createRandomPriceVariation(random), cityId));
 
 		int additionalEstates = random.nextInt(12);
 
 		// create randomly optional estates
 		for (int i = 0; i < additionalEstates; i++) {
-			estates.add(new Estate(EstateType.randomType(), rateOfPriceIncrease, createRandomPriceVariation(random)));
+			estates.add(new Estate(EstateType.randomType(), rateOfPriceIncrease, createRandomPriceVariation(random), cityId));
 		}
 		
 		return estates;

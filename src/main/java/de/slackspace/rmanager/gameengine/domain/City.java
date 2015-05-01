@@ -3,11 +3,16 @@ package de.slackspace.rmanager.gameengine.domain;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class City {
 
+	private String id = UUID.randomUUID().toString();
+	
 	private String name;
+	
 	private BigDecimal rateOfPriceIncrease;
+	
 	private List<Estate> estates = new ArrayList<>();
 
 	public City(String name, BigDecimal rateOfPriceIncrease) {
@@ -40,4 +45,7 @@ public class City {
 		return "City [name=" + name + ", rateOfPriceIncrease=" + rateOfPriceIncrease + ", estates=" + estates + "]";
 	}
 
+	public String getId() {
+		return id;
+	}
 }

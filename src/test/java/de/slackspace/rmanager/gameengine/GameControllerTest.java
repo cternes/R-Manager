@@ -7,7 +7,9 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.slackspace.rmanager.gameengine.domain.GameAction;
+import de.slackspace.rmanager.gameengine.action.BuyEstateAction;
+import de.slackspace.rmanager.gameengine.action.GameAction;
+import de.slackspace.rmanager.gameengine.domain.Estate;
 import de.slackspace.rmanager.gameengine.domain.GameState;
 import de.slackspace.rmanager.gameengine.domain.RManagerPlayer;
 
@@ -15,7 +17,7 @@ public class GameControllerTest {
 
 	@Test
 	public void whenStartingNewGameShouldReturnValidGameState() {
-		GameState gameState = new GameController().startNewGame("p1", "p2");
+		GameState gameState = GameControllerFactory.getGameControllerInstance().startNewGame("p1", "p2");
 		
 		RManagerPlayer playerOne = gameState.getPlayerOne();
 		Assert.assertEquals(new BigDecimal(1_500_000), playerOne.getMoney());
@@ -41,12 +43,19 @@ public class GameControllerTest {
 	
 	@Test
 	public void whenEndingTurnShouldReturnValidGameState() {
-		GameController cut = new GameController();
+		GameController cut = GameControllerFactory.getGameControllerInstance();
 		GameState gameState = cut.startNewGame("p1", "p2");
 		
-		List<GameAction> actions = new ArrayList<>();
-		actions.add(new GameAction());
+		Estate estateToBuy = gameState.getCities().get(4).getEstates().get(2);
 		
-		cut.endTurn(gameState, "p1", actions);
+		List<GameAction> actions = new ArrayList<>();
+		actions.add(new BuyEstateAction(estateToBuy.getId()));
+		
+		GameState updatedState = cut.endTurn(gameState, "p1", actions);
+		
+		BigDecimal expectedMoney = new BigDecimal(1_500_000).subtract(estateToBuy.getTotalPrice());
+		Assert.assertEquals(expectedMoney, updatedState.getPlayerOne().getMoney());
+		Assert.assertEquals(estateToBuy.getId(), updatedState.getPlayerOne().getEstates().get(0).getId());
+		Assert.assertEquals(1, updatedState.getPlayerOne().getEstates().size());
 	}
 }

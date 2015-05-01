@@ -3,15 +3,22 @@ package de.slackspace.rmanager.gameengine;
 import java.math.BigDecimal;
 import java.util.List;
 
+import de.slackspace.rmanager.gameengine.action.GameAction;
+import de.slackspace.rmanager.gameengine.action.handlers.GameActionHandler;
 import de.slackspace.rmanager.gameengine.domain.City;
-import de.slackspace.rmanager.gameengine.domain.GameAction;
 import de.slackspace.rmanager.gameengine.domain.GameState;
 import de.slackspace.rmanager.gameengine.domain.RManagerPlayer;
 import de.slackspace.rmanager.gameengine.service.CityService;
 
 public class GameController {
 
-	CityService cityService = new CityService();
+	CityService cityService;
+	List<GameActionHandler> actionHandlers;
+	
+	public GameController(CityService cityService, List<GameActionHandler> actionHandlers) {
+		this.cityService = cityService;
+		this.actionHandlers = actionHandlers;
+	}
 	
 	public GameState startNewGame(String playerOneName, String playerTwoName) {
 		GameState state = new GameState();
@@ -33,6 +40,17 @@ public class GameController {
 	}
 	
 	public GameState endTurn(GameState state, String playerName, List<GameAction> actions) {
+		RManagerPlayer player = state.getPlayerByName(playerName);
+		
+		
+		
+		for (GameAction gameAction : actions) {
+			for (GameActionHandler handler : actionHandlers) {
+				if(handler.canHandle(gameAction)) {
+					handler.handle(gameAction, player, state);
+				}
+			}
+		}
 		
 		return state;
 	}

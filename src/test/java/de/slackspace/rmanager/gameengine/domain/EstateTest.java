@@ -23,7 +23,7 @@ public class EstateTest {
 
 	@Theory
 	public void whenCreateEstateShouldCalculateCorrectPrices(TestData testData) {
-		Estate cut = new Estate(EstateType.ONE_PARCEL, new BigDecimal(testData.getRateOfPriceIncrease()), new BigDecimal(testData.getRateOfPriceVariation()));
+		Estate cut = new Estate(EstateType.ONE_PARCEL, new BigDecimal(testData.getRateOfPriceIncrease()), new BigDecimal(testData.getRateOfPriceVariation()), "12345");
 		
 		Assert.assertTrue("Price was: " + cut.getPricePerSquareMeter() + "Expected: " + testData.getExpected(), new BigDecimal(testData.getExpected()).equals(cut.getPricePerSquareMeter()));
 		Assert.assertTrue("Total Price was: " + cut.getTotalPrice() + "Expected: " + testData.getExpectedTotal(), new BigDecimal(testData.getExpectedTotal()).equals(cut.getTotalPrice()));

@@ -16,7 +16,7 @@ public class RManagerGameEngine implements GameEngine {
 
 	@Override
 	public byte[] startNewGame(String playerOneName, String playerTwoName) {
-		GameController controller = new GameController();
+		GameController controller = GameControllerFactory.getGameControllerInstance();
 		GameState state = controller.startNewGame(playerOneName, playerTwoName);
 		
 		return serialize(state);

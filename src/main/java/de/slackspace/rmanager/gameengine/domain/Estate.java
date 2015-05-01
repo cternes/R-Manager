@@ -1,15 +1,21 @@
 package de.slackspace.rmanager.gameengine.domain;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class Estate {
 
+	private String id = UUID.randomUUID().toString();
+	
 	private EstateType estateType;
 	
 	private BigDecimal pricePerSquareMeter;
 	
-	public Estate(EstateType estateType, BigDecimal rateOfPriceIncrease, BigDecimal rateOfPriceVariation) {
+	private String cityId;
+	
+	public Estate(EstateType estateType, BigDecimal rateOfPriceIncrease, BigDecimal rateOfPriceVariation, String cityId) {
 		setEstateType(estateType);
+		setCityId(cityId);
 		
 		// calculate price per square meter
 		pricePerSquareMeter = EstateType.getMeanPricePerSquareMeter().multiply(rateOfPriceIncrease).multiply(rateOfPriceVariation);
@@ -39,5 +45,17 @@ public class Estate {
 	public String toString() {
 		return "Estate [estateType=" + estateType + ", pricePerSquareMeter=" + pricePerSquareMeter + ", getTotalPrice()=" + getTotalPrice() + "]";
 	}
-	
+
+	public String getId() {
+		return id;
+	}
+
+	public String getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(String cityId) {
+		this.cityId = cityId;
+	}
+
 }
