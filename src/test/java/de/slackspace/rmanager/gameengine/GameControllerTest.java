@@ -56,7 +56,7 @@ public class GameControllerTest {
 		
 		BigDecimal expectedMoney = new BigDecimal(1_500_000).subtract(estateToBuy.getTotalPrice());
 		Assert.assertEquals(expectedMoney, updatedState.getPlayerOne().getMoney());
-		Assert.assertEquals(estateToBuy.getId(), updatedState.getPlayerOne().getEstates().get(0).getId());
+		Assert.assertEquals(estateToBuy.getId(), updatedState.getPlayerOne().getEstates().iterator().next().getId());
 		Assert.assertEquals(1, updatedState.getPlayerOne().getEstates().size());
 	}
 	
@@ -87,7 +87,17 @@ public class GameControllerTest {
 		actions.add(new BuyEstateAction(gameState.getCities().get(7).getEstates().get(3).getId()));
 		
 		cut.endTurn(gameState, "p1", actions);
+	}
+	
+	@Test(expected=GameException.class)
+	public void whenEndingTurnWithDuplicateEstatesShouldThrowException() {
+		GameController cut = GameControllerFactory.getGameControllerInstance();
+		GameState gameState = cut.startNewGame("p1", "p2");
 		
-		System.out.println(gameState.getPlayerOne().getMoney());
+		List<GameAction> actions = new ArrayList<>();
+		actions.add(new BuyEstateAction(gameState.getCities().get(0).getEstates().get(3).getId()));
+		actions.add(new BuyEstateAction(gameState.getCities().get(0).getEstates().get(3).getId()));
+		
+		cut.endTurn(gameState, "p1", actions);
 	}
 }

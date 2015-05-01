@@ -1,4 +1,4 @@
-package de.slackspace.rmanager.gameengine.action.handlers;
+package de.slackspace.rmanager.gameengine.action.handler;
 
 import de.slackspace.rmanager.gameengine.action.GameAction;
 import de.slackspace.rmanager.gameengine.domain.GameState;

@@ -1,5 +1,6 @@
 package de.slackspace.rmanager.gameengine.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameState {
@@ -7,7 +8,7 @@ public class GameState {
 	private RManagerPlayer playerOne;
 	private RManagerPlayer playerTwo;
 	
-	private List<City> cities;
+	private List<City> cities = new ArrayList<>();
 	
 	public RManagerPlayer getPlayerOne() {
 		return playerOne;

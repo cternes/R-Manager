@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import de.slackspace.rmanager.gameengine.action.GameAction;
-import de.slackspace.rmanager.gameengine.action.handlers.GameActionHandler;
+import de.slackspace.rmanager.gameengine.action.handler.GameActionHandler;
 import de.slackspace.rmanager.gameengine.domain.City;
 import de.slackspace.rmanager.gameengine.domain.GameState;
 import de.slackspace.rmanager.gameengine.domain.RManagerPlayer;

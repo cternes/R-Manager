@@ -1,4 +1,4 @@
-package de.slackspace.rmanager.gameengine.action.handlers;
+package de.slackspace.rmanager.gameengine.action.handler;
 
 import de.slackspace.rmanager.gameengine.action.BuyEstateAction;
 import de.slackspace.rmanager.gameengine.action.GameAction;
@@ -26,6 +26,10 @@ public class BuyEstateActionHandler implements GameActionHandler {
 		
 		if(!player.canBuy(estate.getTotalPrice())) {
 			throw new GameException("The player's money '" + player.getMoney() + "' is not enough to pay '" + estate.getTotalPrice() + "'");
+		}
+		
+		if(player.getEstates().contains(estate)) {
+			throw new GameException("The player owns already the estate with id '" + estate.getId() + "'");
 		}
 		
 		player.buy(estate.getTotalPrice());

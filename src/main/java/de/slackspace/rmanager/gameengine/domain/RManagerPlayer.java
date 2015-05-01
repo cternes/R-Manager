@@ -1,18 +1,18 @@
 package de.slackspace.rmanager.gameengine.domain;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RManagerPlayer {
 
 	private String name;
 	
-	private BigDecimal money;
+	private BigDecimal money = BigDecimal.ZERO;
 	
 	private City currentCity;
 	
-	private List<Estate> estates = new ArrayList<>();
+	private Set<Estate> estates = new HashSet<>();
 
 	public BigDecimal getMoney() {
 		return money;
@@ -38,11 +38,11 @@ public class RManagerPlayer {
 		this.name = name;
 	}
 
-	public List<Estate> getEstates() {
+	public Set<Estate> getEstates() {
 		return estates;
 	}
 
-	public void setEstates(List<Estate> estates) {
+	public void setEstates(Set<Estate> estates) {
 		this.estates = estates;
 	}
 	
