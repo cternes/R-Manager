@@ -78,7 +78,7 @@ public class TurnResource {
 		
 		turnRepo.save(new Turn(match, player, decodedTurnData));
 		
-		TurnResult turnResult = gameEngine.makeTurn(match.getMatchData(), decodedTurnData, match.getPlayer1().equals(player));
+		TurnResult turnResult = gameEngine.makeTurn(match.getMatchData(), decodedTurnData, player.getName());
 		
 		if(turnResult == null) {
 			throw new InvalidOperationException(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_ERROR", "GameEngine has returned an unexpected result");

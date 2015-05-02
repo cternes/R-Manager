@@ -7,5 +7,5 @@ public interface GameEngine {
 
 	public byte[] startNewGame(String playerOneName, String playerTwoName);
 	
-	public TurnResult makeTurn(byte[] rawMatchData, byte[] rawTurnData, boolean isPlayerOne);
+	public TurnResult makeTurn(byte[] rawMatchData, byte[] rawTurnData, String playerName);
 }

@@ -66,7 +66,7 @@ public class TurnResourceTest {
 		
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
-		Mockito.when(cut.gameEngine.makeTurn(new byte[0], new byte[0], true)).thenReturn(new TurnResult(new byte[0], MatchResult.PLAYER1WINS));
+		Mockito.when(cut.gameEngine.makeTurn(new byte[0], new byte[0], "test")).thenReturn(new TurnResult(new byte[0], MatchResult.PLAYER1WINS));
 		
 		cut.takeTurn(matchToken, playerToken, new byte[0]);
 		
@@ -88,7 +88,7 @@ public class TurnResourceTest {
 		
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
-		Mockito.when(cut.gameEngine.makeTurn(new byte[0], new byte[0], true)).thenReturn(new TurnResult(new byte[0], MatchResult.DRAW));
+		Mockito.when(cut.gameEngine.makeTurn(new byte[0], new byte[0], "test")).thenReturn(new TurnResult(new byte[0], MatchResult.DRAW));
 		
 		cut.takeTurn(matchToken, playerToken, new byte[0]);
 		
@@ -127,7 +127,7 @@ public class TurnResourceTest {
 		
 		Mockito.when(cut.playerRepo.findByToken(playerOneToken)).thenReturn(playerOne);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
-		Mockito.when(cut.gameEngine.makeTurn(new byte[0], new byte[0], true)).thenReturn(new TurnResult(new byte[0], MatchResult.DRAW));
+		Mockito.when(cut.gameEngine.makeTurn(new byte[0], new byte[0], "p1")).thenReturn(new TurnResult(new byte[0], MatchResult.DRAW));
 		
 		cut.takeTurn(matchToken, playerOneToken, new byte[0]);
 	}
