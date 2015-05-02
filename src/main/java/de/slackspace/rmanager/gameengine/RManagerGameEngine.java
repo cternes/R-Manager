@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -32,8 +33,8 @@ public class RManagerGameEngine implements GameEngine {
 
 	@Override
 	public TurnResult makeTurn(byte[] rawMatchData, byte[] rawTurnData, String playerName) {
-		GameState state = deserializeMatchData(rawMatchData);
-		List<GameAction> actions = deserializeTurnData(rawTurnData);
+		GameState state = deserialize(rawMatchData, new TypeReference<GameState>(){});
+		List<GameAction> actions = deserialize(rawTurnData, new TypeReference<List<GameAction>>(){});
 		
 		GameState updatedState = controller.endTurn(state, playerName, actions);
 		
@@ -54,23 +55,11 @@ public class RManagerGameEngine implements GameEngine {
 		}
 	}
 	
-	private GameState deserializeMatchData(byte[] matchData) {
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			GameState state = mapper.readValue(matchData, GameState.class);
-			return state;
-		} catch (IOException e) {
-			logger.error("Could not deserialize GameState", e);
-			throw new RuntimeException(e);
-		}
-	}
-	
-	private List<GameAction> deserializeTurnData(byte[] turnData) {
+	private <T> T deserialize(byte[] matchData, TypeReference<T> type) {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			List<GameAction> actions = mapper.readValue(turnData, List.class);
-			return actions;
+			return mapper.readValue(matchData, type);
 		} catch (IOException e) {
 			logger.error("Could not deserialize GameState", e);
 			throw new RuntimeException(e);
