@@ -4,6 +4,9 @@ public class BuyEstateAction implements GameAction {
 
 	private String id;
 	
+	protected BuyEstateAction() {
+	}
+	
 	public BuyEstateAction(String id) {
 		setId(id);
 	}

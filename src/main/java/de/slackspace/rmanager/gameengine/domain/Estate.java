@@ -13,6 +13,9 @@ public class Estate {
 	
 	private String cityId;
 	
+	protected Estate() {
+	}
+	
 	public Estate(EstateType estateType, BigDecimal rateOfPriceIncrease, BigDecimal rateOfPriceVariation, String cityId) {
 		setEstateType(estateType);
 		setCityId(cityId);

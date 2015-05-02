@@ -14,6 +14,9 @@ public class City {
 	private BigDecimal rateOfPriceIncrease;
 	
 	private List<Estate> estates = new ArrayList<>();
+	
+	protected City() {
+	}
 
 	public City(String name, BigDecimal rateOfPriceIncrease) {
 		setName(name);
