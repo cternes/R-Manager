@@ -1,13 +1,13 @@
 package de.slackspace.rmanager.gameengine.action;
 
-public class BuyEstateAction implements GameAction {
+public class SellEstateAction implements GameAction {
 
 	private String id;
 	
-	protected BuyEstateAction() {
+	protected SellEstateAction() {
 	}
 	
-	public BuyEstateAction(String id) {
+	public SellEstateAction(String id) {
 		setId(id);
 	}
 
@@ -18,9 +18,10 @@ public class BuyEstateAction implements GameAction {
 	public void setId(String id) {
 		this.id = id;
 	}
-
+	
 	@Override
 	public int getType() {
-		return GameAction.BUY_ESTATE;
+		return GameAction.SELL_ESTATE;
 	}
+
 }

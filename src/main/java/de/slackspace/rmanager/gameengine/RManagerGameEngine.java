@@ -11,11 +11,13 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import de.slackspace.rmanager.game.GameEngine;
 import de.slackspace.rmanager.game.TurnResult;
 import de.slackspace.rmanager.gameengine.action.GameAction;
 import de.slackspace.rmanager.gameengine.domain.GameState;
+import de.slackspace.rmanager.gameengine.json.GameActionDeserializer;
 
 @Component
 public class RManagerGameEngine implements GameEngine {
@@ -34,7 +36,7 @@ public class RManagerGameEngine implements GameEngine {
 	@Override
 	public TurnResult makeTurn(byte[] rawMatchData, byte[] rawTurnData, String playerName) {
 		GameState state = deserialize(rawMatchData, new TypeReference<GameState>(){});
-		List<GameAction> actions = deserialize(rawTurnData, new TypeReference<List<GameAction>>(){});
+		List<GameAction> actions = deserializeGameActions(rawTurnData);
 		
 		GameState updatedState = controller.endTurn(state, playerName, actions);
 		
@@ -60,6 +62,23 @@ public class RManagerGameEngine implements GameEngine {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			return mapper.readValue(matchData, type);
+		} catch (IOException e) {
+			logger.error("Could not deserialize GameState", e);
+			throw new RuntimeException(e);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<GameAction> deserializeGameActions(byte[] matchData) {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			
+			SimpleModule module = new SimpleModule();
+			module.addDeserializer(List.class, new GameActionDeserializer());
+			mapper.registerModule(module);
+			
+			return mapper.readValue(matchData, List.class);
 		} catch (IOException e) {
 			logger.error("Could not deserialize GameState", e);
 			throw new RuntimeException(e);

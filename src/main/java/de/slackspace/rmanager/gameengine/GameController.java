@@ -42,8 +42,6 @@ public class GameController {
 	public GameState endTurn(GameState state, String playerName, List<GameAction> actions) {
 		RManagerPlayer player = state.getPlayerByName(playerName);
 		
-		
-		
 		for (GameAction gameAction : actions) {
 			for (GameActionHandler handler : actionHandlers) {
 				if(handler.canHandle(gameAction)) {
