@@ -9,16 +9,22 @@ import java.util.Random;
 
 public enum EstateType {
 
-	ONE_PARCEL(new BigDecimal("250")),
-	TWO_PARCEL(new BigDecimal("500")),
-	THREE_PARCEL(new BigDecimal("750")),
-	FOUR_PARCEL(new BigDecimal("1000")),
-	FIVE_PARCEL(new BigDecimal("1250"));
+	ONE_PARCEL(1, new BigDecimal("250")),
+	TWO_PARCEL(2, new BigDecimal("500")),
+	THREE_PARCEL(3, new BigDecimal("750")),
+	FOUR_PARCEL(4, new BigDecimal("1000")),
+	FIVE_PARCEL(5, new BigDecimal("1250"));
 	
+	private int parcels;
 	private BigDecimal squareMeters;
 	
-	EstateType(BigDecimal squareMeters) {
+	EstateType(int parcels, BigDecimal squareMeters) {
+		this.parcels = parcels;
 		this.squareMeters = squareMeters;
+	}
+	
+	public int getParcels() {
+		return parcels;
 	}
 	
 	public BigDecimal getSquareMeters() {

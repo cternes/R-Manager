@@ -13,6 +13,8 @@ public class Estate {
 	
 	private String cityId;
 	
+	private Building building;
+	
 	protected Estate() {
 	}
 	
@@ -59,6 +61,18 @@ public class Estate {
 
 	public void setCityId(String cityId) {
 		this.cityId = cityId;
+	}
+
+	public Building getBuilding() {
+		return building;
+	}
+
+	public void setBuilding(Building building) {
+		this.building = building;
+	}
+	
+	public boolean canBuild(BuildingType buildingType) {
+		return buildingType.getRequiredParcels() <= getEstateType().getParcels();
 	}
 
 }
