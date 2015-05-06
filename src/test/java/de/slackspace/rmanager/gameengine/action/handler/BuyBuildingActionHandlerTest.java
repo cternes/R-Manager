@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import de.slackspace.rmanager.gameengine.action.BuyBuildingAction;
+import de.slackspace.rmanager.gameengine.domain.Building;
 import de.slackspace.rmanager.gameengine.domain.BuildingType;
 import de.slackspace.rmanager.gameengine.domain.Estate;
 import de.slackspace.rmanager.gameengine.domain.EstateType;
@@ -91,8 +92,20 @@ public class BuyBuildingActionHandlerTest {
 		cut.handle(action, player, state);
 	}
 	
-//	@Test
-//	public void whenBuyDuplicateBuildingShouldThrowException() {
-//		//TODO
-//	}
+	@Test(expected=GameException.class)
+	public void whenBuyDuplicateBuildingShouldThrowException() {
+		RManagerPlayer player = new RManagerPlayer();
+		player.setMoney(new BigDecimal(1_500_000));
+		
+		Estate estate = new Estate(EstateType.FOUR_PARCEL, BigDecimal.ONE, BigDecimal.ONE, "1234");
+		player.getEstates().add(estate);
+		estate.setBuilding(new Building(BuildingType.ONE_PARCEL));
+		
+		GameState state = Mockito.mock(GameState.class);
+		Mockito.when(state.getEstateById(estate.getId())).thenReturn(estate);
+		
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), BuildingType.ONE_PARCEL);
+		
+		cut.handle(action, player, state);
+	}
 }

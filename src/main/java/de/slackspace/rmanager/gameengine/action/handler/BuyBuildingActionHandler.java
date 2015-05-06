@@ -26,7 +26,11 @@ public class BuyBuildingActionHandler implements GameActionHandler {
 		}
 		
 		if(!estate.canBuild(buyAction.getBuildingType())) {
-			throw new GameException("The estate is not big enough to build a building of type '" + buyAction.getBuildingType() + "'");
+			throw new GameException("The estate '"+ buyAction.getEstateId() + "' is not big enough to build a building of type '" + buyAction.getBuildingType() + "'");
+		}
+		
+		if(estate.getBuilding() != null) {
+			throw new GameException("The estate '"+ buyAction.getEstateId() + "' already has a building");
 		}
 		
 		Building building = new Building(buyAction.getBuildingType());
