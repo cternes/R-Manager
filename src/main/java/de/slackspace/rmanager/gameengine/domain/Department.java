@@ -39,4 +39,13 @@ public class Department {
 	public void setPersonnel(List<Person> personnel) {
 		this.personnel = personnel;
 	}
+	
+	public int getMonthlyCapacity() {
+		int sumCapacity = 0;
+		for (Cabinet cabinet : cabinets) {
+			sumCapacity += cabinet.getCapacity();
+		}
+		
+		return sumCapacity;
+	}
 }
