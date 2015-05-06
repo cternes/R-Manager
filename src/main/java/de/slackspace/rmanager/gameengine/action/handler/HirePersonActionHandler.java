@@ -33,6 +33,10 @@ public class HirePersonActionHandler implements GameActionHandler {
 			throw new GameException("A person with id '" + personId + "' does not exist on free market");
 		}
 		
+		if(player.getPersonnelById(person.getId()) != null) {
+			throw new GameException("Person with id '" + personId + "' is already hired");
+		}
+		
 		Department department = building.getDepartmentByType(person.getDepartmentType());
 		department.getPersonnel().add(person);
 	}

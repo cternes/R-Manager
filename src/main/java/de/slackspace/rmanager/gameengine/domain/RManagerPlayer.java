@@ -69,6 +69,21 @@ public class RManagerPlayer {
 		return null;
 	}
 	
+	public Person getPersonnelById(String id) {
+		List<Person> personnel = new ArrayList<>();
+		for (Building building : getBuildings()) {
+			personnel.addAll(building.getPersonnel());
+		}
+		
+		for (Person person : personnel) {
+			if(person.getId().equals(id)) {
+				return person;
+			}
+		}
+		
+		return null;
+	}
+	
 	public boolean canBuy(BigDecimal price) {
 		BigDecimal tmpMoney = money.subtract(price);
 		

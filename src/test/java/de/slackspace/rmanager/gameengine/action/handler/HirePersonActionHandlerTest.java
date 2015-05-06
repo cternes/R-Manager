@@ -68,5 +68,30 @@ public class HirePersonActionHandlerTest {
 		cut.handle(action, player, state);
 		
 		Assert.assertEquals(1, building.getDepartmentByType(DepartmentType.Kitchen).getPersonnel().size());
+		Assert.assertEquals(person, building.getDepartmentByType(DepartmentType.Kitchen).getPersonnel().get(0));
+	}
+	
+	@Test(expected=GameException.class)
+	public void whenHireDuplicatePersonShouldThrowException() {
+		HirePersonActionHandler cut = new HirePersonActionHandler();
+		
+		Person person = new Person(BigDecimal.TEN, 20, 10, 10, DepartmentType.Kitchen);
+		Building building = new Building(BuildingType.FOUR_PARCEL);
+		building.getDepartmentByType(DepartmentType.Kitchen).getPersonnel().add(person);
+		
+		HirePersonAction action = new HirePersonAction(building.getId(), person.getId());
+		
+		RManagerPlayer player = new RManagerPlayer();
+		
+		Estate estate = new Estate(EstateType.FOUR_PARCEL, BigDecimal.ONE, BigDecimal.ONE, "123");
+		estate.setBuilding(building);
+		player.getEstates().add(estate);
+		
+		GameState state = Mockito.mock(GameState.class);
+		Mockito.when(state.getAvailablePersonnelById(person.getId())).thenReturn(person);
+		
+		cut.handle(action, player, state);
+		
+		Assert.assertEquals(1, building.getDepartmentByType(DepartmentType.Kitchen).getPersonnel().size());
 	}
 }

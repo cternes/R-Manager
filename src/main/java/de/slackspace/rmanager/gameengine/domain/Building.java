@@ -1,8 +1,11 @@
 package de.slackspace.rmanager.gameengine.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 public class Building {
@@ -45,4 +48,14 @@ public class Building {
 	public Department getDepartmentByType(DepartmentType type) {
 		return departments.get(type);
 	}
+	
+	public List<Person> getPersonnel() {
+		List<Person> personnel = new ArrayList<>();
+		for (Entry<DepartmentType, Department> entry : departments.entrySet()) {
+			personnel.addAll(entry.getValue().getPersonnel());
+		}
+		
+		return personnel;
+	}
+	
 }
