@@ -14,6 +14,7 @@ public class City {
 	private BigDecimal rateOfPriceIncrease;
 	
 	private List<Estate> estates = new ArrayList<>();
+	private List<Person> availablePersonnel = new ArrayList<>();
 	
 	protected City() {
 	}
@@ -50,5 +51,13 @@ public class City {
 
 	public String getId() {
 		return id;
+	}
+
+	public List<Person> getAvailablePersonnel() {
+		return availablePersonnel;
+	}
+
+	public void setAvailablePersonnel(List<Person> availablePersonnel) {
+		this.availablePersonnel = availablePersonnel;
 	}
 }

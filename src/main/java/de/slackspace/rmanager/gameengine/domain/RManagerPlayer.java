@@ -1,7 +1,9 @@
 package de.slackspace.rmanager.gameengine.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class RManagerPlayer {
@@ -41,9 +43,30 @@ public class RManagerPlayer {
 	public Set<Estate> getEstates() {
 		return estates;
 	}
-
+	
 	public void setEstates(Set<Estate> estates) {
 		this.estates = estates;
+	}
+	
+	public List<Building> getBuildings() {
+		List<Building> buildings = new ArrayList<>();
+		for (Estate estate : estates) {
+			if(estate.getBuilding() != null) {
+				buildings.add(estate.getBuilding());
+			}
+		}
+		
+		return buildings;
+	}
+	
+	public Building getBuildingById(String id) {
+		for (Building building : getBuildings()) {
+			if(building.getId().equals(id)) {
+				return building;
+			}
+		}
+		
+		return null;
 	}
 	
 	public boolean canBuy(BigDecimal price) {

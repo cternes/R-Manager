@@ -1,6 +1,8 @@
 package de.slackspace.rmanager.gameengine.domain;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class Building {
@@ -9,10 +11,18 @@ public class Building {
 	
 	private BuildingType buildingType;
 	
+	private Map<DepartmentType, Department> departments = new HashMap<>();
+	
 	protected Building() {
+		departments.put(DepartmentType.Dininghall, new Department(DepartmentType.Dininghall));
+		departments.put(DepartmentType.Facilities, new Department(DepartmentType.Facilities));
+		departments.put(DepartmentType.Kitchen, new Department(DepartmentType.Kitchen));
+		departments.put(DepartmentType.Laundry, new Department(DepartmentType.Laundry));
+		departments.put(DepartmentType.Reefer, new Department(DepartmentType.Reefer));
 	}
 	
 	public Building(BuildingType type) {
+		this();
 		setBuildingType(type);
 	}
 
@@ -32,4 +42,7 @@ public class Building {
 		return buildingType.getPrice();
 	}
 	
+	public Department getDepartmentByType(DepartmentType type) {
+		return departments.get(type);
+	}
 }

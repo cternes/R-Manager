@@ -10,6 +10,15 @@ public class Department {
 	
 	private List<Person> personnel = new ArrayList<Person>();
 	
+	private DepartmentType type;
+	
+	protected Department() {
+	}
+	
+	public Department(DepartmentType type) {
+		setType(type);
+	}
+	
 	public BigDecimal getMonthlyCosts() {
 		BigDecimal costs = BigDecimal.ZERO;
 				
@@ -47,5 +56,13 @@ public class Department {
 		}
 		
 		return sumCapacity;
+	}
+
+	public DepartmentType getType() {
+		return type;
+	}
+
+	public void setType(DepartmentType type) {
+		this.type = type;
 	}
 }

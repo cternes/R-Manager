@@ -1,9 +1,12 @@
 package de.slackspace.rmanager.gameengine.domain;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class Person {
 
+	private String id = UUID.randomUUID().toString();
+	
 	private BigDecimal monthlyCosts;
 	
 	private int age;
@@ -12,14 +15,17 @@ public class Person {
 	
 	private int power;
 	
+	private DepartmentType departmentType;
+	
 	protected Person() {
 	}
 	
-	public Person(BigDecimal monthlyCosts, int age, int quality, int power) {
+	public Person(BigDecimal monthlyCosts, int age, int quality, int power, DepartmentType departmentType) {
 		setMonthlyCosts(monthlyCosts);
 		setAge(age);
 		setQuality(quality);
 		setPower(power);
+		setDepartmentType(departmentType);
 	}
 
 	public BigDecimal getMonthlyCosts() {
@@ -75,4 +81,17 @@ public class Person {
 		
 		return capacity;
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public DepartmentType getDepartmentType() {
+		return departmentType;
+	}
+
+	public void setDepartmentType(DepartmentType departmentType) {
+		this.departmentType = departmentType;
+	}
+
 }

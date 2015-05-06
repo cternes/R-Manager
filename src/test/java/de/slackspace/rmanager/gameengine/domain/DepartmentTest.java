@@ -10,10 +10,10 @@ public class DepartmentTest {
 	@Test
 	public void whenGetMonthlyCostsShouldReturnMonthlyCostsForPersonnel() {
 		Department department = new Department();
-		department.getPersonnel().add(new Person(BigDecimal.TEN, 0, 0, 0));
-		department.getPersonnel().add(new Person(BigDecimal.TEN, 0, 0, 0));
-		department.getPersonnel().add(new Person(BigDecimal.TEN, 0, 0, 0));
-		department.getPersonnel().add(new Person(BigDecimal.ONE, 0, 0, 0));
+		department.getPersonnel().add(new Person(BigDecimal.TEN, 0, 0, 0, DepartmentType.Kitchen));
+		department.getPersonnel().add(new Person(BigDecimal.TEN, 0, 0, 0, DepartmentType.Kitchen));
+		department.getPersonnel().add(new Person(BigDecimal.TEN, 0, 0, 0, DepartmentType.Kitchen));
+		department.getPersonnel().add(new Person(BigDecimal.ONE, 0, 0, 0, DepartmentType.Kitchen));
 		
 		Assert.assertEquals(new BigDecimal(31), department.getMonthlyCosts());
 	}
@@ -30,8 +30,8 @@ public class DepartmentTest {
 	@Test
 	public void whenGetMonthlyCostsShouldReturnMonthlyCostsForPersonnelAndCabinet() {
 		Department department = new Department();
-		department.getPersonnel().add(new Person(BigDecimal.TEN, 0, 0, 0));
-		department.getPersonnel().add(new Person(BigDecimal.ONE, 0, 0, 0));
+		department.getPersonnel().add(new Person(BigDecimal.TEN, 0, 0, 0, DepartmentType.Kitchen));
+		department.getPersonnel().add(new Person(BigDecimal.ONE, 0, 0, 0, DepartmentType.Kitchen));
 		department.getCabinets().add(new Cabinet(BigDecimal.ONE, BigDecimal.ONE, 1));
 		department.getCabinets().add(new Cabinet(BigDecimal.ONE, BigDecimal.ONE, 1));
 		

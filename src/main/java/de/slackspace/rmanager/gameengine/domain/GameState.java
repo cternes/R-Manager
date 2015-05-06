@@ -52,4 +52,16 @@ public class GameState {
 		
 		return null;
 	}
+	
+	public Person getAvailablePersonnelById(String id) {
+		for (City city : cities) {
+			for (Person person : city.getAvailablePersonnel()) {
+				if(person.getId().equals(id)) {
+					return person;
+				}
+			}
+		}
+		
+		return null;
+	}
 }
