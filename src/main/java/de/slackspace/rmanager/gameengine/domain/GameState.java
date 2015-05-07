@@ -64,4 +64,16 @@ public class GameState {
 		
 		return null;
 	}
+	
+	public Cabinet getAvailableCabinetById(String id) {
+		for (City city : cities) {
+			for (Cabinet cabinet : city.getAvailableCabinet()) {
+				if(cabinet.getId().equals(id)) {
+					return cabinet;
+				}
+			}
+		}
+		
+		return null;
+	}
 }

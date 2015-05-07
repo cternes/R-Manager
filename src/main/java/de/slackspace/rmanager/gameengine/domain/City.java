@@ -15,6 +15,7 @@ public class City {
 	
 	private List<Estate> estates = new ArrayList<>();
 	private List<Person> availablePersonnel = new ArrayList<>();
+	private List<Cabinet> availableCabinet = new ArrayList<>();
 	
 	protected City() {
 	}
@@ -59,5 +60,13 @@ public class City {
 
 	public void setAvailablePersonnel(List<Person> availablePersonnel) {
 		this.availablePersonnel = availablePersonnel;
+	}
+
+	public List<Cabinet> getAvailableCabinet() {
+		return availableCabinet;
+	}
+
+	public void setAvailableCabinet(List<Cabinet> availableCabinet) {
+		this.availableCabinet = availableCabinet;
 	}
 }
