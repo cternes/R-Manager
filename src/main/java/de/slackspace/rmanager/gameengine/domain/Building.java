@@ -58,4 +58,27 @@ public class Building {
 		return personnel;
 	}
 	
+	public List<Cabinet> getCabinets() {
+		List<Cabinet> cabinets = new ArrayList<>();
+		
+		for (Entry<DepartmentType, Department> entry : departments.entrySet()) {
+			cabinets.addAll(entry.getValue().getCabinets());
+		}
+		
+		return cabinets;
+	}
+	
+	public BigDecimal getMonthlyCosts() {
+		BigDecimal monthlyCosts = BigDecimal.ZERO;
+		for (Person person : getPersonnel()) {
+			monthlyCosts = monthlyCosts.add(person.getMonthlyCosts());
+		}
+		
+		for (Cabinet cabinet : getCabinets()) {
+			monthlyCosts = monthlyCosts.add(cabinet.getMonthlyCosts());
+		}
+		
+		return monthlyCosts;
+	}
+	
 }

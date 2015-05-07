@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import de.slackspace.rmanager.gameengine.action.GameAction;
 import de.slackspace.rmanager.gameengine.action.handler.GameActionHandler;
+import de.slackspace.rmanager.gameengine.domain.Building;
 import de.slackspace.rmanager.gameengine.domain.City;
 import de.slackspace.rmanager.gameengine.domain.GameState;
 import de.slackspace.rmanager.gameengine.domain.Person;
@@ -73,6 +74,7 @@ public class GameController {
 	public GameState endTurn(GameState state, String playerName, List<GameAction> actions) {
 		RManagerPlayer player = state.getPlayerByName(playerName);
 		
+		// player actions
 		for (GameAction gameAction : actions) {
 			for (GameActionHandler handler : actionHandlers) {
 				if(handler.canHandle(gameAction)) {
@@ -81,7 +83,13 @@ public class GameController {
 			}
 		}
 		
+		// refresh personnel in cities
 		refreshCityPersonnel(state);
+		
+		// pay monthly costs
+		for (Building building : player.getBuildings()) {
+			player.buy(building.getMonthlyCosts());
+		}
 		
 		return state;
 	}

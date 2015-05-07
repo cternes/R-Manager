@@ -133,7 +133,7 @@ public class GameControllerTest {
 		GameController cut = GameControllerFactory.getGameControllerInstance();
 		GameState gameState = cut.startNewGame("p1", "p2");
 
-		Person person = new Person(new BigDecimal(200), 30, 5, 5, DepartmentType.Kitchen);
+		Person person = new Person(new BigDecimal(250), 30, 5, 5, DepartmentType.Kitchen);
 		List<Person> personnel = new ArrayList<>();
 		personnel.add(person);
 		
@@ -141,7 +141,7 @@ public class GameControllerTest {
 		List<Estate> estates = new ArrayList<>();
 		estates.add(estate);
 		
-		Cabinet cabinet = new Cabinet(new BigDecimal(500), new BigDecimal(200), 5, DepartmentType.Kitchen);
+		Cabinet cabinet = new Cabinet(new BigDecimal(500), new BigDecimal(250), 5, DepartmentType.Kitchen);
 		List<Cabinet> cabinets = new ArrayList<>();
 		cabinets.add(cabinet);
 		
@@ -176,6 +176,6 @@ public class GameControllerTest {
 		Assert.assertEquals(person.getId(), updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getPersonnel().get(0).getId());
 		Assert.assertEquals(cabinet.getId(), updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getCabinets().get(0).getId());
 		
-		Assert.assertEquals(new BigDecimal(949500), updatedState.getPlayerOne().getMoney());
+		Assert.assertEquals(new BigDecimal(949000), updatedState.getPlayerOne().getMoney());
 	}
 }
