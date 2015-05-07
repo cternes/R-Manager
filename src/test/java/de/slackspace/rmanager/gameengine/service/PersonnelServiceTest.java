@@ -1,10 +1,12 @@
 package de.slackspace.rmanager.gameengine.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.slackspace.rmanager.gameengine.domain.City;
 import de.slackspace.rmanager.gameengine.domain.Person;
 
 public class PersonnelServiceTest {
@@ -28,5 +30,13 @@ public class PersonnelServiceTest {
 			Assert.assertTrue(person.getMonthlyCosts().compareTo(new BigDecimal(239)) == 1);
 			Assert.assertTrue(person.getMonthlyCosts().compareTo(new BigDecimal(2401)) == -1);
 		} 
+	}
+	
+	@Test
+	public void whenCreatePersonnelShouldReturnSixPersons() {
+		City city = new City("Stuttgart", BigDecimal.ONE);
+		List<Person> personnel = cut.createPersonnel(city);
+		
+		Assert.assertEquals(6, personnel.size());
 	}
 }

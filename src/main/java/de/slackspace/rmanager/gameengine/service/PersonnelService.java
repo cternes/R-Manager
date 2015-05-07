@@ -15,7 +15,7 @@ public class PersonnelService {
 	
 	public List<Person> createPersonnel(City city) {
 		List<Person> personnel = new ArrayList<>();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 6; i++) {
 			personnel.add(createPerson(city.getRateOfPriceIncrease()));
 		}
 		
