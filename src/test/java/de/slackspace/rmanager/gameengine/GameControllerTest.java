@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import de.slackspace.rmanager.gameengine.action.BuyEstateAction;
 import de.slackspace.rmanager.gameengine.action.GameAction;
+import de.slackspace.rmanager.gameengine.domain.City;
 import de.slackspace.rmanager.gameengine.domain.Estate;
 import de.slackspace.rmanager.gameengine.domain.GameState;
 import de.slackspace.rmanager.gameengine.domain.RManagerPlayer;
@@ -30,8 +31,9 @@ public class GameControllerTest {
 		Assert.assertEquals("Munich", playerTwo.getCurrentCity().getName());
 		Assert.assertEquals("p2", playerTwo.getName());
 		
-		// just for debug
-//		for (City city : gameState.getCities()) {
+		for (City city : gameState.getCities()) {
+			Assert.assertEquals(6, city.getAvailablePersonnel().size());
+			
 //			System.out.println("");
 //			System.out.println(city.getName());
 //			System.out.println("===========");
@@ -39,7 +41,7 @@ public class GameControllerTest {
 //			for (Estate estate: city.getEstates()) {
 //				System.out.println("" + estate.getEstateType() + ":" + estate.getTotalPrice());
 //			}
-//		}
+		}
 	}
 	
 	@Test
@@ -99,5 +101,17 @@ public class GameControllerTest {
 		actions.add(new BuyEstateAction(gameState.getCities().get(0).getEstates().get(3).getId()));
 		
 		cut.endTurn(gameState, "p1", actions);
+	}
+	
+	@Test
+	public void whenEndingTurnShouldSetNewAvailablePersonnel() {
+		GameController cut = GameControllerFactory.getGameControllerInstance();
+		GameState gameState = cut.startNewGame("p1", "p2");
+		
+		String personId = gameState.getCities().get(0).getAvailablePersonnel().get(0).getId();
+		
+		GameState updatedState = cut.endTurn(gameState, "p1", new ArrayList<GameAction>());
+		Assert.assertNull(updatedState.getAvailablePersonnelById(personId));
+		Assert.assertEquals(6, updatedState.getCities().get(0).getAvailablePersonnel().size());
 	}
 }

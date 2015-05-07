@@ -7,22 +7,26 @@ import de.slackspace.rmanager.gameengine.action.GameAction;
 import de.slackspace.rmanager.gameengine.action.handler.GameActionHandler;
 import de.slackspace.rmanager.gameengine.domain.City;
 import de.slackspace.rmanager.gameengine.domain.GameState;
+import de.slackspace.rmanager.gameengine.domain.Person;
 import de.slackspace.rmanager.gameengine.domain.RManagerPlayer;
 import de.slackspace.rmanager.gameengine.service.CityService;
+import de.slackspace.rmanager.gameengine.service.PersonnelService;
 
 public class GameController {
 
 	CityService cityService;
+	PersonnelService personnelService;
 	List<GameActionHandler> actionHandlers;
 	
-	public GameController(CityService cityService, List<GameActionHandler> actionHandlers) {
+	public GameController(CityService cityService, PersonnelService personnelService, List<GameActionHandler> actionHandlers) {
 		this.cityService = cityService;
+		this.personnelService = personnelService;
 		this.actionHandlers = actionHandlers;
 	}
 	
 	public GameState startNewGame(String playerOneName, String playerTwoName) {
 		GameState state = new GameState();
-		state.setCities(cityService.createCities());
+		state.setCities(createCities());
 
 		RManagerPlayer playerOne = new RManagerPlayer();
 		playerOne.setMoney(new BigDecimal(1_500_000));
@@ -39,6 +43,16 @@ public class GameController {
 		return state;
 	}
 	
+	private List<City> createCities() {
+		List<City> cities = cityService.createCities();
+		for (City city : cities) {
+			List<Person> personnel = personnelService.createPersonnel(city);
+			city.setAvailablePersonnel(personnel);
+		}
+		
+		return cities;
+	}
+	
 	public GameState endTurn(GameState state, String playerName, List<GameAction> actions) {
 		RManagerPlayer player = state.getPlayerByName(playerName);
 		
@@ -50,7 +64,15 @@ public class GameController {
 			}
 		}
 		
+		refreshCityPersonnel(state);
+		
 		return state;
+	}
+	
+	private void refreshCityPersonnel(GameState state) {
+		for (City city : state.getCities()) {
+			city.setAvailablePersonnel(personnelService.createPersonnel(city));
+		}
 	}
 	
 	private City getCity(GameState state, String cityName) {
