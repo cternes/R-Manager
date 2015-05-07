@@ -33,7 +33,11 @@ public class BuyBuildingActionHandler implements GameActionHandler {
 			throw new GameException("The estate '"+ buyAction.getEstateId() + "' already has a building");
 		}
 		
-		Building building = new Building(buyAction.getBuildingType());
+		if(!state.isBuildingIdExisting(buyAction.getBuildingId())) {
+			throw new GameException("A building with id '"+ buyAction.getBuildingId() + "' does not exists");
+		}
+		
+		Building building = new Building(buyAction.getBuildingId(), buyAction.getBuildingType());
 		
 		if(!player.canBuy(building.getPrice())) {
 			throw new GameException("The player's money '" + player.getMoney() + "' is not enough to pay '" + building.getPrice() + "'");
@@ -41,6 +45,8 @@ public class BuyBuildingActionHandler implements GameActionHandler {
 		
 		player.buy(building.getPrice());
 		estate.setBuilding(building);
+		
+		state.removeBuildingId(buyAction.getBuildingId());
 	}
 
 	

@@ -22,7 +22,7 @@ public class BuyBuildingActionHandlerTest {
 	
 	@Test
 	public void whenCanHandleIsCalledWithCorrectClassShouldReturnTrue() {
-		Assert.assertTrue(cut.canHandle(new BuyBuildingAction("", BuildingType.ONE_PARCEL)));
+		Assert.assertTrue(cut.canHandle(new BuyBuildingAction("", "", BuildingType.ONE_PARCEL)));
 	}
 	
 	@Test
@@ -35,13 +35,15 @@ public class BuyBuildingActionHandlerTest {
 		
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getEstateById(estate.getId())).thenReturn(estate);
+		Mockito.when(state.isBuildingIdExisting("abc")).thenReturn(true);
 		
-		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), BuildingType.ONE_PARCEL);
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", BuildingType.ONE_PARCEL);
 		
 		cut.handle(action, player, state);
 		
 		Assert.assertEquals(new BigDecimal(1_000_000), player.getMoney());
 		Assert.assertEquals(BuildingType.ONE_PARCEL, player.getEstates().iterator().next().getBuilding().getBuildingType());
+		Mockito.verify(state).removeBuildingId("abc");
 	}
 	
 	@Test(expected=GameException.class)
@@ -51,7 +53,7 @@ public class BuyBuildingActionHandlerTest {
 		
 		GameState state = Mockito.mock(GameState.class);
 		
-		BuyBuildingAction action = new BuyBuildingAction(UUID.randomUUID().toString(), BuildingType.ONE_PARCEL);
+		BuyBuildingAction action = new BuyBuildingAction(UUID.randomUUID().toString(), "abc", BuildingType.ONE_PARCEL);
 		
 		cut.handle(action, player, state);
 		
@@ -70,8 +72,9 @@ public class BuyBuildingActionHandlerTest {
 		
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getEstateById(estate.getId())).thenReturn(estate);
+		Mockito.when(state.isBuildingIdExisting("abc")).thenReturn(true);
 		
-		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), BuildingType.ONE_PARCEL);
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", BuildingType.ONE_PARCEL);
 		
 		cut.handle(action, player, state);
 	}
@@ -86,8 +89,9 @@ public class BuyBuildingActionHandlerTest {
 		
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getEstateById(estate.getId())).thenReturn(estate);
+		Mockito.when(state.isBuildingIdExisting("abc")).thenReturn(true);
 		
-		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), BuildingType.TWO_PARCEL);
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", BuildingType.TWO_PARCEL);
 		
 		cut.handle(action, player, state);
 	}
@@ -99,12 +103,13 @@ public class BuyBuildingActionHandlerTest {
 		
 		Estate estate = new Estate(EstateType.FOUR_PARCEL, BigDecimal.ONE, BigDecimal.ONE, "1234");
 		player.getEstates().add(estate);
-		estate.setBuilding(new Building(BuildingType.ONE_PARCEL));
+		estate.setBuilding(new Building("abc", BuildingType.ONE_PARCEL));
 		
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getEstateById(estate.getId())).thenReturn(estate);
+		Mockito.when(state.isBuildingIdExisting("abc")).thenReturn(true);
 		
-		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), BuildingType.ONE_PARCEL);
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", BuildingType.ONE_PARCEL);
 		
 		cut.handle(action, player, state);
 	}

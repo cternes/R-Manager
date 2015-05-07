@@ -9,6 +9,7 @@ public class GameState {
 	private RManagerPlayer playerTwo;
 	
 	private List<City> cities = new ArrayList<>();
+	private List<String> buildingIds = new ArrayList<>();
 	
 	public RManagerPlayer getPlayerOne() {
 		return playerOne;
@@ -75,5 +76,27 @@ public class GameState {
 		}
 		
 		return null;
+	}
+	
+	public boolean isBuildingIdExisting(String id) {
+		for (String buildingId : buildingIds) {
+			if(buildingId.equals(id)) {
+				return true; 
+			}
+		}
+		
+		return false;
+	}
+
+	public List<String> getBuildingIds() {
+		return buildingIds;
+	}
+
+	public void setBuildingIds(List<String> buildingIds) {
+		this.buildingIds = buildingIds;
+	}
+	
+	public void removeBuildingId(String id) {
+		buildingIds.remove(id);
 	}
 }

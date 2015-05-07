@@ -1,7 +1,9 @@
 package de.slackspace.rmanager.gameengine;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import de.slackspace.rmanager.gameengine.action.GameAction;
 import de.slackspace.rmanager.gameengine.action.handler.GameActionHandler;
@@ -27,6 +29,7 @@ public class GameController {
 	public GameState startNewGame(String playerOneName, String playerTwoName) {
 		GameState state = new GameState();
 		state.setCities(createCities());
+		state.setBuildingIds(createBuildingIds(state.getCities()));
 
 		RManagerPlayer playerOne = new RManagerPlayer();
 		playerOne.setMoney(new BigDecimal(1_500_000));
@@ -51,6 +54,20 @@ public class GameController {
 		}
 		
 		return cities;
+	}
+	
+	private List<String> createBuildingIds(List<City> cities) {
+		int numEstates = 0;
+		for (City city : cities) {
+			numEstates += city.getEstates().size();
+		}
+		
+		List<String> buildingIds = new ArrayList<>();
+		for (int i = 0; i < numEstates; i++) {
+			buildingIds.add(UUID.randomUUID().toString());
+		}
+		
+		return buildingIds;
 	}
 	
 	public GameState endTurn(GameState state, String playerName, List<GameAction> actions) {

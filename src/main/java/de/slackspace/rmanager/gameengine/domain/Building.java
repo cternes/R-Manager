@@ -6,11 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 public class Building {
 
-	private String id = UUID.randomUUID().toString();
+	private String id;
 	
 	private BuildingType buildingType;
 	
@@ -24,9 +23,10 @@ public class Building {
 		departments.put(DepartmentType.Reefer, new Department(DepartmentType.Reefer));
 	}
 	
-	public Building(BuildingType type) {
+	public Building(String id, BuildingType type) {
 		this();
 		setBuildingType(type);
+		this.id = id;
 	}
 
 	public String getId() {

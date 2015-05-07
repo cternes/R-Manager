@@ -5,13 +5,15 @@ import de.slackspace.rmanager.gameengine.domain.BuildingType;
 public class BuyBuildingAction implements GameAction {
 
 	private String estateId;
+	private String buildingId;
 	private BuildingType buildingType;
 	
 	protected BuyBuildingAction() {
 	}
 	
-	public BuyBuildingAction(String estateId, BuildingType buildingType) {
+	public BuyBuildingAction(String estateId, String buildingId, BuildingType buildingType) {
 		setEstateId(estateId);
+		setBuildingId(buildingId);
 		setBuildingType(buildingType);
 	}
 	
@@ -34,6 +36,14 @@ public class BuyBuildingAction implements GameAction {
 
 	public void setBuildingType(BuildingType buildingType) {
 		this.buildingType = buildingType;
+	}
+
+	public String getBuildingId() {
+		return buildingId;
+	}
+
+	public void setBuildingId(String buildingId) {
+		this.buildingId = buildingId;
 	}
 
 }

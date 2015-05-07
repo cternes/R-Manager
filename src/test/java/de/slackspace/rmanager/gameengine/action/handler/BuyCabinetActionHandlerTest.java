@@ -30,7 +30,7 @@ public class BuyCabinetActionHandlerTest {
 	public void whenValidShouldAddCabinetToDepartment() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
-		Building building = new Building(BuildingType.FOUR_PARCEL);
+		Building building = new Building("abc", BuildingType.FOUR_PARCEL);
 		BuyCabinetAction action = new BuyCabinetAction(building.getId(), cabinet.getId(), 1);
 		
 		RManagerPlayer player = new RManagerPlayer();
@@ -53,7 +53,7 @@ public class BuyCabinetActionHandlerTest {
 	public void whenPlayerHasNotEnoughMoneyShouldThrowException() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(500), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
-		Building building = new Building(BuildingType.FOUR_PARCEL);
+		Building building = new Building("abc", BuildingType.FOUR_PARCEL);
 		BuyCabinetAction action = new BuyCabinetAction(building.getId(), cabinet.getId(), 1);
 		
 		RManagerPlayer player = new RManagerPlayer();
@@ -87,7 +87,7 @@ public class BuyCabinetActionHandlerTest {
 	public void whenCabinetIsUnknownShouldThrowException() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(500), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
-		Building building = new Building(BuildingType.FOUR_PARCEL);
+		Building building = new Building("abc", BuildingType.FOUR_PARCEL);
 		BuyCabinetAction action = new BuyCabinetAction(building.getId(), cabinet.getId(), 1);
 		
 		RManagerPlayer player = new RManagerPlayer();
@@ -98,5 +98,13 @@ public class BuyCabinetActionHandlerTest {
 		GameState state = Mockito.mock(GameState.class);
 		
 		cut.handle(action, player, state);
+	}
+	
+	public void whenDepartmentIsFullThrowException() {
+		
+	}
+
+	public void whenBuyingMultipleCabinetsShouldCalculateCorrectPrice() {
+		
 	}
 }
