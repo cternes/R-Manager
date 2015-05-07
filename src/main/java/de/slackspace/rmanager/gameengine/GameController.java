@@ -88,7 +88,7 @@ public class GameController {
 		
 		// pay monthly costs
 		for (Building building : player.getBuildings()) {
-			player.buy(building.getMonthlyCosts());
+			player.pay(building.getMonthlyCosts());
 		}
 		
 		return state;

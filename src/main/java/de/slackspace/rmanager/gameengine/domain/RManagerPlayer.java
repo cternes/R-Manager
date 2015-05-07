@@ -94,7 +94,7 @@ public class RManagerPlayer {
 		return true;
 	}
 	
-	public void buy(BigDecimal price) {
+	public void pay(BigDecimal price) {
 		money = money.subtract(price);
 	}
 	

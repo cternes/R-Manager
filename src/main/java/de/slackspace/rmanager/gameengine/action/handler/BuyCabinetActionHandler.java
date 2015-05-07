@@ -37,7 +37,7 @@ public class BuyCabinetActionHandler implements GameActionHandler {
 			throw new GameException("The player's money '" + player.getMoney() + "' is not enough to pay '" + cabinet.getPrice() + "'");
 		}
 		
-		player.buy(cabinet.getPrice());
+		player.pay(cabinet.getPrice());
 		
 		Department department = building.getDepartmentByType(cabinet.getDepartmentType());
 		department.getCabinets().add(cabinet);

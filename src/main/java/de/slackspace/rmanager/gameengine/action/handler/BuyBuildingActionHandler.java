@@ -43,7 +43,7 @@ public class BuyBuildingActionHandler implements GameActionHandler {
 			throw new GameException("The player's money '" + player.getMoney() + "' is not enough to pay '" + building.getPrice() + "'");
 		}
 		
-		player.buy(building.getPrice());
+		player.pay(building.getPrice());
 		estate.setBuilding(building);
 		
 		state.removeBuildingId(buyAction.getBuildingId());

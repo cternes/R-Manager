@@ -32,7 +32,7 @@ public class BuyEstateActionHandler implements GameActionHandler {
 			throw new GameException("The player owns already the estate with id '" + estate.getId() + "'");
 		}
 		
-		player.buy(estate.getTotalPrice());
+		player.pay(estate.getTotalPrice());
 		player.getEstates().add(estate);
 	}
 
