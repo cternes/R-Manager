@@ -6,13 +6,9 @@ import java.util.UUID;
 public class Estate {
 
 	private String id = UUID.randomUUID().toString();
-	
 	private EstateType estateType;
-	
 	private BigDecimal pricePerSquareMeter;
-	
 	private String cityId;
-	
 	private Building building;
 	
 	protected Estate() {

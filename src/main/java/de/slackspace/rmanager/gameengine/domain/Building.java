@@ -10,23 +10,20 @@ import java.util.Map.Entry;
 public class Building {
 
 	private String id;
-	
 	private BuildingType buildingType;
-	
 	private Map<DepartmentType, Department> departments = new HashMap<>();
-	
 	private String cityId;
 	
-	protected Building() {
-		departments.put(DepartmentType.Dininghall, new Department(DepartmentType.Dininghall));
-		departments.put(DepartmentType.Facilities, new Department(DepartmentType.Facilities));
-		departments.put(DepartmentType.Kitchen, new Department(DepartmentType.Kitchen));
-		departments.put(DepartmentType.Laundry, new Department(DepartmentType.Laundry));
-		departments.put(DepartmentType.Reefer, new Department(DepartmentType.Reefer));
+	protected Building(int parcels) {
+		departments.put(DepartmentType.Dininghall, new Department(DepartmentType.Dininghall, parcels * 4));
+		departments.put(DepartmentType.Facilities, new Department(DepartmentType.Facilities, parcels));
+		departments.put(DepartmentType.Kitchen, new Department(DepartmentType.Kitchen, parcels));
+		departments.put(DepartmentType.Laundry, new Department(DepartmentType.Laundry, parcels));
+		departments.put(DepartmentType.Reefer, new Department(DepartmentType.Reefer, parcels * 2));
 	}
 	
 	public Building(String id, BuildingType type, String cityId) {
-		this();
+		this(type.getRequiredParcels());
 		setBuildingType(type);
 		setCityId(cityId);
 		this.id = id;

@@ -11,6 +11,7 @@ public class Cabinet {
 	private int capacity;
 	private DepartmentType departmentType;
 	private int quantity;
+	private int requiredSpaceUnits = 1;
 	
 	protected Cabinet() {
 	}
@@ -73,5 +74,13 @@ public class Cabinet {
 	
 	public void decreaseQuantity(int num) {
 		quantity -= num;
+	}
+
+	public int getRequiredSpaceUnits() {
+		return requiredSpaceUnits;
+	}
+
+	public void setRequiredSpaceUnits(int requiredSpaceUnits) {
+		this.requiredSpaceUnits = requiredSpaceUnits;
 	}
 }

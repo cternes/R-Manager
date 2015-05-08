@@ -158,4 +158,28 @@ public class BuyCabinetActionHandlerTest {
 		Assert.assertEquals(8, building.getDepartmentByType(DepartmentType.Kitchen).getCabinets().iterator().next().getQuantity());
 		Assert.assertEquals(new BigDecimal(3400), player.getMoney());
 	}
+	
+	@Test(expected=GameException.class)
+	public void whenBuyingMoreCabinetThanCapacityInDepartmentShouldThrowException() {
+		Cabinet cabinetOne = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
+		Cabinet cabinetTwo = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
+		
+		Building building = new Building("abc", BuildingType.ONE_PARCEL, "123");
+		BuyCabinetAction actionOne = new BuyCabinetAction(building.getId(), cabinetOne.getId(), 1);
+		BuyCabinetAction actionTwo = new BuyCabinetAction(building.getId(), cabinetTwo.getId(), 1);
+		
+		RManagerPlayer player = new RManagerPlayer();
+		player.setMoney(new BigDecimal(400));
+		
+		Estate estate = new Estate(EstateType.FOUR_PARCEL, BigDecimal.ONE, BigDecimal.ONE, "123");
+		estate.setBuilding(building);
+		player.getEstates().add(estate);
+		
+		GameState state = Mockito.mock(GameState.class);
+		Mockito.when(state.getAvailableCabinetById(cabinetOne.getId())).thenReturn(cabinetOne);
+		Mockito.when(state.getAvailableCabinetById(cabinetTwo.getId())).thenReturn(cabinetTwo);
+		
+		cut.handle(actionOne, player, state);
+		cut.handle(actionTwo, player, state);
+	}
 }

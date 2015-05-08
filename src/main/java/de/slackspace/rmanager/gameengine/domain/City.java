@@ -8,11 +8,9 @@ import java.util.UUID;
 public class City {
 
 	private String id = UUID.randomUUID().toString();
-	
 	private String name;
-	
 	private BigDecimal rateOfPriceIncrease;
-	
+
 	private List<Estate> estates = new ArrayList<>();
 	private List<Person> availablePersonnel = new ArrayList<>();
 	private List<Cabinet> availableCabinet = new ArrayList<>();

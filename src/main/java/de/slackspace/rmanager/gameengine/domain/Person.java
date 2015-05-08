@@ -6,15 +6,10 @@ import java.util.UUID;
 public class Person {
 
 	private String id = UUID.randomUUID().toString();
-	
 	private BigDecimal monthlyCosts;
-	
 	private int age;
-	
 	private int quality;
-	
 	private int power;
-	
 	private DepartmentType departmentType;
 	
 	protected Person() {

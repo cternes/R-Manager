@@ -39,6 +39,11 @@ public class BuyCabinetActionHandler implements GameActionHandler {
 			throw new GameException("A cabinet with id '" + cabinetId + "' does not exist on free market");
 		}
 		
+		Department department = building.getDepartmentByType(cabinet.getDepartmentType());
+		if(!department.canAddCabinet(cabinet.getRequiredSpaceUnits())) {
+			throw new GameException("Not enough free space units in department to add cabinet with '" + cabinet.getRequiredSpaceUnits() + "' required space units");
+		}
+		
 		BigDecimal totalPrice = calculateTotalPrice(cabinet.getPrice(), buyAction.getQuantity());
 		
 		if(!player.canBuy(totalPrice)) {
@@ -48,7 +53,6 @@ public class BuyCabinetActionHandler implements GameActionHandler {
 		player.pay(totalPrice);
 		cabinet.increaseQuantity(buyAction.getQuantity());
 		
-		Department department = building.getDepartmentByType(cabinet.getDepartmentType());
 		department.getCabinets().add(cabinet);
 	}
 

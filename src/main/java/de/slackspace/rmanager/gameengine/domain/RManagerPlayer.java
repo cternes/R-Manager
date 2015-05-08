@@ -9,11 +9,8 @@ import java.util.Set;
 public class RManagerPlayer {
 
 	private String name;
-	
 	private BigDecimal money = BigDecimal.ZERO;
-	
 	private City currentCity;
-	
 	private Set<Estate> estates = new HashSet<>();
 
 	public BigDecimal getMoney() {

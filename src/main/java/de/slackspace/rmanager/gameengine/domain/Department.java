@@ -9,16 +9,16 @@ import java.util.Set;
 public class Department {
 
 	private Set<Cabinet> cabinets = new HashSet<Cabinet>();
-	
 	private List<Person> personnel = new ArrayList<Person>();
-	
 	private DepartmentType type;
+	private int maxSpaceUnits;
 	
 	protected Department() {
 	}
 	
-	public Department(DepartmentType type) {
+	public Department(DepartmentType type, int maxSpaceUnits) {
 		setType(type);
+		setMaxSpaceunits(maxSpaceUnits);
 	}
 	
 	public BigDecimal getMonthlyCosts() {
@@ -92,5 +92,26 @@ public class Department {
 
 	public void setType(DepartmentType type) {
 		this.type = type;
+	}
+
+	public int getMaxSpaceunits() {
+		return maxSpaceUnits;
+	}
+
+	public void setMaxSpaceunits(int maxSpaceunits) {
+		this.maxSpaceUnits = maxSpaceunits;
+	}
+	
+	public boolean canAddCabinet(int requiredSpaceUnits) {
+		int spaceUnitsInUse = 0;
+		for (Cabinet cabinet : getCabinets()) {
+			spaceUnitsInUse += cabinet.getRequiredSpaceUnits();
+		}
+		
+		if(spaceUnitsInUse + requiredSpaceUnits <= maxSpaceUnits) {
+			return true;
+		}
+		
+		return false;
 	}
 }
