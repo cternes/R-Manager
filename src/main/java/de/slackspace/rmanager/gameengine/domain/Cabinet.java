@@ -16,14 +16,19 @@ public class Cabinet {
 	}
 	
 	public Cabinet(BigDecimal price, BigDecimal monthlyCosts, int capacity, DepartmentType departmentType)  {
+		this(price, monthlyCosts, capacity, departmentType, 0);
+	}
+	
+	public Cabinet(BigDecimal price, BigDecimal monthlyCosts, int capacity, DepartmentType departmentType, int quantity)  {
 		setMonthlyCosts(monthlyCosts);
 		setPrice(price);
 		setCapacity(capacity);
 		setDepartmentType(departmentType);
+		this.quantity = quantity;
 	}
 
 	public BigDecimal getMonthlyCosts() {
-		return monthlyCosts;
+		return monthlyCosts.multiply(new BigDecimal(quantity));
 	}
 
 	public void setMonthlyCosts(BigDecimal monthlyCosts) {
@@ -39,7 +44,7 @@ public class Cabinet {
 	}
 
 	public int getCapacity() {
-		return capacity;
+		return capacity * quantity;
 	}
 
 	public void setCapacity(int capacity) {

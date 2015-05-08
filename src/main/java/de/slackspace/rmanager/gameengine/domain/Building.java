@@ -81,4 +81,14 @@ public class Building {
 		return monthlyCosts;
 	}
 	
+	public BigDecimal getMonthlyOutput() {
+		BigDecimal meals = BigDecimal.ZERO;
+		
+		for (Entry<DepartmentType, Department> entry : departments.entrySet()) {
+			meals = meals.add(entry.getValue().getMonthlyOutput());
+		}
+		
+		return meals;
+	}
+	
 }

@@ -34,6 +34,41 @@ public class Department {
 		
 		return costs;
 	}
+	
+	/**
+	 * Calculates the number of meals produced by this department. Number of meals
+	 * is the sum of all equipment hold by this department.
+	 * 
+	 * Each equipment needs a person to produce meals. One person can handle
+	 * 1 equipment as a minimum and 5 as maximum (depends on person stats). 
+	 *  
+	 * @return the number of meals produced by all equipment
+	 */
+	public BigDecimal getMonthlyOutput() {
+		int meals = 0;
+		int numberOfMachines = 0;
+		
+		for (Person person : getPersonnel()) {
+			numberOfMachines += person.getCapacity();
+		}
+		
+		if(numberOfMachines == 0) {
+			return BigDecimal.ZERO;
+		}
+
+		int i = 0;
+		for (Cabinet cabinet : cabinets) {
+			meals += cabinet.getCapacity();
+			
+			if(i == numberOfMachines -1) {
+				return new BigDecimal(meals);
+			}
+			
+			i++;
+		}
+		
+		return new BigDecimal(meals);
+	}
 
 	public Set<Cabinet> getCabinets() {
 		return cabinets;
@@ -51,15 +86,6 @@ public class Department {
 		this.personnel = personnel;
 	}
 	
-	public int getMonthlyCapacity() {
-		int sumCapacity = 0;
-		for (Cabinet cabinet : cabinets) {
-			sumCapacity += cabinet.getCapacity();
-		}
-		
-		return sumCapacity;
-	}
-
 	public DepartmentType getType() {
 		return type;
 	}

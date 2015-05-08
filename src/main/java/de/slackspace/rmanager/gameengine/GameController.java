@@ -91,6 +91,13 @@ public class GameController {
 			player.pay(building.getMonthlyCosts());
 		}
 		
+		// sell meals
+		for (Building building : player.getBuildings()) {
+			BigDecimal meals = building.getMonthlyOutput();
+			BigDecimal income = meals.multiply(new BigDecimal(3)); // meal price = 3
+			player.earn(income);
+		}
+		
 		return state;
 	}
 	
