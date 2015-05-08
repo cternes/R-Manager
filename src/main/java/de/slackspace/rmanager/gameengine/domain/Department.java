@@ -2,11 +2,13 @@ package de.slackspace.rmanager.gameengine.domain;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Department {
 
-	private List<Cabinet> cabinets = new ArrayList<Cabinet>();
+	private Set<Cabinet> cabinets = new HashSet<Cabinet>();
 	
 	private List<Person> personnel = new ArrayList<Person>();
 	
@@ -33,11 +35,11 @@ public class Department {
 		return costs;
 	}
 
-	public List<Cabinet> getCabinets() {
+	public Set<Cabinet> getCabinets() {
 		return cabinets;
 	}
 
-	public void setCabinets(List<Cabinet> cabinets) {
+	public void setCabinets(Set<Cabinet> cabinets) {
 		this.cabinets = cabinets;
 	}
 

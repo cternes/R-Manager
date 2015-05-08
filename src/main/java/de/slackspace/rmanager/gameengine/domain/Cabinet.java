@@ -10,6 +10,7 @@ public class Cabinet {
 	private BigDecimal monthlyCosts;
 	private int capacity;
 	private DepartmentType departmentType;
+	private int quantity;
 	
 	protected Cabinet() {
 	}
@@ -32,7 +33,7 @@ public class Cabinet {
 	public BigDecimal getPrice() {
 		return price;
 	}
-
+	
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
@@ -55,5 +56,17 @@ public class Cabinet {
 
 	public void setDepartmentType(DepartmentType departmentType) {
 		this.departmentType = departmentType;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void increaseQuantity(int num) {
+		quantity += num;
+	}
+	
+	public void decreaseQuantity(int num) {
+		quantity -= num;
 	}
 }

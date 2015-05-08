@@ -98,4 +98,8 @@ public class RManagerPlayer {
 		money = money.subtract(price);
 	}
 	
+	public void earn(BigDecimal earnings) {
+		money = money.add(earnings);
+	}
+	
 }

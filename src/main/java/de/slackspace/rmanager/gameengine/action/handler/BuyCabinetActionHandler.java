@@ -1,5 +1,7 @@
 package de.slackspace.rmanager.gameengine.action.handler;
 
+import java.math.BigDecimal;
+
 import de.slackspace.rmanager.gameengine.action.BuyCabinetAction;
 import de.slackspace.rmanager.gameengine.action.GameAction;
 import de.slackspace.rmanager.gameengine.domain.Building;
@@ -23,6 +25,10 @@ public class BuyCabinetActionHandler implements GameActionHandler {
 		String buildingId = buyAction.getBuildingId();
 		String cabinetId = buyAction.getCabinetId();
 		
+		if(buyAction.getQuantity() < 1) {
+			throw new GameException("A quantity < 1 is not allowed");
+		}
+		
 		Building building = player.getBuildingById(buildingId);
 		if(building == null) {
 			throw new GameException("The player does not own a building with id '" + buildingId + "'");
@@ -33,14 +39,20 @@ public class BuyCabinetActionHandler implements GameActionHandler {
 			throw new GameException("A cabinet with id '" + cabinetId + "' does not exist on free market");
 		}
 		
-		if(!player.canBuy(cabinet.getPrice())) {
-			throw new GameException("The player's money '" + player.getMoney() + "' is not enough to pay '" + cabinet.getPrice() + "'");
+		BigDecimal totalPrice = calculateTotalPrice(cabinet.getPrice(), buyAction.getQuantity());
+		
+		if(!player.canBuy(totalPrice)) {
+			throw new GameException("The player's money '" + player.getMoney() + "' is not enough to pay '" + totalPrice + "'");
 		}
 		
-		player.pay(cabinet.getPrice());
+		player.pay(totalPrice);
+		cabinet.increaseQuantity(buyAction.getQuantity());
 		
 		Department department = building.getDepartmentByType(cabinet.getDepartmentType());
 		department.getCabinets().add(cabinet);
 	}
 
+	private BigDecimal calculateTotalPrice(BigDecimal price, int quantity) {
+		return price.multiply(new BigDecimal(quantity));
+	}
 }

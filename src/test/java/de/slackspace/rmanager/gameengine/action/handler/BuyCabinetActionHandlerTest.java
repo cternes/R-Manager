@@ -104,7 +104,58 @@ public class BuyCabinetActionHandlerTest {
 		
 	}
 
+	@Test
 	public void whenBuyingMultipleCabinetsShouldCalculateCorrectPrice() {
+		Cabinet cabinet = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
+		Building building = new Building("abc", BuildingType.FOUR_PARCEL);
+		BuyCabinetAction action = new BuyCabinetAction(building.getId(), cabinet.getId(), 10);
+		
+		RManagerPlayer player = new RManagerPlayer();
+		player.setMoney(new BigDecimal(4000));
+		
+		Estate estate = new Estate(EstateType.FOUR_PARCEL, BigDecimal.ONE, BigDecimal.ONE, "123");
+		estate.setBuilding(building);
+		player.getEstates().add(estate);
+		
+		GameState state = Mockito.mock(GameState.class);
+		Mockito.when(state.getAvailableCabinetById(cabinet.getId())).thenReturn(cabinet);
+		
+		cut.handle(action, player, state);
+		
+		Assert.assertEquals(1, building.getDepartmentByType(DepartmentType.Kitchen).getCabinets().size());
+		Assert.assertEquals(10, building.getDepartmentByType(DepartmentType.Kitchen).getCabinets().iterator().next().getQuantity());
+		Assert.assertEquals(new BigDecimal(2000), player.getMoney());
+	}
+	
+	@Test
+	public void whenBuyingMoreOfACabinetShouldIncreaseQuantityOfCabinet() {
+		Cabinet cabinet = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
+		
+		Building building = new Building("abc", BuildingType.FOUR_PARCEL);
+		building.getCabinets().add(cabinet);
+		BuyCabinetAction actionOne = new BuyCabinetAction(building.getId(), cabinet.getId(), 5);
+		
+		RManagerPlayer player = new RManagerPlayer();
+		player.setMoney(new BigDecimal(4000));
+		
+		Estate estate = new Estate(EstateType.FOUR_PARCEL, BigDecimal.ONE, BigDecimal.ONE, "123");
+		estate.setBuilding(building);
+		player.getEstates().add(estate);
+		
+		GameState state = Mockito.mock(GameState.class);
+		Mockito.when(state.getAvailableCabinetById(cabinet.getId())).thenReturn(cabinet);
+		
+		// buy first charge
+		cut.handle(actionOne, player, state);
+		
+		// buy second charge
+		player.setMoney(new BigDecimal(4000));
+		BuyCabinetAction actionTwo = new BuyCabinetAction(building.getId(), cabinet.getId(), 3);
+		cut.handle(actionTwo, player, state);
+		
+		Assert.assertEquals(1, building.getDepartmentByType(DepartmentType.Kitchen).getCabinets().size());
+		Assert.assertEquals(8, building.getDepartmentByType(DepartmentType.Kitchen).getCabinets().iterator().next().getQuantity());
+		Assert.assertEquals(new BigDecimal(3400), player.getMoney());
 	}
 }
