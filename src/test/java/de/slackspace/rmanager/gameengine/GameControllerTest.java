@@ -3,7 +3,6 @@ package de.slackspace.rmanager.gameengine;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -137,7 +136,9 @@ public class GameControllerTest {
 		List<Person> personnel = new ArrayList<>();
 		personnel.add(person);
 		
-		Estate estate = new Estate(EstateType.TWO_PARCEL, BigDecimal.ONE, BigDecimal.ONE, UUID.randomUUID().toString());
+		City city = new City("Stuttgart", BigDecimal.ONE);
+		
+		Estate estate = new Estate(EstateType.TWO_PARCEL, BigDecimal.ONE, BigDecimal.ONE, city.getId());
 		List<Estate> estates = new ArrayList<>();
 		estates.add(estate);
 		
@@ -145,7 +146,6 @@ public class GameControllerTest {
 		List<Cabinet> cabinets = new ArrayList<>();
 		cabinets.add(cabinet);
 		
-		City city = new City("Stuttgart", BigDecimal.ONE);
 		city.setAvailablePersonnel(personnel);
 		city.setEstates(estates);
 		city.setAvailableCabinet(cabinets);

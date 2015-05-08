@@ -12,6 +12,7 @@ import de.slackspace.rmanager.gameengine.domain.City;
 import de.slackspace.rmanager.gameengine.domain.GameState;
 import de.slackspace.rmanager.gameengine.domain.Person;
 import de.slackspace.rmanager.gameengine.domain.RManagerPlayer;
+import de.slackspace.rmanager.gameengine.exception.GameException;
 import de.slackspace.rmanager.gameengine.service.CityService;
 import de.slackspace.rmanager.gameengine.service.PersonnelService;
 
@@ -93,8 +94,13 @@ public class GameController {
 		
 		// sell meals
 		for (Building building : player.getBuildings()) {
+			City city = state.getCityById(building.getCityId());
+			if(city == null) {
+				throw new GameException("City with id '" + building.getCityId() + "' could not be found");
+			}
+			
 			BigDecimal meals = building.getMonthlyOutput();
-			BigDecimal income = meals.multiply(new BigDecimal(3)); // meal price = 3
+			BigDecimal income = meals.multiply(new BigDecimal(3).multiply(city.getRateOfPriceIncrease())); // meal price = 3
 			player.earn(income);
 		}
 		

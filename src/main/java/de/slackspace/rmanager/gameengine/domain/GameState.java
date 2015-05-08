@@ -87,6 +87,15 @@ public class GameState {
 		
 		return false;
 	}
+	
+	public City getCityById(String id) {
+		for (City city : cities) {
+			if(city.getId().equals(id)) {
+				return city;
+			}
+		}
+		return null;
+	}
 
 	public List<String> getBuildingIds() {
 		return buildingIds;

@@ -15,6 +15,8 @@ public class Building {
 	
 	private Map<DepartmentType, Department> departments = new HashMap<>();
 	
+	private String cityId;
+	
 	protected Building() {
 		departments.put(DepartmentType.Dininghall, new Department(DepartmentType.Dininghall));
 		departments.put(DepartmentType.Facilities, new Department(DepartmentType.Facilities));
@@ -23,9 +25,10 @@ public class Building {
 		departments.put(DepartmentType.Reefer, new Department(DepartmentType.Reefer));
 	}
 	
-	public Building(String id, BuildingType type) {
+	public Building(String id, BuildingType type, String cityId) {
 		this();
 		setBuildingType(type);
+		setCityId(cityId);
 		this.id = id;
 	}
 
@@ -89,6 +92,14 @@ public class Building {
 		}
 		
 		return meals;
+	}
+
+	public String getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(String cityId) {
+		this.cityId = cityId;
 	}
 	
 }

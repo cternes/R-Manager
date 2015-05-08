@@ -30,7 +30,7 @@ public class BuyCabinetActionHandlerTest {
 	public void whenValidShouldAddCabinetToDepartment() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
-		Building building = new Building("abc", BuildingType.FOUR_PARCEL);
+		Building building = new Building("abc", BuildingType.FOUR_PARCEL, "123");
 		BuyCabinetAction action = new BuyCabinetAction(building.getId(), cabinet.getId(), 1);
 		
 		RManagerPlayer player = new RManagerPlayer();
@@ -53,7 +53,7 @@ public class BuyCabinetActionHandlerTest {
 	public void whenPlayerHasNotEnoughMoneyShouldThrowException() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(500), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
-		Building building = new Building("abc", BuildingType.FOUR_PARCEL);
+		Building building = new Building("abc", BuildingType.FOUR_PARCEL, "123");
 		BuyCabinetAction action = new BuyCabinetAction(building.getId(), cabinet.getId(), 1);
 		
 		RManagerPlayer player = new RManagerPlayer();
@@ -87,7 +87,7 @@ public class BuyCabinetActionHandlerTest {
 	public void whenCabinetIsUnknownShouldThrowException() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(500), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
-		Building building = new Building("abc", BuildingType.FOUR_PARCEL);
+		Building building = new Building("abc", BuildingType.FOUR_PARCEL, "123");
 		BuyCabinetAction action = new BuyCabinetAction(building.getId(), cabinet.getId(), 1);
 		
 		RManagerPlayer player = new RManagerPlayer();
@@ -108,7 +108,7 @@ public class BuyCabinetActionHandlerTest {
 	public void whenBuyingMultipleCabinetsShouldCalculateCorrectPrice() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
-		Building building = new Building("abc", BuildingType.FOUR_PARCEL);
+		Building building = new Building("abc", BuildingType.FOUR_PARCEL, "123");
 		BuyCabinetAction action = new BuyCabinetAction(building.getId(), cabinet.getId(), 10);
 		
 		RManagerPlayer player = new RManagerPlayer();
@@ -132,7 +132,7 @@ public class BuyCabinetActionHandlerTest {
 	public void whenBuyingMoreOfACabinetShouldIncreaseQuantityOfCabinet() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
-		Building building = new Building("abc", BuildingType.FOUR_PARCEL);
+		Building building = new Building("abc", BuildingType.FOUR_PARCEL, "123");
 		building.getCabinets().add(cabinet);
 		BuyCabinetAction actionOne = new BuyCabinetAction(building.getId(), cabinet.getId(), 5);
 		

@@ -37,7 +37,7 @@ public class BuyBuildingActionHandler implements GameActionHandler {
 			throw new GameException("A building with id '"+ buyAction.getBuildingId() + "' does not exists");
 		}
 		
-		Building building = new Building(buyAction.getBuildingId(), buyAction.getBuildingType());
+		Building building = new Building(buyAction.getBuildingId(), buyAction.getBuildingType(), estate.getCityId());
 		
 		if(!player.canBuy(building.getPrice())) {
 			throw new GameException("The player's money '" + player.getMoney() + "' is not enough to pay '" + building.getPrice() + "'");

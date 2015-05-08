@@ -43,6 +43,7 @@ public class BuyBuildingActionHandlerTest {
 		
 		Assert.assertEquals(new BigDecimal(1_000_000), player.getMoney());
 		Assert.assertEquals(BuildingType.ONE_PARCEL, player.getEstates().iterator().next().getBuilding().getBuildingType());
+		Assert.assertEquals("1234", player.getEstates().iterator().next().getBuilding().getCityId());
 		Mockito.verify(state).removeBuildingId("abc");
 	}
 	
@@ -103,7 +104,7 @@ public class BuyBuildingActionHandlerTest {
 		
 		Estate estate = new Estate(EstateType.FOUR_PARCEL, BigDecimal.ONE, BigDecimal.ONE, "1234");
 		player.getEstates().add(estate);
-		estate.setBuilding(new Building("abc", BuildingType.ONE_PARCEL));
+		estate.setBuilding(new Building("abc", BuildingType.ONE_PARCEL, estate.getCityId()));
 		
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getEstateById(estate.getId())).thenReturn(estate);
