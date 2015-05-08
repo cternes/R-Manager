@@ -100,7 +100,7 @@ public class GameController {
 			}
 			
 			BigDecimal meals = building.getMonthlyOutput();
-			BigDecimal income = meals.multiply(new BigDecimal(3).multiply(city.getRateOfPriceIncrease())); // meal price = 3
+			BigDecimal income = meals.multiply(new BigDecimal(10).multiply(city.getRateOfPriceIncrease())); // meal price = 10
 			player.earn(income);
 		}
 		

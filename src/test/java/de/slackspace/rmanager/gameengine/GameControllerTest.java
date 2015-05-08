@@ -177,6 +177,82 @@ public class GameControllerTest {
 		Assert.assertEquals(cabinet.getId(), updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getCabinets().iterator().next().getId());
 		Assert.assertEquals(1, updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getCabinets().size());
 		
-		Assert.assertEquals(new BigDecimal(942400), updatedState.getPlayerOne().getMoney());
+		Assert.assertEquals(new BigDecimal(942750), updatedState.getPlayerOne().getMoney());
+	}
+	
+	@Test
+	public void simulateATurn() {
+		GameController cut = GameControllerFactory.getGameControllerInstance();
+		GameState gameState = cut.startNewGame("p1", "p2");
+
+		Person personOne = new Person(new BigDecimal(2550), 30, 8, 8, DepartmentType.Kitchen);
+		Person personTwo = new Person(new BigDecimal(1400), 30, 5, 5, DepartmentType.Dininghall);
+		Person personThree = new Person(new BigDecimal(1400), 30, 5, 5, DepartmentType.Facilities);
+		Person personFour = new Person(new BigDecimal(1400), 30, 5, 5, DepartmentType.Laundry);
+		Person personFive = new Person(new BigDecimal(1400), 30, 5, 5, DepartmentType.Reefer);
+		List<Person> personnel = new ArrayList<>();
+		personnel.add(personOne);
+		personnel.add(personTwo);
+		personnel.add(personThree);
+		personnel.add(personFour);
+		personnel.add(personFive);
+		
+		City city = new City("Stuttgart", BigDecimal.ONE);
+		
+		Estate estate = new Estate(EstateType.FOUR_PARCEL, new BigDecimal("1.17"), BigDecimal.ONE, city.getId());
+		List<Estate> estates = new ArrayList<>();
+		estates.add(estate);
+		
+		Cabinet washingMachine = new Cabinet(new BigDecimal(22000), new BigDecimal(1300), 50, DepartmentType.Laundry);
+		Cabinet fridge = new Cabinet(new BigDecimal(24000), new BigDecimal(1500), 50, DepartmentType.Reefer);
+		Cabinet stove = new Cabinet(new BigDecimal(25000), new BigDecimal(1650), 50, DepartmentType.Kitchen);
+		Cabinet sanitary = new Cabinet(new BigDecimal(20000), new BigDecimal(700), 50, DepartmentType.Facilities);
+		Cabinet table = new Cabinet(new BigDecimal(330), new BigDecimal(20), 15, DepartmentType.Dininghall);
+		List<Cabinet> cabinets = new ArrayList<>();
+		cabinets.add(washingMachine);
+		cabinets.add(fridge);
+		cabinets.add(stove);
+		cabinets.add(sanitary);
+		cabinets.add(table);
+		
+		city.setAvailablePersonnel(personnel);
+		city.setEstates(estates);
+		city.setAvailableCabinet(cabinets);
+		
+		List<City> cities = new ArrayList<>();
+		cities.add(city);
+		
+		List<String> buildingIds = new ArrayList<>();
+		buildingIds.add("abc");
+		
+		gameState.setCities(cities);
+		gameState.setBuildingIds(buildingIds);
+		
+		List<GameAction> actions = new ArrayList<>();
+		actions.add(new BuyEstateAction(estate.getId()));
+		actions.add(new BuyBuildingAction(estate.getId(), "abc", BuildingType.TWO_PARCEL));
+		actions.add(new HirePersonAction("abc", personOne.getId()));
+		actions.add(new HirePersonAction("abc", personTwo.getId()));
+		actions.add(new HirePersonAction("abc", personThree.getId()));
+		actions.add(new HirePersonAction("abc", personFour.getId()));
+		actions.add(new HirePersonAction("abc", personFive.getId()));
+		actions.add(new BuyCabinetAction("abc", washingMachine.getId(), 2));
+		actions.add(new BuyCabinetAction("abc", fridge.getId(), 1));
+		actions.add(new BuyCabinetAction("abc", stove.getId(), 1));
+		actions.add(new BuyCabinetAction("abc", sanitary.getId(), 1));
+		actions.add(new BuyCabinetAction("abc", table.getId(), 20));
+		
+		GameState updatedState = cut.endTurn(gameState, "p1", actions);
+		
+		Assert.assertEquals(1, updatedState.getPlayerOne().getEstates().size());
+		Assert.assertEquals(estate.getId(), updatedState.getPlayerOne().getEstates().iterator().next().getId());
+		
+		Assert.assertEquals(1, updatedState.getPlayerOne().getBuildings().size());
+		Assert.assertNotNull(updatedState.getPlayerOne().getBuildingById("abc"));
+		
+		Assert.assertEquals(personOne.getId(), updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getPersonnel().get(0).getId());
+		Assert.assertEquals(1, updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getCabinets().size());
+		
+		Assert.assertEquals(new BigDecimal("353900.00"), updatedState.getPlayerOne().getMoney());
 	}
 }
