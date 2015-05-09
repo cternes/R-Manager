@@ -2,6 +2,7 @@ package de.slackspace.rmanager.gameengine;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -44,6 +45,12 @@ public class GameControllerTest {
 			Assert.assertEquals(6, city.getAvailablePersonnel().size());
 			numEstates += city.getEstates().size();
 			
+			Assert.assertEquals(10, city.getAvailableCabinetByType(DepartmentType.Kitchen).size());
+			Assert.assertEquals(9, city.getAvailableCabinetByType(DepartmentType.Dininghall).size());
+			Assert.assertEquals(7, city.getAvailableCabinetByType(DepartmentType.Facilities).size());
+			Assert.assertEquals(10, city.getAvailableCabinetByType(DepartmentType.Laundry).size());
+			Assert.assertEquals(10, city.getAvailableCabinetByType(DepartmentType.Reefer).size());
+			
 //			System.out.println("");
 //			System.out.println(city.getName());
 //			System.out.println("===========");
@@ -54,11 +61,6 @@ public class GameControllerTest {
 		}
 		
 		Assert.assertEquals(numEstates, gameState.getBuildingIds().size());
-		Assert.assertEquals(10, gameState.getAvailableCabinetByType(DepartmentType.Kitchen).size());
-		Assert.assertEquals(9, gameState.getAvailableCabinetByType(DepartmentType.Dininghall).size());
-		Assert.assertEquals(7, gameState.getAvailableCabinetByType(DepartmentType.Facilities).size());
-		Assert.assertEquals(10, gameState.getAvailableCabinetByType(DepartmentType.Laundry).size());
-		Assert.assertEquals(10, gameState.getAvailableCabinetByType(DepartmentType.Reefer).size());
 	}
 	
 	@Test
@@ -153,7 +155,7 @@ public class GameControllerTest {
 		
 		city.setAvailablePersonnel(personnel);
 		city.setEstates(estates);
-		city.setAvailableCabinet(cabinets);
+		city.setAvailableCabinet(DepartmentType.Kitchen, cabinets);
 		
 		List<City> cities = new ArrayList<>();
 		cities.add(city);
@@ -213,16 +215,14 @@ public class GameControllerTest {
 		Cabinet stove = new Cabinet(new BigDecimal(25000), new BigDecimal(1650), 50, DepartmentType.Kitchen);
 		Cabinet sanitary = new Cabinet(new BigDecimal(20000), new BigDecimal(700), 50, DepartmentType.Facilities);
 		Cabinet table = new Cabinet(new BigDecimal(330), new BigDecimal(20), 15, DepartmentType.Dininghall);
-		List<Cabinet> cabinets = new ArrayList<>();
-		cabinets.add(washingMachine);
-		cabinets.add(fridge);
-		cabinets.add(stove);
-		cabinets.add(sanitary);
-		cabinets.add(table);
 		
 		city.setAvailablePersonnel(personnel);
 		city.setEstates(estates);
-		city.setAvailableCabinet(cabinets);
+		city.setAvailableCabinet(DepartmentType.Kitchen, Arrays.asList(new Cabinet[] {stove}));
+		city.setAvailableCabinet(DepartmentType.Reefer, Arrays.asList(new Cabinet[] {fridge}));
+		city.setAvailableCabinet(DepartmentType.Laundry, Arrays.asList(new Cabinet[] {washingMachine}));
+		city.setAvailableCabinet(DepartmentType.Facilities, Arrays.asList(new Cabinet[] {sanitary}));
+		city.setAvailableCabinet(DepartmentType.Dininghall, Arrays.asList(new Cabinet[] {table}));
 		
 		List<City> cities = new ArrayList<>();
 		cities.add(city);

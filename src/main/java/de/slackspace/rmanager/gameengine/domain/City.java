@@ -2,7 +2,11 @@ package de.slackspace.rmanager.gameengine.domain;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 public class City {
@@ -13,7 +17,7 @@ public class City {
 
 	private List<Estate> estates = new ArrayList<>();
 	private List<Person> availablePersonnel = new ArrayList<>();
-	private List<Cabinet> availableCabinet = new ArrayList<>();
+	private Map<DepartmentType, List<Cabinet>> availableCabinet = new HashMap<>();
 	
 	protected City() {
 	}
@@ -60,11 +64,26 @@ public class City {
 		this.availablePersonnel = availablePersonnel;
 	}
 
-	public List<Cabinet> getAvailableCabinet() {
-		return availableCabinet;
+	public List<Cabinet> getAvailableCabinetByType(DepartmentType type) {
+		return availableCabinet.get(type);
 	}
-
-	public void setAvailableCabinet(List<Cabinet> availableCabinet) {
-		this.availableCabinet = availableCabinet;
+	
+	public void setAvailableCabinet(DepartmentType type, List<Cabinet> cabinets) {
+		availableCabinet.put(type, cabinets);
+	}
+	
+	public Cabinet getAvailableCabinetById(String id) {
+		Iterator<Entry<DepartmentType, List<Cabinet>>> iter = availableCabinet.entrySet().iterator();
+		while(iter.hasNext()) {
+			Entry<DepartmentType, List<Cabinet>> entry = iter.next();
+			
+			for (Cabinet cabinet : entry.getValue()) {
+				if(cabinet.getId().equals(id)) {
+					return cabinet;
+				}
+			}
+		}
+		
+		return null;
 	}
 }

@@ -37,11 +37,6 @@ public class GameController {
 		GameState state = new GameState();
 		state.setCities(createCities());
 		state.setBuildingIds(createBuildingIds(state.getCities()));
-		state.setAvailableCabinet(DepartmentType.Kitchen, cabinetService.createCabinet(DepartmentType.Kitchen));
-		state.setAvailableCabinet(DepartmentType.Dininghall, cabinetService.createCabinet(DepartmentType.Dininghall));
-		state.setAvailableCabinet(DepartmentType.Facilities, cabinetService.createCabinet(DepartmentType.Facilities));
-		state.setAvailableCabinet(DepartmentType.Reefer, cabinetService.createCabinet(DepartmentType.Reefer));
-		state.setAvailableCabinet(DepartmentType.Laundry, cabinetService.createCabinet(DepartmentType.Laundry));
 
 		RManagerPlayer playerOne = new RManagerPlayer();
 		playerOne.setMoney(new BigDecimal(1_500_000));
@@ -63,6 +58,12 @@ public class GameController {
 		for (City city : cities) {
 			List<Person> personnel = personnelService.createPersonnel(city);
 			city.setAvailablePersonnel(personnel);
+			
+			city.setAvailableCabinet(DepartmentType.Kitchen, cabinetService.createCabinet(DepartmentType.Kitchen));
+			city.setAvailableCabinet(DepartmentType.Dininghall, cabinetService.createCabinet(DepartmentType.Dininghall));
+			city.setAvailableCabinet(DepartmentType.Facilities, cabinetService.createCabinet(DepartmentType.Facilities));
+			city.setAvailableCabinet(DepartmentType.Reefer, cabinetService.createCabinet(DepartmentType.Reefer));
+			city.setAvailableCabinet(DepartmentType.Laundry, cabinetService.createCabinet(DepartmentType.Laundry));
 		}
 		
 		return cities;
