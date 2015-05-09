@@ -12,6 +12,7 @@ public class RManagerPlayer {
 	private BigDecimal money = BigDecimal.ZERO;
 	private City currentCity;
 	private Set<Estate> estates = new HashSet<>();
+	private Set<Share> shares = new HashSet<>();
 
 	public BigDecimal getMoney() {
 		return money;
@@ -116,5 +117,23 @@ public class RManagerPlayer {
 		
 		return capital;
 	}
+
+	public Set<Share> getShares() {
+		return shares;
+	}
+
+	public void setShares(Set<Share> shares) {
+		this.shares = shares;
+	}
 	
+	public Share getShareById(String id) {
+		for (Share share : shares) {
+			if(share.getId().equals(id)) {
+				return share;
+			}
+		}
+		
+		return null;
+	}
+
 }

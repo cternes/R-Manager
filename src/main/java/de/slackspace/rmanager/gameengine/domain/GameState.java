@@ -1,7 +1,9 @@
 package de.slackspace.rmanager.gameengine.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GameState {
 
@@ -10,6 +12,7 @@ public class GameState {
 	
 	private List<City> cities = new ArrayList<>();
 	private List<String> buildingIds = new ArrayList<>();
+	private Set<Share> shares = new HashSet<>();
 	
 	public RManagerPlayer getPlayerOne() {
 		return playerOne;
@@ -106,6 +109,24 @@ public class GameState {
 	
 	public void removeBuildingId(String id) {
 		buildingIds.remove(id);
+	}
+
+	public Set<Share> getShares() {
+		return shares;
+	}
+
+	public void setShares(Set<Share> shares) {
+		this.shares = shares;
+	}
+	
+	public Share getShareById(String id) {
+		for (Share share : shares) {
+			if(share.getId().equals(id)) {
+				return share;
+			}
+		}
+		
+		return null;
 	}
 
 }

@@ -10,6 +10,8 @@ public interface GameAction {
 	public static final int FIRE_PERSON 	= 6;
 	public static final int BUY_CABINET 	= 7;
 	public static final int SELL_CABINET 	= 8;
+	public static final int BUY_SHARE		= 9;
+	public static final int SELL_SHARE	 	= 10;
 	
 	public int getType();
 }
