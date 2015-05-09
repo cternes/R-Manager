@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import de.slackspace.rmanager.gameengine.action.GameAction;
 import de.slackspace.rmanager.gameengine.action.handler.GameActionHandler;
 import de.slackspace.rmanager.gameengine.domain.Building;
@@ -20,6 +23,8 @@ import de.slackspace.rmanager.gameengine.service.PersonnelService;
 
 public class GameController {
 
+	private Log logger = LogFactory.getLog(getClass());
+	
 	CityService cityService;
 	PersonnelService personnelService;
 	CabinetService cabinetService;
@@ -86,6 +91,8 @@ public class GameController {
 	public GameState endTurn(GameState state, String playerName, List<GameAction> actions) {
 		RManagerPlayer player = state.getPlayerByName(playerName);
 		
+		logger.debug("Ending turn for player '" + playerName +"'");
+		
 		// player actions
 		for (GameAction gameAction : actions) {
 			for (GameActionHandler handler : actionHandlers) {
@@ -101,6 +108,7 @@ public class GameController {
 		// pay monthly costs
 		for (Building building : player.getBuildings()) {
 			player.pay(building.getMonthlyCosts());
+			logger.debug("Monthly costs of building '" + building.getId() + "' = " + building.getMonthlyCosts());
 		}
 		
 		// sell meals
@@ -111,8 +119,12 @@ public class GameController {
 			}
 			
 			BigDecimal meals = building.getMonthlyOutput();
+			logger.debug("Monthly output of building '" + building.getId() + "' = " + meals);
+			
 			BigDecimal income = meals.multiply(new BigDecimal(10).multiply(city.getRateOfPriceIncrease())); // meal price = 10
 			player.earn(income);
+			
+			logger.debug("Monthly income of building '" + building.getId() + "' = " + income);
 		}
 		
 		return state;

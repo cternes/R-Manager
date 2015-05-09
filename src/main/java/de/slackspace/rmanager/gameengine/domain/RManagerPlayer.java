@@ -99,4 +99,22 @@ public class RManagerPlayer {
 		money = money.add(earnings);
 	}
 	
+	public BigDecimal getCapital() {
+		BigDecimal capital = money;
+		
+		for (Estate estate : estates) {
+			capital = capital.add(estate.getTotalPrice());
+		}
+		
+		for (Building building : getBuildings()) {
+			capital = capital.add(building.getPrice());
+			
+			for (Cabinet cabinet : building.getCabinets()) {
+				capital = capital.add(cabinet.getPrice().multiply(new BigDecimal(cabinet.getQuantity())));
+			}
+		}
+		
+		return capital;
+	}
+	
 }
