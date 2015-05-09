@@ -9,10 +9,12 @@ import de.slackspace.rmanager.gameengine.action.GameAction;
 import de.slackspace.rmanager.gameengine.action.handler.GameActionHandler;
 import de.slackspace.rmanager.gameengine.domain.Building;
 import de.slackspace.rmanager.gameengine.domain.City;
+import de.slackspace.rmanager.gameengine.domain.DepartmentType;
 import de.slackspace.rmanager.gameengine.domain.GameState;
 import de.slackspace.rmanager.gameengine.domain.Person;
 import de.slackspace.rmanager.gameengine.domain.RManagerPlayer;
 import de.slackspace.rmanager.gameengine.exception.GameException;
+import de.slackspace.rmanager.gameengine.service.CabinetService;
 import de.slackspace.rmanager.gameengine.service.CityService;
 import de.slackspace.rmanager.gameengine.service.PersonnelService;
 
@@ -20,11 +22,14 @@ public class GameController {
 
 	CityService cityService;
 	PersonnelService personnelService;
+	CabinetService cabinetService;
 	List<GameActionHandler> actionHandlers;
 	
-	public GameController(CityService cityService, PersonnelService personnelService, List<GameActionHandler> actionHandlers) {
+	public GameController(CityService cityService, PersonnelService personnelService, CabinetService cabinetService,
+			List<GameActionHandler> actionHandlers) {
 		this.cityService = cityService;
 		this.personnelService = personnelService;
+		this.cabinetService = cabinetService;
 		this.actionHandlers = actionHandlers;
 	}
 	
@@ -32,6 +37,11 @@ public class GameController {
 		GameState state = new GameState();
 		state.setCities(createCities());
 		state.setBuildingIds(createBuildingIds(state.getCities()));
+		state.setAvailableCabinet(DepartmentType.Kitchen, cabinetService.createCabinet(DepartmentType.Kitchen));
+		state.setAvailableCabinet(DepartmentType.Dininghall, cabinetService.createCabinet(DepartmentType.Dininghall));
+		state.setAvailableCabinet(DepartmentType.Facilities, cabinetService.createCabinet(DepartmentType.Facilities));
+		state.setAvailableCabinet(DepartmentType.Reefer, cabinetService.createCabinet(DepartmentType.Reefer));
+		state.setAvailableCabinet(DepartmentType.Laundry, cabinetService.createCabinet(DepartmentType.Laundry));
 
 		RManagerPlayer playerOne = new RManagerPlayer();
 		playerOne.setMoney(new BigDecimal(1_500_000));

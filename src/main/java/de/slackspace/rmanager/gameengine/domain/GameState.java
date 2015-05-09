@@ -1,7 +1,9 @@
 package de.slackspace.rmanager.gameengine.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameState {
 
@@ -10,6 +12,7 @@ public class GameState {
 	
 	private List<City> cities = new ArrayList<>();
 	private List<String> buildingIds = new ArrayList<>();
+	private Map<DepartmentType, List<Cabinet>> availableCabinet = new HashMap<>();
 	
 	public RManagerPlayer getPlayerOne() {
 		return playerOne;
@@ -108,4 +111,13 @@ public class GameState {
 	public void removeBuildingId(String id) {
 		buildingIds.remove(id);
 	}
+
+	public List<Cabinet> getAvailableCabinetByType(DepartmentType type) {
+		return availableCabinet.get(type);
+	}
+	
+	public void setAvailableCabinet(DepartmentType type, List<Cabinet> cabinets) {
+		availableCabinet.put(type, cabinets);
+	}
+
 }

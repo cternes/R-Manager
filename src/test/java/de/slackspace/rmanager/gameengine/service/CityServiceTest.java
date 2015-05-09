@@ -10,7 +10,7 @@ import de.slackspace.rmanager.gameengine.domain.City;
 import de.slackspace.rmanager.gameengine.domain.Estate;
 import de.slackspace.rmanager.gameengine.domain.EstateType;
 
-public class CityServiceTests {
+public class CityServiceTest {
 
 	private CityService cut = new CityService();
 	

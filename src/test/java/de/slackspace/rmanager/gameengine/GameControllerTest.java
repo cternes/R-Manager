@@ -54,6 +54,11 @@ public class GameControllerTest {
 		}
 		
 		Assert.assertEquals(numEstates, gameState.getBuildingIds().size());
+		Assert.assertEquals(10, gameState.getAvailableCabinetByType(DepartmentType.Kitchen).size());
+		Assert.assertEquals(9, gameState.getAvailableCabinetByType(DepartmentType.Dininghall).size());
+		Assert.assertEquals(7, gameState.getAvailableCabinetByType(DepartmentType.Facilities).size());
+		Assert.assertEquals(10, gameState.getAvailableCabinetByType(DepartmentType.Laundry).size());
+		Assert.assertEquals(10, gameState.getAvailableCabinetByType(DepartmentType.Reefer).size());
 	}
 	
 	@Test
