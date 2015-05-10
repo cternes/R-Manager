@@ -31,7 +31,7 @@ public class PlayerResource {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
-	public Player createPlayer(@RequestParam String name) {
+	public Player createPlayer(@RequestParam("name") String name) {
 		if(name == null || name.isEmpty()) {
 			throw new InvalidOperationException(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "A player must have a name.");
 		}
@@ -43,6 +43,18 @@ public class PlayerResource {
 		}
 		
 		return playerRepo.save(new Player(name));
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, value = "{name}")
+	@ResponseBody
+	public Player getPlayer(@PathVariable(value = "name") String name) {
+		Player player = playerRepo.findByName(name);
+		
+		if(player == null) {
+			throw new InvalidOperationException(HttpStatus.BAD_REQUEST, "BAD_REQUEST", "A player with name " + name + " does not exists.");
+		}
+		
+		return player;
 	}
 	
 	@RequestMapping(method=RequestMethod.GET, value = "{id}/matches")
