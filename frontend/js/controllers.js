@@ -35,7 +35,7 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location',
 	$scope.createMatch = function createMatch() {
 	    $http.post('http://localhost:8080/matches', 'playerToken=' + playerToken)
 		.success(function(data, status, headers, config) {
-		    console.log(data);
+		    // todo
 		})
 		.error(function(data, status, headers, config) {
 		    // todo
@@ -43,9 +43,18 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location',
 	};
 	
 	$scope.joinRandomMatch = function joinRandomMatch() {
-	    $http.get('http://localhost:8080/players/' + playerToken + '/matches')
+	    $http.get('http://localhost:8080/matches')
 		.success(function(data, status, headers, config) {
+		    var id = data.id;
 		    
+		    $http.post('http://localhost:8080/matches/' + id + '/join', 'playerId=' + playerToken)
+			.success(function(data, status, headers, config) {
+			    debugger;
+			    // todo
+			})
+			.error(function(data, status, headers, config) {
+			    // todo
+			});
 		})
 		.error(function(data, status, headers, config) {
 		    // todo
