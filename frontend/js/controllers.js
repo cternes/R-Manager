@@ -49,7 +49,6 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location',
 		    
 		    $http.post('http://localhost:8080/matches/' + id + '/join', 'playerId=' + playerToken)
 			.success(function(data, status, headers, config) {
-			    debugger;
 			    // todo
 			})
 			.error(function(data, status, headers, config) {
@@ -60,4 +59,18 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location',
 		    // todo
 		});
 	};
+    }]);
+
+appControllers.controller('MatchController', ['$scope', '$http', '$location',
+    function($scope, $http, $location) {
+	
+	$http.get('http://localhost:8080/matches/14c46d2d-3516-47ad-8a33-72ddf8586ed9')
+	    .success(function(data, status, headers, config) {
+		$scope.currentMatch = data;
+		$scope.currentMatch.data = angular.fromJson(atob(data.matchData));
+	    })
+	    .error(function(data, status, headers, config) {
+		// todo
+	    });
+	
     }]);
