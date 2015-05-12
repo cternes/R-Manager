@@ -25,6 +25,10 @@ app.config(['$routeProvider',
 		  templateUrl: 'views/trainstation.html',
 		  controller: 'TrainstationController'
 		}).
+		when('/match/:matchId/estates', {
+		  templateUrl: 'views/estates.html',
+		  controller: 'MatchController'
+		}).
 		otherwise({
 		    redirectTo: '/'
 		});

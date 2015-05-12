@@ -57,3 +57,8 @@ body {
 .left-padding-5px {
     padding-left: 5px;
 }
+
+.estate-box {
+    border: 1px solid #CCC;
+    margin: 10px;
+}

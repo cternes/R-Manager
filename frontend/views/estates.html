@@ -1,0 +1,21 @@
+<div class="container">
+
+    <a class="btn btn-default" href="#match/{{matchId}}" role="button">&laquo; Back</a>
+
+    <h2>Estates</h2>
+
+    <div class="row">
+	<div class="col-md-5 estate-box" ng-repeat="estate in currentCity.estates">
+	    <div>
+		<label>Estate</label>
+		<h5>Square meter: {{estate.squareMeter}}</h5>
+		<h5>Price/m²: {{estate.pricePerSquareMeter}} $</h5>
+		<span class="lead">Total price: {{estate.totalPrice}} $</span>
+		<button class="btn btn-danger" role="button">Buy</button>
+	    </div>
+	</div>
+    </div>
+
+</div>
+
+

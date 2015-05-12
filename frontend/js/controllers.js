@@ -77,7 +77,20 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    else {
 		$scope.player = $scope.currentMatch.data.playerTwo;
 	    }
+	    
+	    // set current city
+	    $scope.currentCity = getCityById($scope.player.currentCity.id);
 	});
+	
+	function getCityById(id) {
+	    for (var i=0;i < $scope.currentMatch.data.cities.length;i++) {
+		if($scope.currentMatch.data.cities[i].id === id) {
+		    return $scope.currentMatch.data.cities[i];
+		}
+	    }
+	    
+	    return undefined;
+	}
     }]);
 
 appControllers.controller('TrainstationController', ['$scope', '$http', '$location', '$routeParams', 'matchService',
