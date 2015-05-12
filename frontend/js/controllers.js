@@ -61,16 +61,9 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location',
 	};
     }]);
 
-appControllers.controller('MatchController', ['$scope', '$http', '$location',
-    function($scope, $http, $location) {
+appControllers.controller('MatchController', ['$scope', '$http', '$location', '$routeParams', 'matchService',
+    function($scope, $http, $location, $routeParams, matchService) {
 	
-	$http.get('http://localhost:8080/matches/14c46d2d-3516-47ad-8a33-72ddf8586ed9')
-	    .success(function(data, status, headers, config) {
-		$scope.currentMatch = data;
-		$scope.currentMatch.data = angular.fromJson(atob(data.matchData));
-	    })
-	    .error(function(data, status, headers, config) {
-		// todo
-	    });
+	$scope.currentMatch = matchService.getMatch('14c46d2d-3516-47ad-8a33-72ddf8586ed9');
 	
     }]);

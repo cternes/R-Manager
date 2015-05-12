@@ -2,7 +2,8 @@
 
 var app = angular.module('r-manager', [
     'ngRoute',
-    'appControllers'
+    'appControllers',
+    'appServices'
 ]);
 
 app.config(['$routeProvider',
@@ -16,7 +17,7 @@ app.config(['$routeProvider',
 		  templateUrl: 'views/lobby.html',
 		  controller: 'LobbyController'
 		}).
-		when('/match', {
+		when('/match/:matchId', {
 		  templateUrl: 'views/match.html',
 		  controller: 'MatchController'
 		}).
