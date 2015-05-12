@@ -64,6 +64,16 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location',
 appControllers.controller('MatchController', ['$scope', '$http', '$location', '$routeParams', 'matchService',
     function($scope, $http, $location, $routeParams, matchService) {
 	
-	$scope.currentMatch = matchService.getMatch('14c46d2d-3516-47ad-8a33-72ddf8586ed9');
+	$scope.matchId = $routeParams.matchId;
+	$scope.currentMatch = matchService.getMatch($routeParams.matchId);
 	
+    }]);
+
+appControllers.controller('TrainstationController', ['$scope', '$http', '$location', '$routeParams', 'matchService',
+    function($scope, $http, $location, $routeParams, matchService) {
+	
+	$scope.matchId = $routeParams.matchId;
+	matchService.getMatch($routeParams.matchId).then(function() {
+	    $scope.currentMatch = matchService.currentMatch();
+	});
     }]);
