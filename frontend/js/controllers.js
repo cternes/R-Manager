@@ -66,9 +66,18 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	
 	$scope.matchId = $routeParams.matchId;
 	matchService.getMatch($routeParams.matchId).then(function() {
+	    // set match
 	    $scope.currentMatch = matchService.currentMatch();
+	    
+	    // set player
+	    var playerToken = angular.fromJson(localStorage.getItem('playerToken'));
+	    if($scope.currentMatch.player1.id===playerToken) {
+		$scope.player = $scope.currentMatch.data.playerOne;
+	    }
+	    else {
+		$scope.player = $scope.currentMatch.data.playerTwo;
+	    }
 	});
-	
     }]);
 
 appControllers.controller('TrainstationController', ['$scope', '$http', '$location', '$routeParams', 'matchService',
