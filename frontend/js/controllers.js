@@ -65,7 +65,9 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
     function($scope, $http, $location, $routeParams, matchService) {
 	
 	$scope.matchId = $routeParams.matchId;
-	$scope.currentMatch = matchService.getMatch($routeParams.matchId);
+	matchService.getMatch($routeParams.matchId).then(function() {
+	    $scope.currentMatch = matchService.currentMatch();
+	});
 	
     }]);
 
