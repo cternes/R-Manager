@@ -85,7 +85,19 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	$scope.buyEstate = function(estateId) {
 	    var estate = getEstateById(estateId);
 	    estate.isSold = true;
-	    $scope.player.money=$scope.player.money - estate.totalPrice;
+	    
+	    // reduce money
+	    $scope.player.money = $scope.player.money - estate.totalPrice;
+	    
+	    // add to player
+	    $scope.player.estates.push(estate);
+	    
+	    // add to actions
+	    if($scope.player.actions === undefined) {
+		$scope.player.actions = [];
+	    }
+	     
+	    $scope.player.actions.push({type: 1, id: estateId});
 	};
 	
 	function getEstateById(id) {

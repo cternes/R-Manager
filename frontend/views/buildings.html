@@ -1,0 +1,35 @@
+<div class="container">
+
+    <a class="btn btn-default" href="#match/{{matchId}}" role="button">&laquo; Back</a>
+
+    <h2>Buildings</h2>
+
+    <div class="row">
+	<div class="col-lg-9 estate-box" ng-repeat="estate in player.estates">
+	    <div>
+		<label>Estate</label>
+		<h5>Square meter: {{estate.squareMeter}}</h5>
+		
+		<div class="col-md-2 estate-box">
+		    <span>Type A</span>
+		    <p>Price: 100.000 $</p>
+		    <button class="btn btn-danger" role="button">Buy</button>
+		</div>
+		<div class="col-md-2 estate-box">
+		    <span>Type B</span>
+		    <p>Price: 100.000 $</p>
+		    <button class="btn btn-danger" role="button">Buy</button>
+		</div>
+		<div class="col-md-2 estate-box">
+		    <span>Type C</span>
+		</div>
+		<div class="col-md-2 estate-box">
+		    <span>Type A</span>
+		</div>
+	    </div>
+	</div>
+    </div>
+
+</div>
+
+
