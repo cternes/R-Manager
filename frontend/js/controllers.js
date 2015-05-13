@@ -82,6 +82,22 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    $scope.currentCity = getCityById($scope.player.currentCity.id);
 	});
 	
+	$scope.buyEstate = function(estateId) {
+	    var estate = getEstateById(estateId);
+	    estate.isSold = true;
+	    $scope.player.money=$scope.player.money - estate.totalPrice;
+	};
+	
+	function getEstateById(id) {
+	    for (var i=0;i < $scope.currentCity.estates.length;i++) {
+		if($scope.currentCity.estates[i].id === id) {
+		    return $scope.currentCity.estates[i];
+		}
+	    }
+	    
+	    return undefined;
+	}
+	
 	function getCityById(id) {
 	    for (var i=0;i < $scope.currentMatch.data.cities.length;i++) {
 		if($scope.currentMatch.data.cities[i].id === id) {
@@ -91,13 +107,4 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    
 	    return undefined;
 	}
-    }]);
-
-appControllers.controller('TrainstationController', ['$scope', '$http', '$location', '$routeParams', 'matchService',
-    function($scope, $http, $location, $routeParams, matchService) {
-	
-	$scope.matchId = $routeParams.matchId;
-	matchService.getMatch($routeParams.matchId).then(function() {
-	    $scope.currentMatch = matchService.currentMatch();
-	});
     }]);

@@ -24,7 +24,7 @@ app.config(['$routeProvider',
 		}).
 		when('/match/:matchId/trainstation', {
 		  templateUrl: 'views/trainstation.html',
-		  controller: 'TrainstationController'
+		  controller: 'MatchController'
 		}).
 		when('/match/:matchId/estates', {
 		  templateUrl: 'views/estates.html',

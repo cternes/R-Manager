@@ -62,3 +62,7 @@ body {
     border: 1px solid #CCC;
     margin: 10px;
 }
+
+.estate-box.sold {
+    background-color: #EFEFEF;
+}
