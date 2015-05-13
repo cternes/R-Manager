@@ -10,7 +10,7 @@
 		<label>Estate</label>
 		<h5>Square meter: {{estate.squareMeter}}</h5>
 		<h5>Price/m²: {{estate.pricePerSquareMeter}} $</h5>
-		<span class="lead">Total price: {{estate.totalPrice}} $</span>
+		<span class="lead">Total price: {{estate.totalPrice | money}} $</span>
 		<button class="btn btn-danger" role="button">Buy</button>
 	    </div>
 	</div>

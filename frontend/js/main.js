@@ -3,7 +3,8 @@
 var app = angular.module('r-manager', [
     'ngRoute',
     'appControllers',
-    'appServices'
+    'appServices',
+    'appFilters'
 ]);
 
 app.config(['$routeProvider',
