@@ -30,7 +30,8 @@ public class BuyCabinetActionHandlerTest {
 	public void whenValidShouldAddCabinetToDepartment() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
-		Building building = new Building("abc", BuildingType.FOUR_PARCEL, "123");
+		BuildingType buildingType = new BuildingType(4, new BigDecimal(1_600_000));
+		Building building = new Building("abc", buildingType, "123");
 		BuyCabinetAction action = new BuyCabinetAction(building.getId(), cabinet.getId(), 1);
 		
 		RManagerPlayer player = new RManagerPlayer();
@@ -53,7 +54,8 @@ public class BuyCabinetActionHandlerTest {
 	public void whenPlayerHasNotEnoughMoneyShouldThrowException() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(500), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
-		Building building = new Building("abc", BuildingType.FOUR_PARCEL, "123");
+		BuildingType buildingType = new BuildingType(4, new BigDecimal(1_600_000));
+		Building building = new Building("abc", buildingType, "123");
 		BuyCabinetAction action = new BuyCabinetAction(building.getId(), cabinet.getId(), 1);
 		
 		RManagerPlayer player = new RManagerPlayer();
@@ -87,7 +89,8 @@ public class BuyCabinetActionHandlerTest {
 	public void whenCabinetIsUnknownShouldThrowException() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(500), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
-		Building building = new Building("abc", BuildingType.FOUR_PARCEL, "123");
+		BuildingType buildingType = new BuildingType(4, new BigDecimal(1_600_000));
+		Building building = new Building("abc", buildingType, "123");
 		BuyCabinetAction action = new BuyCabinetAction(building.getId(), cabinet.getId(), 1);
 		
 		RManagerPlayer player = new RManagerPlayer();
@@ -108,7 +111,8 @@ public class BuyCabinetActionHandlerTest {
 	public void whenBuyingMultipleCabinetsShouldCalculateCorrectPrice() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
-		Building building = new Building("abc", BuildingType.FOUR_PARCEL, "123");
+		BuildingType buildingType = new BuildingType(4, new BigDecimal(1_600_000));
+		Building building = new Building("abc", buildingType, "123");
 		BuyCabinetAction action = new BuyCabinetAction(building.getId(), cabinet.getId(), 10);
 		
 		RManagerPlayer player = new RManagerPlayer();
@@ -132,7 +136,8 @@ public class BuyCabinetActionHandlerTest {
 	public void whenBuyingMoreOfACabinetShouldIncreaseQuantityOfCabinet() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
-		Building building = new Building("abc", BuildingType.FOUR_PARCEL, "123");
+		BuildingType buildingType = new BuildingType(4, new BigDecimal(1_600_000));
+		Building building = new Building("abc", buildingType, "123");
 		building.getCabinets().add(cabinet);
 		BuyCabinetAction actionOne = new BuyCabinetAction(building.getId(), cabinet.getId(), 5);
 		
@@ -164,7 +169,8 @@ public class BuyCabinetActionHandlerTest {
 		Cabinet cabinetOne = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		Cabinet cabinetTwo = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
-		Building building = new Building("abc", BuildingType.ONE_PARCEL, "123");
+		BuildingType buildingType = new BuildingType(1, new BigDecimal(500_000));
+		Building building = new Building("abc", buildingType, "123");
 		BuyCabinetAction actionOne = new BuyCabinetAction(building.getId(), cabinetOne.getId(), 1);
 		BuyCabinetAction actionTwo = new BuyCabinetAction(building.getId(), cabinetTwo.getId(), 1);
 		

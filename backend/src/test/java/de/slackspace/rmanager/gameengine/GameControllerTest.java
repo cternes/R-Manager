@@ -163,12 +163,18 @@ public class GameControllerTest {
 		List<String> buildingIds = new ArrayList<>();
 		buildingIds.add("abc");
 		
+		BuildingType buildingTypeOne = new BuildingType(1, new BigDecimal(500_000));
+		
+		List<BuildingType> buildingTypes = new ArrayList<>();
+		buildingTypes.add(buildingTypeOne);
+		
 		gameState.setCities(cities);
 		gameState.setBuildingIds(buildingIds);
-		
+		gameState.setBuildingTypes(buildingTypes);
+
 		List<GameAction> actions = new ArrayList<>();
 		actions.add(new BuyEstateAction(estate.getId()));
-		actions.add(new BuyBuildingAction(estate.getId(), "abc", BuildingType.ONE_PARCEL));
+		actions.add(new BuyBuildingAction(estate.getId(), "abc", buildingTypeOne));
 		actions.add(new HirePersonAction("abc", person.getId()));
 		actions.add(new BuyCabinetAction("abc", cabinet.getId(), 10));
 		
@@ -230,12 +236,18 @@ public class GameControllerTest {
 		List<String> buildingIds = new ArrayList<>();
 		buildingIds.add("abc");
 		
+		BuildingType buildingTypeOne = new BuildingType(2, new BigDecimal(900_000));
+		
+		List<BuildingType> buildingTypes = new ArrayList<>();
+		buildingTypes.add(buildingTypeOne);
+		
 		gameState.setCities(cities);
 		gameState.setBuildingIds(buildingIds);
+		gameState.setBuildingTypes(buildingTypes);
 		
 		List<GameAction> actions = new ArrayList<>();
 		actions.add(new BuyEstateAction(estate.getId()));
-		actions.add(new BuyBuildingAction(estate.getId(), "abc", BuildingType.TWO_PARCEL));
+		actions.add(new BuyBuildingAction(estate.getId(), "abc", buildingTypeOne));
 		actions.add(new HirePersonAction("abc", personOne.getId()));
 		actions.add(new HirePersonAction("abc", personTwo.getId()));
 		actions.add(new HirePersonAction("abc", personThree.getId()));

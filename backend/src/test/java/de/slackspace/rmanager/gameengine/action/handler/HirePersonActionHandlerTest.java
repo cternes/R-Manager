@@ -35,7 +35,8 @@ public class HirePersonActionHandlerTest {
 	public void whenPersonDoesNotExistsThrowException() {
 		HirePersonActionHandler cut = new HirePersonActionHandler();
 		
-		Building building = new Building("abc", BuildingType.FOUR_PARCEL, "123");
+		BuildingType buildingType = new BuildingType(4, new BigDecimal(1_600_000));
+		Building building = new Building("abc", buildingType, "123");
 		HirePersonAction action = new HirePersonAction(building.getId(), "abc");
 		
 		RManagerPlayer player = new RManagerPlayer();
@@ -53,7 +54,8 @@ public class HirePersonActionHandlerTest {
 		HirePersonActionHandler cut = new HirePersonActionHandler();
 		
 		Person person = new Person(BigDecimal.TEN, 20, 10, 10, DepartmentType.Kitchen);
-		Building building = new Building("abc", BuildingType.FOUR_PARCEL, "123");
+		BuildingType buildingType = new BuildingType(4, new BigDecimal(1_600_000));
+		Building building = new Building("abc", buildingType, "123");
 		HirePersonAction action = new HirePersonAction(building.getId(), person.getId());
 		
 		RManagerPlayer player = new RManagerPlayer();
@@ -76,7 +78,8 @@ public class HirePersonActionHandlerTest {
 		HirePersonActionHandler cut = new HirePersonActionHandler();
 		
 		Person person = new Person(BigDecimal.TEN, 20, 10, 10, DepartmentType.Kitchen);
-		Building building = new Building("abc", BuildingType.FOUR_PARCEL, "123");
+		BuildingType buildingType = new BuildingType(4, new BigDecimal(1_600_000));
+		Building building = new Building("abc", buildingType, "123");
 		building.getDepartmentByType(DepartmentType.Kitchen).getPersonnel().add(person);
 		
 		HirePersonAction action = new HirePersonAction(building.getId(), person.getId());

@@ -13,6 +13,7 @@ public class GameState {
 	private List<City> cities = new ArrayList<>();
 	private List<String> buildingIds = new ArrayList<>();
 	private Set<Share> shares = new HashSet<>();
+	private List<BuildingType> buildingTypes = new ArrayList<>();
 	
 	public RManagerPlayer getPlayerOne() {
 		return playerOne;
@@ -126,6 +127,23 @@ public class GameState {
 			}
 		}
 		
+		return null;
+	}
+
+	public List<BuildingType> getBuildingTypes() {
+		return buildingTypes;
+	}
+
+	public void setBuildingTypes(List<BuildingType> buildingTypes) {
+		this.buildingTypes = buildingTypes;
+	}
+
+	public BuildingType getBuildingTypeById(String id) {
+		for (BuildingType buildingType : buildingTypes) {
+			if(buildingType.getId().equals(id)) {
+				return buildingType;
+			}
+		}
 		return null;
 	}
 

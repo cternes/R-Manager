@@ -17,6 +17,7 @@ import de.slackspace.rmanager.gameengine.domain.GameState;
 import de.slackspace.rmanager.gameengine.domain.Person;
 import de.slackspace.rmanager.gameengine.domain.RManagerPlayer;
 import de.slackspace.rmanager.gameengine.exception.GameException;
+import de.slackspace.rmanager.gameengine.service.BuildingTypeService;
 import de.slackspace.rmanager.gameengine.service.CabinetService;
 import de.slackspace.rmanager.gameengine.service.CityService;
 import de.slackspace.rmanager.gameengine.service.PersonnelService;
@@ -28,13 +29,15 @@ public class GameController {
 	CityService cityService;
 	PersonnelService personnelService;
 	CabinetService cabinetService;
+	BuildingTypeService buildingTypeService;
 	List<GameActionHandler> actionHandlers;
 	
 	public GameController(CityService cityService, PersonnelService personnelService, CabinetService cabinetService,
-			List<GameActionHandler> actionHandlers) {
+			BuildingTypeService buildingTypeService, List<GameActionHandler> actionHandlers) {
 		this.cityService = cityService;
 		this.personnelService = personnelService;
 		this.cabinetService = cabinetService;
+		this.buildingTypeService = buildingTypeService;
 		this.actionHandlers = actionHandlers;
 	}
 	
@@ -42,6 +45,7 @@ public class GameController {
 		GameState state = new GameState();
 		state.setCities(createCities());
 		state.setBuildingIds(createBuildingIds(state.getCities()));
+		state.setBuildingTypes(buildingTypeService.createBuildingTypes());
 
 		RManagerPlayer playerOne = new RManagerPlayer();
 		playerOne.setMoney(new BigDecimal(1_500_000));

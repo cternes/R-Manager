@@ -31,23 +31,28 @@ public class EstateTest {
 	
 	@DataPoints
 	public static ParcelTestData[] parcels() {
+		BuildingType btOne = new BuildingType(1, BigDecimal.ZERO);
+		BuildingType btTwo = new BuildingType(2, BigDecimal.ZERO);
+		BuildingType btThree = new BuildingType(3, BigDecimal.ZERO);
+		BuildingType btFour = new BuildingType(4, BigDecimal.ZERO);
+		
 		return new ParcelTestData[] {
-			new ParcelTestData(true, EstateType.ONE_PARCEL, BuildingType.ONE_PARCEL),
-			new ParcelTestData(false, EstateType.ONE_PARCEL, BuildingType.TWO_PARCEL),
-			new ParcelTestData(false, EstateType.ONE_PARCEL, BuildingType.THREE_PARCEL),
-			new ParcelTestData(false, EstateType.ONE_PARCEL, BuildingType.FOUR_PARCEL),
-			new ParcelTestData(true, EstateType.TWO_PARCEL, BuildingType.ONE_PARCEL),
-			new ParcelTestData(true, EstateType.TWO_PARCEL, BuildingType.TWO_PARCEL),
-			new ParcelTestData(false, EstateType.TWO_PARCEL, BuildingType.THREE_PARCEL),
-			new ParcelTestData(false, EstateType.TWO_PARCEL, BuildingType.FOUR_PARCEL),
-			new ParcelTestData(true, EstateType.THREE_PARCEL, BuildingType.ONE_PARCEL),
-			new ParcelTestData(true, EstateType.THREE_PARCEL, BuildingType.TWO_PARCEL),
-			new ParcelTestData(true, EstateType.THREE_PARCEL, BuildingType.THREE_PARCEL),
-			new ParcelTestData(false, EstateType.THREE_PARCEL, BuildingType.FOUR_PARCEL),
-			new ParcelTestData(true, EstateType.FOUR_PARCEL, BuildingType.ONE_PARCEL),
-			new ParcelTestData(true, EstateType.FOUR_PARCEL, BuildingType.TWO_PARCEL),
-			new ParcelTestData(true, EstateType.FOUR_PARCEL, BuildingType.THREE_PARCEL),
-			new ParcelTestData(true, EstateType.FOUR_PARCEL, BuildingType.FOUR_PARCEL),
+			new ParcelTestData(true, EstateType.ONE_PARCEL, btOne),
+			new ParcelTestData(false, EstateType.ONE_PARCEL, btTwo),
+			new ParcelTestData(false, EstateType.ONE_PARCEL, btThree),
+			new ParcelTestData(false, EstateType.ONE_PARCEL, btFour),
+			new ParcelTestData(true, EstateType.TWO_PARCEL, btOne),
+			new ParcelTestData(true, EstateType.TWO_PARCEL, btTwo),
+			new ParcelTestData(false, EstateType.TWO_PARCEL, btThree),
+			new ParcelTestData(false, EstateType.TWO_PARCEL, btFour),
+			new ParcelTestData(true, EstateType.THREE_PARCEL, btOne),
+			new ParcelTestData(true, EstateType.THREE_PARCEL, btTwo),
+			new ParcelTestData(true, EstateType.THREE_PARCEL, btThree),
+			new ParcelTestData(false, EstateType.THREE_PARCEL, btFour),
+			new ParcelTestData(true, EstateType.FOUR_PARCEL, btOne),
+			new ParcelTestData(true, EstateType.FOUR_PARCEL, btTwo),
+			new ParcelTestData(true, EstateType.FOUR_PARCEL, btThree),
+			new ParcelTestData(true, EstateType.FOUR_PARCEL, btFour),
 		};
 	}
 	

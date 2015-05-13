@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import de.slackspace.rmanager.gameengine.action.BuyBuildingAction;
@@ -22,7 +24,7 @@ public class BuyBuildingActionHandlerTest {
 	
 	@Test
 	public void whenCanHandleIsCalledWithCorrectClassShouldReturnTrue() {
-		Assert.assertTrue(cut.canHandle(new BuyBuildingAction("", "", BuildingType.ONE_PARCEL)));
+		Assert.assertTrue(cut.canHandle(new BuyBuildingAction("", "", new BuildingType(1, BigDecimal.ONE))));
 	}
 	
 	@Test
@@ -33,37 +35,43 @@ public class BuyBuildingActionHandlerTest {
 		Estate estate = new Estate(EstateType.FOUR_PARCEL, BigDecimal.ONE, BigDecimal.ONE, "1234");
 		player.getEstates().add(estate);
 		
+		BuildingType buildingType = new BuildingType(1, new BigDecimal(500_000));
+		
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getEstateById(estate.getId())).thenReturn(estate);
 		Mockito.when(state.isBuildingIdExisting("abc")).thenReturn(true);
+		Mockito.when(state.getBuildingTypeById(buildingType.getId())).thenReturn(buildingType);
 		
-		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", BuildingType.ONE_PARCEL);
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType);
 		
 		cut.handle(action, player, state);
 		
 		Assert.assertEquals(new BigDecimal(1_000_000), player.getMoney());
-		Assert.assertEquals(BuildingType.ONE_PARCEL, player.getEstates().iterator().next().getBuilding().getBuildingType());
+		Assert.assertEquals(1, player.getEstates().iterator().next().getBuilding().getBuildingType().getRequiredParcels());
 		Assert.assertEquals("1234", player.getEstates().iterator().next().getBuilding().getCityId());
 		Mockito.verify(state).removeBuildingId("abc");
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenBuyBuildingWithEstateWrongIdShouldThrowException() {
 		RManagerPlayer player = new RManagerPlayer();
 		player.setMoney(new BigDecimal(1_500_000));
 		
 		GameState state = Mockito.mock(GameState.class);
 		
-		BuyBuildingAction action = new BuyBuildingAction(UUID.randomUUID().toString(), "abc", BuildingType.ONE_PARCEL);
+		BuildingType buildingType = new BuildingType(1, new BigDecimal(500_000));
+		BuyBuildingAction action = new BuyBuildingAction(UUID.randomUUID().toString(), "abc", buildingType);
+		
+		exception.expect(GameException.class);
+		exception.expectMessage("could not be found");
 		
 		cut.handle(action, player, state);
 		
 		Assert.assertEquals(new BigDecimal(1_000_000), player.getMoney());
-		Assert.assertEquals(BuildingType.ONE_PARCEL, player.getEstates().iterator().next().getBuilding().getBuildingType());
+		Assert.assertEquals(1, player.getEstates().iterator().next().getBuilding().getBuildingType());
 	}
 	
-	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenBuyBuildingWithNotEnoughMoneyShouldThrowException() {
 		RManagerPlayer player = new RManagerPlayer();
 		player.setMoney(new BigDecimal(100_000));
@@ -71,16 +79,25 @@ public class BuyBuildingActionHandlerTest {
 		Estate estate = new Estate(EstateType.FOUR_PARCEL, BigDecimal.ONE, BigDecimal.ONE, "1234");
 		player.getEstates().add(estate);
 		
+		BuildingType buildingType = new BuildingType(1, new BigDecimal(500_000));
+		
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getEstateById(estate.getId())).thenReturn(estate);
 		Mockito.when(state.isBuildingIdExisting("abc")).thenReturn(true);
+		Mockito.when(state.getBuildingTypeById(buildingType.getId())).thenReturn(buildingType);
 		
-		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", BuildingType.ONE_PARCEL);
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType);
+		
+		exception.expect(GameException.class);
+		exception.expectMessage("is not enough to pay");
 		
 		cut.handle(action, player, state);
 	}
 	
-	@Test(expected=GameException.class)
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
+	
+	@Test
 	public void whenBuyTooBigBuildingForEstateShouldThrowException() {
 		RManagerPlayer player = new RManagerPlayer();
 		player.setMoney(new BigDecimal(1_500_000));
@@ -88,29 +105,61 @@ public class BuyBuildingActionHandlerTest {
 		Estate estate = new Estate(EstateType.ONE_PARCEL, BigDecimal.ONE, BigDecimal.ONE, "1234");
 		player.getEstates().add(estate);
 		
+		BuildingType buildingType = new BuildingType(2, new BigDecimal(900_000));
+		
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getEstateById(estate.getId())).thenReturn(estate);
 		Mockito.when(state.isBuildingIdExisting("abc")).thenReturn(true);
+		Mockito.when(state.getBuildingTypeById(buildingType.getId())).thenReturn(buildingType);
 		
-		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", BuildingType.TWO_PARCEL);
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType);
+		
+		exception.expect(GameException.class);
+		exception.expectMessage("is not big enough to build a building of type");
 		
 		cut.handle(action, player, state);
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenBuyDuplicateBuildingShouldThrowException() {
+		RManagerPlayer player = new RManagerPlayer();
+		player.setMoney(new BigDecimal(1_500_000));
+		
+		BuildingType buildingType = new BuildingType(1, new BigDecimal(500_000));
+		
+		Estate estate = new Estate(EstateType.FOUR_PARCEL, BigDecimal.ONE, BigDecimal.ONE, "1234");
+		player.getEstates().add(estate);
+		estate.setBuilding(new Building("abc", buildingType, estate.getCityId()));
+		
+		GameState state = Mockito.mock(GameState.class);
+		Mockito.when(state.getEstateById(estate.getId())).thenReturn(estate);
+		Mockito.when(state.isBuildingIdExisting("abc")).thenReturn(true);
+		
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType);
+		
+		exception.expect(GameException.class);
+		exception.expectMessage("already has a building");
+		
+		cut.handle(action, player, state);
+	}
+	
+	@Test
+	public void whenBuyBuildingWithUnknownBuildingTypeShouldThrowException() {
 		RManagerPlayer player = new RManagerPlayer();
 		player.setMoney(new BigDecimal(1_500_000));
 		
 		Estate estate = new Estate(EstateType.FOUR_PARCEL, BigDecimal.ONE, BigDecimal.ONE, "1234");
 		player.getEstates().add(estate);
-		estate.setBuilding(new Building("abc", BuildingType.ONE_PARCEL, estate.getCityId()));
 		
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getEstateById(estate.getId())).thenReturn(estate);
 		Mockito.when(state.isBuildingIdExisting("abc")).thenReturn(true);
 		
-		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", BuildingType.ONE_PARCEL);
+		BuildingType buildingType = new BuildingType(1, new BigDecimal(500_000));
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType);
+		
+		exception.expect(GameException.class);
+		exception.expectMessage("A building type with");
 		
 		cut.handle(action, player, state);
 	}

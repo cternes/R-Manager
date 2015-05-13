@@ -8,6 +8,7 @@ import de.slackspace.rmanager.gameengine.action.handler.BuyCabinetActionHandler;
 import de.slackspace.rmanager.gameengine.action.handler.BuyEstateActionHandler;
 import de.slackspace.rmanager.gameengine.action.handler.GameActionHandler;
 import de.slackspace.rmanager.gameengine.action.handler.HirePersonActionHandler;
+import de.slackspace.rmanager.gameengine.service.BuildingTypeService;
 import de.slackspace.rmanager.gameengine.service.CabinetService;
 import de.slackspace.rmanager.gameengine.service.CityService;
 import de.slackspace.rmanager.gameengine.service.PersonnelService;
@@ -18,6 +19,7 @@ public class GameControllerFactory {
 		CityService cityService = new CityService();
 		PersonnelService personnelService = new PersonnelService();
 		CabinetService cabinetService = new CabinetService();
+		BuildingTypeService buildingTypeService = new BuildingTypeService();
 		
 		List<GameActionHandler> actionHandlers = new ArrayList<>();
 		actionHandlers.add(new BuyEstateActionHandler());
@@ -25,6 +27,6 @@ public class GameControllerFactory {
 		actionHandlers.add(new HirePersonActionHandler());
 		actionHandlers.add(new BuyCabinetActionHandler());
 		
-		return new GameController(cityService, personnelService, cabinetService, actionHandlers);
+		return new GameController(cityService, personnelService, cabinetService, buildingTypeService, actionHandlers);
 	}
 }
