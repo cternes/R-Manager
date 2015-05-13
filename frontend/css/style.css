@@ -66,3 +66,12 @@ body {
 .estate-box.sold {
     background-color: #EFEFEF;
 }
+
+.label-sold {
+    transform: rotate(-30deg);
+    font-size: 30px;
+    position: absolute;
+    top: 38px;
+    left: 197px;
+    color: #c9302c;
+}
