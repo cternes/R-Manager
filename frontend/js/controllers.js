@@ -32,7 +32,7 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$
 		    getActiveMatches();
 		})
 		.error(function(data, status, headers, config) {
-		    // todo
+		    showError($scope, $timeout, 'Could not create match.');
 		});
 	};
 	
@@ -46,11 +46,7 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$
 			    getActiveMatches();
 			})
 			.error(function(data, status, headers, config) {
-			    $scope.error = {showError: true, text: 'Could not find any open matches to join. Consider creating one.'};
-		    
-			    $timeout(function() { 
-				//debugger;
-				$scope.error.showError = false;}, 5000);
+			    showError($scope, $timeout, 'Could not find any open matches to join. Consider creating one.');
 			});
 		})
 		.error(function(data, status, headers, config) {
