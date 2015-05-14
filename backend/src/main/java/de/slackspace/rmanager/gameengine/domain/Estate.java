@@ -10,6 +10,7 @@ public class Estate {
 	private BigDecimal pricePerSquareMeter;
 	private String cityId;
 	private Building building;
+	private boolean isSold;
 	
 	protected Estate() {
 	}
@@ -69,6 +70,14 @@ public class Estate {
 	
 	public boolean canBuild(BuildingType buildingType) {
 		return buildingType.getRequiredParcels() <= getEstateType().getParcels();
+	}
+
+	public boolean isSold() {
+		return isSold;
+	}
+
+	public void setSold(boolean isSold) {
+		this.isSold = isSold;
 	}
 
 }

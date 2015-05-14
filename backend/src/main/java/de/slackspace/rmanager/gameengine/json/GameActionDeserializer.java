@@ -16,9 +16,13 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.slackspace.rmanager.gameengine.action.BuyBuildingAction;
+import de.slackspace.rmanager.gameengine.action.BuyCabinetAction;
 import de.slackspace.rmanager.gameengine.action.BuyEstateAction;
 import de.slackspace.rmanager.gameengine.action.GameAction;
+import de.slackspace.rmanager.gameengine.action.HirePersonAction;
 import de.slackspace.rmanager.gameengine.action.SellEstateAction;
+import de.slackspace.rmanager.gameengine.exception.GameException;
 
 public class GameActionDeserializer extends JsonDeserializer<List<GameAction>> {
 
@@ -26,6 +30,10 @@ public class GameActionDeserializer extends JsonDeserializer<List<GameAction>> {
 	private Map<Integer, Class<? extends GameAction>> availableClazzes = new HashMap<Integer, Class<? extends GameAction>>() {{
 		put(GameAction.BUY_ESTATE, BuyEstateAction.class);
 		put(GameAction.SELL_ESTATE, SellEstateAction.class);
+		put(GameAction.BUY_BUILDING, BuyBuildingAction.class);
+		//put(GameAction.SELL_BUILDING, .class);
+		put(GameAction.BUY_CABINET, BuyCabinetAction.class);
+		put(GameAction.HIRE_PERSON, HirePersonAction.class);
 	}};
 	
 	@Override
@@ -41,6 +49,10 @@ public class GameActionDeserializer extends JsonDeserializer<List<GameAction>> {
         	int type = (Integer) element.get("type").numberValue();
         	
         	Class<? extends GameAction> concreteClazz = availableClazzes.get(type);
+        	
+        	if(concreteClazz == null) {
+        		throw new GameException("Could not find a deserializer for type " + type);
+        	}
         	
         	// deserialize to concrete object
     		ObjectMapper mapper = new ObjectMapper();
