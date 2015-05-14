@@ -19,10 +19,10 @@ appControllers.controller('LoginController', ['$scope', '$http', '$location',
 	};
     }]);
 
-appControllers.controller('LobbyController', ['$scope', '$http', '$location',
-    function($scope, $http, $location) {
+appControllers.controller('LobbyController', ['$scope', '$http', '$location', 'playerService', 
+    function($scope, $http, $location, playerService) {
 	
-	var playerToken = angular.fromJson(localStorage.getItem('playerToken'));
+	var playerToken = playerService.checkPlayerToken();
 	
 	$http.get('http://localhost:8080/players/' + playerToken + '/matches')
 	    .success(function(data, status, headers, config) {

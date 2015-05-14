@@ -36,3 +36,18 @@ appServices.factory('matchService', ['$http', '$q', function($http, $q) {
 	,currentMatch: function() { return currentMatch; }
     };
 }]);
+
+appServices.factory('playerService', ['$http', '$location', function($http, $location) {
+    return {
+	checkPlayerToken: function() {
+	    var playerToken = angular.fromJson(localStorage.getItem('playerToken'));
+
+	    if(playerToken === null) {
+		$location.url('/');
+	    }
+	    else {
+		return 	playerToken;
+	    }
+	}
+    };
+}]);
