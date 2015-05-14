@@ -34,6 +34,9 @@ appServices.factory('matchService', ['$http', '$q', function($http, $q) {
 	    }
 	}
 	,currentMatch: function() { return currentMatch; }
+	,clearMatch: function(matchId) {
+	    matches[matchId] = undefined;
+	}
     };
 }]);
 

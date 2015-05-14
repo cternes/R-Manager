@@ -159,7 +159,8 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    
 	    $http.post('http://localhost:8080//matches/' + matchId + '/turns', 'playerToken=' + playerToken + '&turnData=' + turnData)
 		.success(function(data, status, headers, config) {
-		    // todo
+		    matchService.clearMatch(matchId);
+		    $location.url('/match/' + matchId + '/turnsummary');
 		})
 		.error(function(data, status, headers, config) {
 		    // todo
@@ -175,4 +176,24 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    
 	    return undefined;
 	}
+    }]);
+
+appControllers.controller('TurnSummaryController', ['$scope', '$http', '$location', '$routeParams', 'matchService',
+    function($scope, $http, $location, $routeParams, matchService) {
+	
+	$scope.matchId = $routeParams.matchId;
+	matchService.getMatch($routeParams.matchId).then(function() {
+	    // set match
+	    $scope.currentMatch = matchService.currentMatch();
+	    
+	    // set player
+	    var playerToken = angular.fromJson(localStorage.getItem('playerToken'));
+	    if($scope.currentMatch.player1.id===playerToken) {
+		$scope.player = $scope.currentMatch.data.playerOne;
+	    }
+	    else {
+		$scope.player = $scope.currentMatch.data.playerTwo;
+	    }
+	});
+	
     }]);

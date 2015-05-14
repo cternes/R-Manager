@@ -1,34 +1,81 @@
 <div class="container">
 
-    <div ng-include src="'views/player.html'"></div>
-    
     <div class="margin-top-10px">
-	<a class="btn btn-default" href="#match/{{matchId}}" role="button">&laquo; Back</a>
+	<a class="btn btn-default" href="#lobby" role="button">&laquo; Lobby</a>
     </div>
 
-    <h2>Buildings</h2>
+    <h2>Turn Summary</h2>
 
     <div class="row">
-	<div class="col-lg-9 estate-box" ng-class="{sold: estate.building !== null}" ng-repeat="estate in player.estates">
-	    <div>
-		<label>Estate</label>
-		<h5>Square meter: {{estate.squareMeter}}</h5>
-		
-		<div class="col-md-2 estate-box" ng-repeat="buildingType in currentMatch.data.buildingTypes" ng-show="estate.building === null">
-		    <span>{{buildingType.name}}</span>
-		    <p>Square meter: {{buildingType.squareMeters}}</p>
-		    <p>Price: {{buildingType.price | money}} $</p>
-		    <button class="btn btn-danger" role="button" ng-click="buyBuilding(estate.id, buildingType.id)">Buy</button>
-		</div>
-		
-		<div class="col-md-8 estate-box" ng-show="estate.building !== null">
-		    <span>{{estate.building.buildingType.name}}</span>
-		    <p>Square meter: {{estate.building.buildingType.squareMeters}}</p>
-		</div>
-	    </div>
+	<div class="col-xs-2">
+	    <p>Construction costs: </p>
+	</div>
+	<div class="col-xs-2">
+	    <p class="text-danger">{{player.turnStatistics.constructionCost | money}} $</p>
 	</div>
     </div>
-
+    <div class="row">
+	<div class="col-xs-2">
+	    <p>Personnel costs: </p>
+	</div>
+	<div class="col-xs-2">
+	    <p class="text-danger">{{player.turnStatistics.personnelCost | money}} $</p>
+	</div>
+    </div>
+    <div class="row">
+	<div class="col-xs-2">
+	    <p>Running costs: </p>
+	</div>
+	<div class="col-xs-2">
+	    <p class="text-danger">{{player.turnStatistics.runningCost | money}} $</p>
+	</div>
+    </div>
+    <div class="row">
+	<div class="col-xs-2">
+	    <p>Misc: </p>
+	</div>
+	<div class="col-xs-2">
+	    <p>{{player.turnStatistics.misc | money}} $</p>
+	</div>
+    </div>
+    <div class="row">
+	<hr />
+    </div>
+    <div class="row">
+	<div class="col-xs-2">
+	    <p>Customers: </p>
+	</div>
+	<div class="col-xs-2">
+	    <p>{{player.turnStatistics.customers}}</p>
+	</div>
+    </div>
+    <div class="row">
+	<div class="col-xs-2">
+	    <p>Earnings: </p>
+	</div>
+	<div class="col-xs-2">
+	    <p class="text-success">{{player.turnStatistics.earnings | money}} $</p>
+	</div>
+    </div>
+    <div class="row">
+	<hr />
+    </div>
+    <div class="row">
+	<div class="col-xs-2">
+	    <p>Profit: </p>
+	</div>
+	<div class="col-xs-2">
+	    <p ng-class="{'text-success': player.turnStatistics.profit >= 0, 'text-danger': player.turnStatistics.profit < 0 }">{{player.turnStatistics.profit | money}} $</p>
+	</div>
+    </div>
+    <div class="row">
+	<div class="col-xs-2">
+	    <h4>Money: </h4>
+	</div>
+	<div class="col-xs-2">
+	    <h4 ng-class="{'text-success': player.money >= 0, 'text-danger': player.money < 0 }">{{player.money | money}} $</h4>
+	</div>
+    </div>
 </div>
 
 
