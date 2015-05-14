@@ -6,9 +6,10 @@ import java.util.UUID;
 public class BuildingType {
 
 	private String id = UUID.randomUUID().toString();
-	
+	private String name;
 	private int requiredParcels;
 	private BigDecimal price;
+	private BigDecimal squareMeters;
 	
 	protected BuildingType() {
 	}
@@ -16,6 +17,13 @@ public class BuildingType {
 	public BuildingType(int requiredParcels, BigDecimal price) {
 		this.requiredParcels = requiredParcels;
 		this.price = price;
+	}
+	
+	public BuildingType(String name, int requiredParcels, BigDecimal price, BigDecimal squareMeters) {
+		this.name = name;
+		this.requiredParcels = requiredParcels;
+		this.price = price;
+		this.squareMeters = squareMeters;
 	}
 	
 	public int getRequiredParcels() {
@@ -28,5 +36,21 @@ public class BuildingType {
 	
 	public String getId() {
 		return id;
+	}
+
+	public BigDecimal getSquareMeters() {
+		return squareMeters;
+	}
+
+	public void setSquareMeters(BigDecimal squareMeters) {
+		this.squareMeters = squareMeters;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
