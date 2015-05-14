@@ -79,11 +79,19 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    }
 	    
 	    // set current city
-	    $scope.currentCity = getCityById($scope.player.currentCity.id);
+	    $scope.currentCity = getItemById($scope.player.currentCity.id, $scope.currentMatch.data.cities);
+	    
+	    var numBuildings = 0;
+	    for (var i=0;i < $scope.player.estates.length;i++) {
+		if($scope.player.estates[i].building !== null) {
+		    numBuildings++;
+		}
+	    }
+	    $scope.player.numBuildings = numBuildings;
 	});
 	
 	$scope.buyEstate = function(estateId) {
-	    var estate = getEstateById(estateId);
+	    var estate = getItemById(estateId, $scope.currentCity.estates);
 	    estate.isSold = true;
 	    
 	    // reduce money
@@ -116,26 +124,6 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    // add to actions
 	    $scope.player.actions.push({type: 3, estateId: estateId, buildingId: buildingId, buildingTypeId: buildingType.id});
 	};
-	
-	function getEstateById(id) {
-	    for (var i=0;i < $scope.currentCity.estates.length;i++) {
-		if($scope.currentCity.estates[i].id === id) {
-		    return $scope.currentCity.estates[i];
-		}
-	    }
-	    
-	    return undefined;
-	}
-	
-	function getCityById(id) {
-	    for (var i=0;i < $scope.currentMatch.data.cities.length;i++) {
-		if($scope.currentMatch.data.cities[i].id === id) {
-		    return $scope.currentMatch.data.cities[i];
-		}
-	    }
-	    
-	    return undefined;
-	}
 	
 	function getItemById(id, list) {
 	    for (var i=0;i < list.length;i++) {
