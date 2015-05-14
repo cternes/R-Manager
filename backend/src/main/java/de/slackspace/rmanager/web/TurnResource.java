@@ -92,9 +92,19 @@ public class TurnResource {
 		if(turnResult == null) {
 			throw new InvalidOperationException(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_ERROR", "GameEngine has returned an unexpected result");
 		}
+
+		// switch current player
+		if(match.getCurrentPlayer().getId() == match.getPlayer1().getId()) {
+			match.setCurrentPlayer(match.getPlayer2());
+		}
+		else {
+			match.setCurrentPlayer(match.getPlayer1());
+		}
 		
+		// check if match has ended
 		if(turnResult.hasMatchEnded()) {
 			match.setMatchResult(turnResult.getMatchResult());
+			match.setCurrentPlayer(null);
 		}
 		
 		match.setMatchData(turnResult.getMatchData());

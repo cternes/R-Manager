@@ -33,6 +33,7 @@ public class BuyEstateActionHandler implements GameActionHandler {
 		}
 		
 		player.pay(estate.getTotalPrice());
+		player.getTurnStatistics().increaseConstructionCosts(estate.getTotalPrice());
 
 		estate.setSold(true);
 		player.getEstates().add(estate);

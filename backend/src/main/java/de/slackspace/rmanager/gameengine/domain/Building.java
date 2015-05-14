@@ -14,6 +14,9 @@ public class Building {
 	private Map<DepartmentType, Department> departments = new HashMap<>();
 	private String cityId;
 	
+	protected Building() {
+	}
+	
 	protected Building(int parcels) {
 		departments.put(DepartmentType.Dininghall, new Department(DepartmentType.Dininghall, parcels * 4));
 		departments.put(DepartmentType.Facilities, new Department(DepartmentType.Facilities, parcels));
@@ -68,11 +71,17 @@ public class Building {
 		return cabinets;
 	}
 	
-	public BigDecimal getMonthlyCosts() {
+	public BigDecimal getMonthlyPersonnelCosts() {
 		BigDecimal monthlyCosts = BigDecimal.ZERO;
 		for (Person person : getPersonnel()) {
 			monthlyCosts = monthlyCosts.add(person.getMonthlyCosts());
 		}
+		
+		return monthlyCosts;
+	}
+	
+	public BigDecimal getMonthlyCabinetCosts() {
+		BigDecimal monthlyCosts = BigDecimal.ZERO;
 		
 		for (Cabinet cabinet : getCabinets()) {
 			monthlyCosts = monthlyCosts.add(cabinet.getMonthlyCosts());

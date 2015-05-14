@@ -13,6 +13,7 @@ public class RManagerPlayer {
 	private City currentCity;
 	private Set<Estate> estates = new HashSet<>();
 	private Set<Share> shares = new HashSet<>();
+	private TurnStatistic turnStatistics = new TurnStatistic();
 
 	public BigDecimal getMoney() {
 		return money;
@@ -134,6 +135,14 @@ public class RManagerPlayer {
 		}
 		
 		return null;
+	}
+
+	public TurnStatistic getTurnStatistics() {
+		return turnStatistics;
+	}
+
+	public void setTurnStatistics(TurnStatistic turnStatistics) {
+		this.turnStatistics = turnStatistics;
 	}
 
 }

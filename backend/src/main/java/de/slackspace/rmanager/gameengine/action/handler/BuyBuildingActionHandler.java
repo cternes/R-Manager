@@ -50,6 +50,7 @@ public class BuyBuildingActionHandler implements GameActionHandler {
 		}
 		
 		player.pay(building.getPrice());
+		player.getTurnStatistics().increaseConstructionCosts(building.getPrice());
 		estate.setBuilding(building);
 		
 		state.removeBuildingId(buyAction.getBuildingId());

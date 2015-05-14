@@ -16,6 +16,7 @@ import de.slackspace.rmanager.gameengine.domain.DepartmentType;
 import de.slackspace.rmanager.gameengine.domain.GameState;
 import de.slackspace.rmanager.gameengine.domain.Person;
 import de.slackspace.rmanager.gameengine.domain.RManagerPlayer;
+import de.slackspace.rmanager.gameengine.domain.TurnStatistic;
 import de.slackspace.rmanager.gameengine.exception.GameException;
 import de.slackspace.rmanager.gameengine.service.BuildingTypeService;
 import de.slackspace.rmanager.gameengine.service.CabinetService;
@@ -94,6 +95,7 @@ public class GameController {
 	
 	public GameState endTurn(GameState state, String playerName, List<GameAction> actions) {
 		RManagerPlayer player = state.getPlayerByName(playerName);
+		player.setTurnStatistics(new TurnStatistic());
 		
 		logger.debug("Ending turn for player '" + playerName +"'");
 		
@@ -111,8 +113,13 @@ public class GameController {
 		
 		// pay monthly costs
 		for (Building building : player.getBuildings()) {
-			player.pay(building.getMonthlyCosts());
-			logger.debug("Monthly costs of building '" + building.getId() + "' = " + building.getMonthlyCosts());
+			player.pay(building.getMonthlyPersonnelCosts());
+			player.getTurnStatistics().increasePersonnelCosts(building.getMonthlyPersonnelCosts());
+			
+			player.pay(building.getMonthlyCabinetCosts());
+			player.getTurnStatistics().increaseRunningCosts(building.getMonthlyPersonnelCosts());
+			
+			logger.debug("Monthly costs of building '" + building.getId() + "' = " + building.getMonthlyPersonnelCosts().add(building.getMonthlyCabinetCosts()));
 		}
 		
 		// sell meals
@@ -123,12 +130,14 @@ public class GameController {
 			}
 			
 			BigDecimal meals = building.getMonthlyOutput();
+			player.getTurnStatistics().increaseCustomers(meals);
 			logger.debug("Monthly output of building '" + building.getId() + "' = " + meals);
 			
-			BigDecimal income = meals.multiply(new BigDecimal(10).multiply(city.getRateOfPriceIncrease())); // meal price = 10
-			player.earn(income);
+			BigDecimal earnings = meals.multiply(new BigDecimal(10).multiply(city.getRateOfPriceIncrease())); // meal price = 10
+			player.earn(earnings);
+			player.getTurnStatistics().increaseEarnings(earnings);
 			
-			logger.debug("Monthly income of building '" + building.getId() + "' = " + income);
+			logger.debug("Monthly income of building '" + building.getId() + "' = " + earnings);
 		}
 		
 		return state;
