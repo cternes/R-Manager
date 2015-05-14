@@ -7,7 +7,7 @@ var appControllers = angular.module('appControllers', []);
 appControllers.controller('LoginController', ['$scope', '$http', '$location',
     function($scope, $http, $location) {
 	
-	$scope.getPlayer = function getPlayer(name) {
+	$scope.getPlayer = function(name) {
 	     $http.get('http://localhost:8080/players/' + name)
 	    .success(function(data, status, headers, config) {
 		localStorage.setItem('playerToken', angular.toJson(data.id));
@@ -24,32 +24,26 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', 'p
 	
 	var playerToken = playerService.checkPlayerToken();
 	
-	$http.get('http://localhost:8080/players/' + playerToken + '/matches')
-	    .success(function(data, status, headers, config) {
-		$scope.myMatches = data;
-	    })
-	    .error(function(data, status, headers, config) {
-		// todo
-	    });
+	getActiveMatches();
 
-	$scope.createMatch = function createMatch() {
+	$scope.createMatch = function() {
 	    $http.post('http://localhost:8080/matches', 'playerToken=' + playerToken)
 		.success(function(data, status, headers, config) {
-		    // todo
+		    getActiveMatches();
 		})
 		.error(function(data, status, headers, config) {
 		    // todo
 		});
 	};
 	
-	$scope.joinRandomMatch = function joinRandomMatch() {
+	$scope.joinRandomMatch = function() {
 	    $http.get('http://localhost:8080/matches')
 		.success(function(data, status, headers, config) {
 		    var id = data.id;
 		    
 		    $http.post('http://localhost:8080/matches/' + id + '/join', 'playerId=' + playerToken)
 			.success(function(data, status, headers, config) {
-			    // todo
+			    getActiveMatches();
 			})
 			.error(function(data, status, headers, config) {
 			    // todo
@@ -59,10 +53,30 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', 'p
 		    // todo
 		});
 	};
+	
+	$scope.deleteMatch = function(matchId) {
+	    $http.delete('http://localhost:8080/matches/' + matchId + '?playerToken=' + playerToken)
+		.success(function(data, status, headers, config) {
+			getActiveMatches();
+		})
+		.error(function(data, status, headers, config) {
+		    // todo
+		});
+	};
+	
+	function getActiveMatches() {
+	    $http.get('http://localhost:8080/players/' + playerToken + '/matches')
+		.success(function(data, status, headers, config) {
+		    $scope.myMatches = data;
+		})
+		.error(function(data, status, headers, config) {
+		    // todo
+		});
+	}
     }]);
 
-appControllers.controller('MatchController', ['$scope', '$http', '$location', '$routeParams', 'matchService',
-    function($scope, $http, $location, $routeParams, matchService) {
+appControllers.controller('MatchController', ['$scope', '$http', '$location', '$routeParams', 'matchService', 'playerService',
+    function($scope, $http, $location, $routeParams, matchService, playerService) {
 	
 	$scope.matchId = $routeParams.matchId;
 	matchService.getMatch($routeParams.matchId).then(function() {
@@ -126,7 +140,18 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	};
 	
 	$scope.endTurn = function() {
-	    console.log("end turn!");
+	    debugger;
+	    var matchId = $scope.currentMatch.id;
+	    var turnData = btoa(angular.toJson($scope.player.actions));
+	    var playerToken = playerService.checkPlayerToken();
+	    
+	    $http.post('http://localhost:8080//matches/' + matchId + '/turns', 'playerToken=' + playerToken + '&turnData=' + turnData)
+		.success(function(data, status, headers, config) {
+		    // todo
+		})
+		.error(function(data, status, headers, config) {
+		    // todo
+		});
 	};
 	
 	function getItemById(id, list) {

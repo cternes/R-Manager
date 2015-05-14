@@ -1,14 +1,13 @@
 <div class="container">
 
-    <h3>Matches</h3>
+    <h2>Matches</h2>
 
-    <h3>My current matches</h3>
+    <h3>My active matches</h3>
     <ul>
 	<li ng-repeat="match in myMatches">
-	    ID: {{match.id}}
+	    <a href="#/match/{{match.id}}" class="btn">{{match.id}}</a>
 	    Status: {{match.status}}
-	    
-	    <a href="#/match/{{match.id}}" class="btn">Open</a>
+	    <button class="btn btn-default btn-danger btn-xs" ng-click="deleteMatch(match.id)">Delete</button>
 	</li>
     </ul>
 
