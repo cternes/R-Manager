@@ -100,6 +100,23 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    $scope.player.actions.push({type: 1, id: estateId});
 	};
 	
+	$scope.buyBuilding = function(estateId, buildingTypeId) {
+	    var estate = getItemById(estateId, $scope.player.estates);
+	    var buildingType = getItemById(buildingTypeId, $scope.currentMatch.data.buildingTypes);
+	    
+	    // reduce money
+	    $scope.player.money = $scope.player.money - buildingType.price;
+	    
+	    // get building id
+	    var buildingId = $scope.currentMatch.data.buildingIds.pop();
+	    
+	    // add to estate
+	    estate.building = {id: buildingId, buildingType: buildingType};
+	    
+	    // add to actions
+	    $scope.player.actions.push({type: 3, estateId: estateId, buildingId: buildingId, buildingTypeId: buildingType.id});
+	};
+	
 	function getEstateById(id) {
 	    for (var i=0;i < $scope.currentCity.estates.length;i++) {
 		if($scope.currentCity.estates[i].id === id) {
@@ -114,6 +131,16 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    for (var i=0;i < $scope.currentMatch.data.cities.length;i++) {
 		if($scope.currentMatch.data.cities[i].id === id) {
 		    return $scope.currentMatch.data.cities[i];
+		}
+	    }
+	    
+	    return undefined;
+	}
+	
+	function getItemById(id, list) {
+	    for (var i=0;i < list.length;i++) {
+		if(list[i].id === id) {
+		    return list[i];
 		}
 	    }
 	    
