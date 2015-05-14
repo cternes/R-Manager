@@ -22,12 +22,12 @@ appControllers.controller('LoginController', ['$scope', '$http', '$location',
 appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$timeout', 'playerService', 
     function($scope, $http, $location, $timeout, playerService) {
 	
-	var playerToken = playerService.checkPlayerToken();
+	$scope.playerToken = playerService.checkPlayerToken();
 	
 	getActiveMatches();
 
 	$scope.createMatch = function() {
-	    $http.post('http://localhost:8080/matches', 'playerToken=' + playerToken)
+	    $http.post('http://localhost:8080/matches', 'playerToken=' + $scope.playerToken)
 		.success(function(data, status, headers, config) {
 		    getActiveMatches();
 		})
@@ -41,7 +41,7 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$
 		.success(function(data, status, headers, config) {
 		    var id = data.id;
 		    
-		    $http.post('http://localhost:8080/matches/' + id + '/join', 'playerId=' + playerToken)
+		    $http.post('http://localhost:8080/matches/' + id + '/join', 'playerId=' + $scope.playerToken)
 			.success(function(data, status, headers, config) {
 			    getActiveMatches();
 			})
@@ -55,7 +55,7 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$
 	};
 	
 	$scope.deleteMatch = function(matchId) {
-	    $http.delete('http://localhost:8080/matches/' + matchId + '?playerToken=' + playerToken)
+	    $http.delete('http://localhost:8080/matches/' + matchId + '?playerToken=' + $scope.playerToken)
 		.success(function(data, status, headers, config) {
 			getActiveMatches();
 		})
@@ -65,9 +65,20 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$
 	};
 	
 	function getActiveMatches() {
-	    $http.get('http://localhost:8080/players/' + playerToken + '/matches')
+	    $http.get('http://localhost:8080/players/' + $scope.playerToken + '/matches')
 		.success(function(data, status, headers, config) {
 		    $scope.myMatches = data;
+	    
+		    for (var i=0;i < $scope.myMatches.length;i++) {
+			var match = $scope.myMatches[i];
+		    
+			if(match.player1.id === $scope.playerToken) {
+			    match.opponent = {name: match.player2.name};
+			}
+			else {
+			    match.opponent = {name: match.player1.name};
+			}
+		    }
 		})
 		.error(function(data, status, headers, config) {
 		    // todo
@@ -87,9 +98,11 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    var playerToken = angular.fromJson(localStorage.getItem('playerToken'));
 	    if($scope.currentMatch.player1.id===playerToken) {
 		$scope.player = $scope.currentMatch.data.playerOne;
+		$scope.opponent = $scope.currentMatch.data.playerTwo;
 	    }
 	    else {
 		$scope.player = $scope.currentMatch.data.playerTwo;
+		$scope.opponent = $scope.currentMatch.data.playerOne;
 	    }
 	    
 	    // set current city
@@ -140,7 +153,6 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	};
 	
 	$scope.endTurn = function() {
-	    debugger;
 	    var matchId = $scope.currentMatch.id;
 	    var turnData = btoa(angular.toJson($scope.player.actions));
 	    var playerToken = playerService.checkPlayerToken();
