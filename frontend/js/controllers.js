@@ -125,6 +125,10 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    $scope.player.actions.push({type: 3, estateId: estateId, buildingId: buildingId, buildingTypeId: buildingType.id});
 	};
 	
+	$scope.endTurn = function() {
+	    console.log("end turn!");
+	};
+	
 	function getItemById(id, list) {
 	    for (var i=0;i < list.length;i++) {
 		if(list[i].id === id) {
