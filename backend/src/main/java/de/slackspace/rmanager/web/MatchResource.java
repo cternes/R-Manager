@@ -110,7 +110,7 @@ public class MatchResource {
 		return matchRepo.save(match);
 	}
 	
-	@RequestMapping(method=RequestMethod.GET, value = "{id}")
+	@RequestMapping(method=RequestMethod.DELETE, value = "{id}")
 	@ResponseBody
 	public void deleteMatch(@PathVariable String id, @RequestParam String playerToken) {
 		GameMatch match = matchRepo.findByToken(id);
