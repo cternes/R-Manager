@@ -68,6 +68,10 @@ public class Player {
 	public void setWins(int wins) {
 		this.wins = wins;
 	}
+	
+	public void increaseWins() {
+		setWins(++wins);
+	}
 
 	public int getLosses() {
 		return losses;
@@ -76,6 +80,10 @@ public class Player {
 	public void setLosses(int losses) {
 		this.losses = losses;
 	}
+	
+	public void increaseLosses() {
+		setLosses(++losses);
+	}
 
 	public int getDraws() {
 		return draws;
@@ -83,6 +91,10 @@ public class Player {
 
 	public void setDraws(int draws) {
 		this.draws = draws;
+	}
+	
+	public void increaseDraws() {
+		setDraws(++draws);
 	}
 
 	public String getToken() {

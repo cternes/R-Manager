@@ -109,4 +109,46 @@ public class MatchResource {
 		
 		return matchRepo.save(match);
 	}
+	
+	@RequestMapping(method=RequestMethod.GET, value = "{id}")
+	@ResponseBody
+	public void deleteMatch(@PathVariable String id, @RequestParam String playerToken) {
+		GameMatch match = matchRepo.findByToken(id);
+		
+		if(match == null) {
+			logger.warn("The requested match '"+ id +"' could not be found");
+			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested match '"+ id +"' could not be found");
+		}
+		
+		Player player = playerRepo.findByToken(playerToken);
+		
+		if(player == null) {
+			logger.warn("The requested player '"+ playerToken +"' could not be found");
+			throw new UnknownObjectException(HttpStatus.NOT_FOUND, "OBJECT_UNKNOWN", "The requested player '"+ playerToken +"' could not be found");
+		}
+		
+		if(match.getStatus().equals(MatchStatus.RUNNING)) {
+			if(match.getPlayer1().getId() == player.getId()) {
+				match.setWinner(match.getPlayer2());
+				
+				match.getPlayer1().increaseLosses();
+				match.getPlayer2().increaseWins();
+			}
+			else {
+				match.setWinner(match.getPlayer1());
+				
+				match.getPlayer1().increaseWins();
+				match.getPlayer2().increaseLosses();
+			}
+			
+			playerRepo.save(match.getPlayer1());
+			playerRepo.save(match.getPlayer2());
+		}
+		
+		match.setStatus(MatchStatus.CANCELLED);
+		match.setCurrentPlayer(null);
+		
+		matchRepo.save(match);
+	}
+	
 }

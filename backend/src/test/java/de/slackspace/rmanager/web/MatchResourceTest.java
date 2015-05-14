@@ -171,6 +171,80 @@ public class MatchResourceTest {
 		cut.joinMatch(matchId, playerThreeToken);
 	}
 	
+	@Test
+	public void whenDeleteRunningMatchShouldEndMatchAndUpdatePlayerStats() {
+		MatchResource cut = createMatchResource();
+		String matchId = UUID.randomUUID().toString();
+		
+		Player playerOne = new Player("test");
+		Player playerTwo = new Player("test 2");
+		GameMatch match = new GameMatch(playerOne);
+		match.setPlayer2(playerTwo);
+		match.setStatus(MatchStatus.RUNNING);
+		
+		Mockito.when(cut.matchRepo.findByToken(matchId)).thenReturn(match);
+		Mockito.when(cut.playerRepo.findByToken(playerOne.getToken())).thenReturn(playerOne);
+		
+		cut.deleteMatch(matchId, playerOne.getToken());
+		
+		Assert.assertEquals(MatchStatus.CANCELLED, match.getStatus());
+		Assert.assertEquals(null, match.getCurrentPlayer());
+		Assert.assertEquals(playerOne.getId(), match.getWinner().getId());
+		
+		Assert.assertEquals(1, playerOne.getLosses());
+		Assert.assertEquals(1, playerTwo.getWins());
+		
+		Mockito.verify(cut.matchRepo).save(match);
+		Mockito.verify(cut.playerRepo).save(playerOne);
+		Mockito.verify(cut.playerRepo).save(playerTwo);
+	}
+	
+	@Test
+	public void whenDeleteMatchWithUnknownMatchShouldThrowException() {
+		MatchResource cut = createMatchResource();
+		
+		exception.expect(UnknownObjectException.class);
+		exception.expectMessage("The requested match");
+		
+		cut.deleteMatch("abc", "xyz");
+	}
+	
+	@Test
+	public void whenDeleteMatchWithUnknownPlayerShouldThrowException() {
+		MatchResource cut = createMatchResource();
+		
+		exception.expect(UnknownObjectException.class);
+		exception.expectMessage("The requested player");
+		
+		GameMatch match = new GameMatch(new Player("test"));
+		Mockito.when(cut.matchRepo.findByToken(match.getToken())).thenReturn(match);
+		
+		cut.deleteMatch(match.getToken(), "xyz");
+	}
+	
+	@Test
+	public void whenDeleteNotRunningMatchShouldEndMatch() {
+		MatchResource cut = createMatchResource();
+		String matchId = UUID.randomUUID().toString();
+		
+		Player playerOne = new Player("test");
+		GameMatch match = new GameMatch(playerOne);
+		match.setStatus(MatchStatus.WAITINGFORPLAYERS);
+		
+		Mockito.when(cut.matchRepo.findByToken(matchId)).thenReturn(match);
+		Mockito.when(cut.playerRepo.findByToken(playerOne.getToken())).thenReturn(playerOne);
+		
+		cut.deleteMatch(matchId, playerOne.getToken());
+		
+		Assert.assertEquals(MatchStatus.CANCELLED, match.getStatus());
+		Assert.assertEquals(null, match.getCurrentPlayer());
+		Assert.assertEquals(null, match.getWinner());
+		
+		Assert.assertEquals(0, playerOne.getLosses());
+		
+		Mockito.verify(cut.matchRepo).save(match);
+	}
+	
 	private MatchResource createMatchResource() {
 		MatchResource cut = new MatchResource();
 		

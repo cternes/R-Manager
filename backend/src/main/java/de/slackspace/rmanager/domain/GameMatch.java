@@ -42,6 +42,9 @@ public class GameMatch {
 	@ManyToOne
 	private Player currentPlayer;
 	
+	@ManyToOne
+	private Player winner;
+	
 	@NotNull
 	private MatchStatus status = MatchStatus.WAITINGFORPLAYERS;
 	
@@ -135,6 +138,14 @@ public class GameMatch {
 
 	public void setCurrentPlayer(Player currentPlayer) {
 		this.currentPlayer = currentPlayer;
+	}
+
+	public Player getWinner() {
+		return winner;
+	}
+
+	public void setWinner(Player winner) {
+		this.winner = winner;
 	}
 	
 }
