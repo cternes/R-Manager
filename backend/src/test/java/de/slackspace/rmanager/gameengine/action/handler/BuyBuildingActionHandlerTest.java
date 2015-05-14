@@ -20,6 +20,9 @@ import de.slackspace.rmanager.gameengine.exception.GameException;
 
 public class BuyBuildingActionHandlerTest {
 
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
+	
 	BuyBuildingActionHandler cut = new BuyBuildingActionHandler();
 	
 	@Test
@@ -93,9 +96,6 @@ public class BuyBuildingActionHandlerTest {
 		
 		cut.handle(action, player, state);
 	}
-	
-	@Rule
-	public ExpectedException exception = ExpectedException.none();
 	
 	@Test
 	public void whenBuyTooBigBuildingForEstateShouldThrowException() {

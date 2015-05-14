@@ -67,9 +67,18 @@ public class TurnResource {
 			throw new InvalidOperationException(HttpStatus.METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED", "The match '"+ id +"' is waiting for players, taking a turn is not allowed");
 		}
 		
-		// validate turn status
-		if(match.getStatus() == MatchStatus.TURNP1 && !player.getToken().equals(match.getPlayer1().getToken()) 
-				|| match.getStatus() == MatchStatus.TURNP2 && !player.getToken().equals(match.getPlayer2().getId())) {
+		if(match.getStatus() != MatchStatus.RUNNING) {
+			logger.warn("The match '"+ id +"' is currently not running, taking a turn is not allowed");
+			throw new InvalidOperationException(HttpStatus.METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED", "The match '"+ id +"' is currently not running, taking a turn is not allowed");
+		}
+		
+		// validate player
+		if(match.getCurrentPlayer() == null) {
+			logger.warn("The match '"+ id +"' is not having a current player, taking a turn is not allowed");
+			throw new InvalidOperationException(HttpStatus.METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED", "The match '"+ id +"' is not having a current player, taking a turn is not allowed");
+		}
+		
+		if(match.getCurrentPlayer().getId() != player.getId()) {
 			logger.warn("The match '"+ id +"' is expecting another player to take a turn. Player '"+ player.getToken() + "' is not allowed to take a turn");
 			throw new InvalidOperationException(HttpStatus.METHOD_NOT_ALLOWED, "METHOD_NOT_ALLOWED", "The match '"+ id +"' is expecting another player to take a turn. Player '"+ player.getToken() + "' is not allowed to take a turn");
 		}

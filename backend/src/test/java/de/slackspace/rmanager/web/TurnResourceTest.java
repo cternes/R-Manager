@@ -62,7 +62,8 @@ public class TurnResourceTest {
 		Player player = new Player("test");
 		GameMatch gameMatch = new GameMatch(player);
 		gameMatch.setMatchData(new byte[0]);
-		gameMatch.setStatus(MatchStatus.TURNP1);
+		gameMatch.setCurrentPlayer(player);
+		gameMatch.setStatus(MatchStatus.RUNNING);
 		
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
@@ -84,7 +85,8 @@ public class TurnResourceTest {
 		Player player = new Player("test");
 		GameMatch gameMatch = new GameMatch(player);
 		gameMatch.setMatchData(new byte[0]);
-		gameMatch.setStatus(MatchStatus.TURNP1);
+		gameMatch.setCurrentPlayer(player);
+		gameMatch.setStatus(MatchStatus.RUNNING);
 		
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
@@ -123,7 +125,7 @@ public class TurnResourceTest {
 		Player playerTwo = new Player("p2");
 		GameMatch gameMatch = new GameMatch(playerOne);
 		gameMatch.setPlayer2(playerTwo);
-		gameMatch.setStatus(MatchStatus.TURNP2);
+		gameMatch.setCurrentPlayer(playerTwo);
 		
 		Mockito.when(cut.playerRepo.findByToken(playerOneToken)).thenReturn(playerOne);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);

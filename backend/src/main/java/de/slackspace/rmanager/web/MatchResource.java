@@ -104,7 +104,8 @@ public class MatchResource {
 		
 		match.setPlayer2(player2);
 		match.setMatchData(gameEngine.startNewGame(match.getPlayer1().getName(), player2.getName()));
-		match.setStatus(MatchStatus.TURNP1);
+		match.setCurrentPlayer(match.getPlayer1());
+		match.setStatus(MatchStatus.RUNNING);
 		
 		return matchRepo.save(match);
 	}

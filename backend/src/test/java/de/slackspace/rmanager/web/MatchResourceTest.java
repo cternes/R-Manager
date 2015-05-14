@@ -3,7 +3,9 @@ package de.slackspace.rmanager.web;
 import java.util.UUID;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import de.slackspace.rmanager.database.MatchRepository;
@@ -17,6 +19,9 @@ import de.slackspace.rmanager.game.GameEngine;
 
 public class MatchResourceTest {
 
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
+	
 	@Test
 	public void whenCreateMatchIsCalledWithValidPlayerShouldCreateMatch() {
 		MatchResource cut = createMatchResource();
@@ -33,10 +38,13 @@ public class MatchResourceTest {
 		Mockito.verify(matchRepository).save(Mockito.any(GameMatch.class));
 	}
 	
-	@Test(expected=UnknownObjectException.class)
+	@Test
 	public void whenCreateMatchIsCalledWithUnknownPlayerShouldThrowException() {
 		MatchResource cut = createMatchResource();
 		String playerToken = UUID.randomUUID().toString();
+		
+		exception.expect(UnknownObjectException.class);
+		exception.expectMessage("could not be found");
 		
 		cut.createMatch(playerToken);
 	}
@@ -54,24 +62,30 @@ public class MatchResourceTest {
 		Mockito.verify(cut.matchRepo).findByToken(mockMatch.getToken());
 	}
 	
-	@Test(expected=UnknownObjectException.class)
+	@Test
 	public void whenGetMatchWithUnknownIdShouldThrowException() {
 		MatchResource cut = createMatchResource();
 		String matchToken = UUID.randomUUID().toString();
 		
+		exception.expect(UnknownObjectException.class);
+		exception.expectMessage("The requested match");
+		
 		cut.getMatch(matchToken);
 	}
 	
-	@Test(expected=UnknownObjectException.class)
+	@Test
 	public void whenJoinMatchWithUnknownMatchIdShouldThrowException() {
 		MatchResource cut = createMatchResource();
 		String matchToken = UUID.randomUUID().toString();
 		String playerToken = UUID.randomUUID().toString();
 		
+		exception.expect(UnknownObjectException.class);
+		exception.expectMessage("The requested match");
+		
 		cut.joinMatch(matchToken, playerToken);
 	}
 	
-	@Test(expected=UnknownObjectException.class)
+	@Test
 	public void whenJoinMatchWithUnknownPlayerShouldThrowException() {
 		MatchResource cut = createMatchResource();
 		String playerToken = UUID.randomUUID().toString();
@@ -80,10 +94,13 @@ public class MatchResourceTest {
 		GameMatch match = new GameMatch(player);
 		Mockito.when(cut.matchRepo.findByToken(match.getToken())).thenReturn(match);
 		
+		exception.expect(UnknownObjectException.class);
+		exception.expectMessage("The requested player");
+		
 		cut.joinMatch(match.getToken(), playerToken);
 	}
 	
-	@Test(expected=InvalidOperationException.class)
+	@Test
 	public void whenJoinMatchWithPlayerNull() {
 		MatchResource cut = createMatchResource();
 		
@@ -91,6 +108,9 @@ public class MatchResourceTest {
 		GameMatch match = new GameMatch(player);
 		
 		Mockito.when(cut.matchRepo.findByToken(match.getToken())).thenReturn(match);
+		
+		exception.expect(InvalidOperationException.class);
+		exception.expectMessage("The playerId must be set");
 		
 		cut.joinMatch(match.getToken(), null);
 	}
@@ -111,10 +131,11 @@ public class MatchResourceTest {
 		cut.joinMatch(matchToken, playerTwo.getToken());
 		
 		Mockito.verify(cut.matchRepo).save(match);
-		Assert.assertEquals(match.getStatus(), MatchStatus.TURNP1);
+		Assert.assertEquals(match.getCurrentPlayer().getId(), playerOne.getId());
+		Assert.assertEquals(match.getStatus(), MatchStatus.RUNNING);
 	}
 	
-	@Test(expected=InvalidOperationException.class)
+	@Test
 	public void whenJoinMatchWithSamePlayerAsPlayer1ShouldThrowException() {
 		MatchResource cut = createMatchResource();
 		String matchToken = UUID.randomUUID().toString();
@@ -124,12 +145,13 @@ public class MatchResourceTest {
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(match);
 		Mockito.when(cut.playerRepo.findByToken(player.getToken())).thenReturn(player);
 		
-		cut.joinMatch(matchToken, player.getToken());
+		exception.expect(InvalidOperationException.class);
+		exception.expectMessage("cannot be joined, because the player");
 		
-		Mockito.verify(cut.matchRepo).save(match);
+		cut.joinMatch(matchToken, player.getToken());
 	}
 	
-	@Test(expected=InvalidOperationException.class)
+	@Test
 	public void whenJoinMatchWithAlreadyFullMatchShouldThrowException() {
 		MatchResource cut = createMatchResource();
 		String matchId = UUID.randomUUID().toString();
@@ -142,6 +164,9 @@ public class MatchResourceTest {
 		match.setPlayer2(playerTwo);
 
 		Mockito.when(cut.matchRepo.findByToken(matchId)).thenReturn(match);
+		
+		exception.expect(InvalidOperationException.class);
+		exception.expectMessage("cannot be joined, because it is already full");
 		
 		cut.joinMatch(matchId, playerThreeToken);
 	}

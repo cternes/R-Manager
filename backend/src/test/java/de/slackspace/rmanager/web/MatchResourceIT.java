@@ -54,7 +54,8 @@ public class MatchResourceIT {
 		
 		assertThat(match.getPlayer1().getId(), is(equalTo(playerOne.getId())));
 		assertThat(match.getPlayer2().getId(), is(equalTo(playerTwo.getId())));
-		assertThat(match.getStatus(), is(equalTo(MatchStatus.TURNP1)));
+		assertThat(match.getCurrentPlayer().getId(), is(equalTo(playerOne.getId())));
+		assertThat(match.getStatus(), is(equalTo(MatchStatus.RUNNING)));
 	}
 	
 	@Test
