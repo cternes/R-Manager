@@ -19,8 +19,8 @@ appControllers.controller('LoginController', ['$scope', '$http', '$location',
 	};
     }]);
 
-appControllers.controller('LobbyController', ['$scope', '$http', '$location', 'playerService', 
-    function($scope, $http, $location, playerService) {
+appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$timeout', 'playerService', 
+    function($scope, $http, $location, $timeout, playerService) {
 	
 	var playerToken = playerService.checkPlayerToken();
 	
@@ -46,7 +46,11 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', 'p
 			    getActiveMatches();
 			})
 			.error(function(data, status, headers, config) {
-			    // todo
+			    $scope.error = {showError: true, text: 'Could not find any open matches to join. Consider creating one.'};
+		    
+			    $timeout(function() { 
+				//debugger;
+				$scope.error.showError = false;}, 5000);
 			});
 		})
 		.error(function(data, status, headers, config) {
