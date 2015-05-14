@@ -3,6 +3,7 @@ package de.slackspace.rmanager.gameengine.action.handler;
 import de.slackspace.rmanager.gameengine.action.BuyBuildingAction;
 import de.slackspace.rmanager.gameengine.action.GameAction;
 import de.slackspace.rmanager.gameengine.domain.Building;
+import de.slackspace.rmanager.gameengine.domain.BuildingType;
 import de.slackspace.rmanager.gameengine.domain.Estate;
 import de.slackspace.rmanager.gameengine.domain.GameState;
 import de.slackspace.rmanager.gameengine.domain.RManagerPlayer;
@@ -20,13 +21,18 @@ public class BuyBuildingActionHandler implements GameActionHandler {
 		BuyBuildingAction buyAction = (BuyBuildingAction) action;
 		
 		Estate estate = state.getEstateById(buyAction.getEstateId());
+		BuildingType buildingType = state.getBuildingTypeById(buyAction.getBuildingTypeId());
 		
 		if(estate == null) {
 			throw new GameException("The estate with id '" + buyAction.getEstateId() + "' could not be found");
 		}
 		
-		if(!estate.canBuild(buyAction.getBuildingType())) {
-			throw new GameException("The estate '"+ buyAction.getEstateId() + "' is not big enough to build a building of type '" + buyAction.getBuildingType() + "'");
+		if(buildingType == null) {
+			throw new GameException("A building type with id '"+ buyAction.getBuildingTypeId() + "' does not exists");
+		}
+		
+		if(!estate.canBuild(buildingType)) {
+			throw new GameException("The estate '"+ buyAction.getEstateId() + "' is not big enough to build a building of type '" + buildingType.getRequiredParcels() + "'");
 		}
 		
 		if(estate.getBuilding() != null) {
@@ -37,11 +43,7 @@ public class BuyBuildingActionHandler implements GameActionHandler {
 			throw new GameException("A building with id '"+ buyAction.getBuildingId() + "' does not exists");
 		}
 		
-		if(state.getBuildingTypeById(buyAction.getBuildingType().getId()) == null) {
-			throw new GameException("A building type with id '"+ buyAction.getBuildingType().getId() + "' does not exists");
-		}
-		
-		Building building = new Building(buyAction.getBuildingId(), buyAction.getBuildingType(), estate.getCityId());
+		Building building = new Building(buyAction.getBuildingId(), buildingType, estate.getCityId());
 		
 		if(!player.canBuy(building.getPrice())) {
 			throw new GameException("The player's money '" + player.getMoney() + "' is not enough to pay '" + building.getPrice() + "'");

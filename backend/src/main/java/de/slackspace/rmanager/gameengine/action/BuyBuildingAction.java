@@ -1,20 +1,19 @@
 package de.slackspace.rmanager.gameengine.action;
 
-import de.slackspace.rmanager.gameengine.domain.BuildingType;
 
 public class BuyBuildingAction implements GameAction {
 
 	private String estateId;
 	private String buildingId;
-	private BuildingType buildingType;
+	private String buildingTypeId;
 	
 	protected BuyBuildingAction() {
 	}
 	
-	public BuyBuildingAction(String estateId, String buildingId, BuildingType buildingType) {
+	public BuyBuildingAction(String estateId, String buildingId, String buildingTypeId) {
 		setEstateId(estateId);
 		setBuildingId(buildingId);
-		setBuildingType(buildingType);
+		setBuildingTypeId(buildingTypeId);
 	}
 	
 	@Override
@@ -30,12 +29,12 @@ public class BuyBuildingAction implements GameAction {
 		this.estateId = estateId;
 	}
 
-	public BuildingType getBuildingType() {
-		return buildingType;
+	public String getBuildingTypeId() {
+		return buildingTypeId;
 	}
 
-	public void setBuildingType(BuildingType buildingType) {
-		this.buildingType = buildingType;
+	public void setBuildingTypeId(String buildingType) {
+		this.buildingTypeId = buildingType;
 	}
 
 	public String getBuildingId() {

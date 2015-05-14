@@ -24,7 +24,7 @@ public class BuyBuildingActionHandlerTest {
 	
 	@Test
 	public void whenCanHandleIsCalledWithCorrectClassShouldReturnTrue() {
-		Assert.assertTrue(cut.canHandle(new BuyBuildingAction("", "", new BuildingType(1, BigDecimal.ONE))));
+		Assert.assertTrue(cut.canHandle(new BuyBuildingAction("", "", "")));
 	}
 	
 	@Test
@@ -42,7 +42,7 @@ public class BuyBuildingActionHandlerTest {
 		Mockito.when(state.isBuildingIdExisting("abc")).thenReturn(true);
 		Mockito.when(state.getBuildingTypeById(buildingType.getId())).thenReturn(buildingType);
 		
-		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType);
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType.getId());
 		
 		cut.handle(action, player, state);
 		
@@ -60,7 +60,7 @@ public class BuyBuildingActionHandlerTest {
 		GameState state = Mockito.mock(GameState.class);
 		
 		BuildingType buildingType = new BuildingType(1, new BigDecimal(500_000));
-		BuyBuildingAction action = new BuyBuildingAction(UUID.randomUUID().toString(), "abc", buildingType);
+		BuyBuildingAction action = new BuyBuildingAction(UUID.randomUUID().toString(), "abc", buildingType.getId());
 		
 		exception.expect(GameException.class);
 		exception.expectMessage("could not be found");
@@ -86,7 +86,7 @@ public class BuyBuildingActionHandlerTest {
 		Mockito.when(state.isBuildingIdExisting("abc")).thenReturn(true);
 		Mockito.when(state.getBuildingTypeById(buildingType.getId())).thenReturn(buildingType);
 		
-		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType);
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType.getId());
 		
 		exception.expect(GameException.class);
 		exception.expectMessage("is not enough to pay");
@@ -112,7 +112,7 @@ public class BuyBuildingActionHandlerTest {
 		Mockito.when(state.isBuildingIdExisting("abc")).thenReturn(true);
 		Mockito.when(state.getBuildingTypeById(buildingType.getId())).thenReturn(buildingType);
 		
-		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType);
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType.getId());
 		
 		exception.expect(GameException.class);
 		exception.expectMessage("is not big enough to build a building of type");
@@ -134,8 +134,9 @@ public class BuyBuildingActionHandlerTest {
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getEstateById(estate.getId())).thenReturn(estate);
 		Mockito.when(state.isBuildingIdExisting("abc")).thenReturn(true);
+		Mockito.when(state.getBuildingTypeById(buildingType.getId())).thenReturn(buildingType);
 		
-		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType);
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType.getId());
 		
 		exception.expect(GameException.class);
 		exception.expectMessage("already has a building");
@@ -156,7 +157,7 @@ public class BuyBuildingActionHandlerTest {
 		Mockito.when(state.isBuildingIdExisting("abc")).thenReturn(true);
 		
 		BuildingType buildingType = new BuildingType(1, new BigDecimal(500_000));
-		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType);
+		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType.getId());
 		
 		exception.expect(GameException.class);
 		exception.expectMessage("A building type with");

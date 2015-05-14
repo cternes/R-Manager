@@ -174,7 +174,7 @@ public class GameControllerTest {
 
 		List<GameAction> actions = new ArrayList<>();
 		actions.add(new BuyEstateAction(estate.getId()));
-		actions.add(new BuyBuildingAction(estate.getId(), "abc", buildingTypeOne));
+		actions.add(new BuyBuildingAction(estate.getId(), "abc", buildingTypeOne.getId()));
 		actions.add(new HirePersonAction("abc", person.getId()));
 		actions.add(new BuyCabinetAction("abc", cabinet.getId(), 10));
 		
@@ -247,7 +247,7 @@ public class GameControllerTest {
 		
 		List<GameAction> actions = new ArrayList<>();
 		actions.add(new BuyEstateAction(estate.getId()));
-		actions.add(new BuyBuildingAction(estate.getId(), "abc", buildingTypeOne));
+		actions.add(new BuyBuildingAction(estate.getId(), "abc", buildingTypeOne.getId()));
 		actions.add(new HirePersonAction("abc", personOne.getId()));
 		actions.add(new HirePersonAction("abc", personTwo.getId()));
 		actions.add(new HirePersonAction("abc", personThree.getId()));
