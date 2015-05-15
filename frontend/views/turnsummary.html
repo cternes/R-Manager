@@ -19,7 +19,7 @@
 	    <p>Personnel costs: </p>
 	</div>
 	<div class="col-xs-2">
-	    <p class="text-danger">{{player.turnStatistics.personnelCost | money}} $</p>
+	    <p class="text-danger">{{player.turnStatistics.personnelCosts | money}} $</p>
 	</div>
     </div>
     <div class="row">
@@ -27,7 +27,7 @@
 	    <p>Running costs: </p>
 	</div>
 	<div class="col-xs-2">
-	    <p class="text-danger">{{player.turnStatistics.runningCost | money}} $</p>
+	    <p class="text-danger">{{player.turnStatistics.runningCosts | money}} $</p>
 	</div>
     </div>
     <div class="row">
@@ -62,10 +62,10 @@
     </div>
     <div class="row">
 	<div class="col-xs-2">
-	    <p>Profit: </p>
+	    <h4>Profit: </h4>
 	</div>
 	<div class="col-xs-2">
-	    <p ng-class="{'text-success': player.turnStatistics.profit >= 0, 'text-danger': player.turnStatistics.profit < 0 }">{{player.turnStatistics.profit | money}} $</p>
+	    <h4 ng-class="{'text-success': player.turnStatistics.profit >= 0, 'text-danger': player.turnStatistics.profit < 0 }">{{player.turnStatistics.profit | money}} $</h4>
 	</div>
     </div>
     <div class="row">

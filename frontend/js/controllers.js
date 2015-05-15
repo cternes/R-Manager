@@ -81,7 +81,7 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$
 		    }
 		})
 		.error(function(data, status, headers, config) {
-		    // todo
+		    showError($scope, $timeout, 'Could not retrieve active matches. Pleasy try again later.');
 		});
 	}
     }]);
@@ -146,7 +146,13 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    var buildingId = $scope.currentMatch.data.buildingIds.pop();
 	    
 	    // add to estate
-	    estate.building = {id: buildingId, buildingType: buildingType};
+	    var departments = [];
+	    departments['Dininghall'] = { cabinets: [], personnel: [], type: 'Dininghall', maxSpaceUnits: 4 };
+	    departments['Facilities'] = { cabinets: [], personnel: [], type: 'Facilities', maxSpaceUnits: 1 };
+	    departments['Kitchen'] = { cabinets: [], personnel: [], type: 'Kitchen', maxSpaceUnits: 1 };
+	    departments['Reefer'] = { cabinets: [], personnel: [], type: 'Reefer', maxSpaceUnits: 2 };
+		
+	    estate.building = {id: buildingId, buildingType: buildingType, departments: departments};
 	    
 	    // add to actions
 	    $scope.player.actions.push({type: 3, estateId: estateId, buildingId: buildingId, buildingTypeId: buildingType.id});
@@ -154,7 +160,14 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	
 	$scope.hirePerson = function(personId) {
 	    var person = getItemById(personId, $scope.currentCity.availablePersonnel);
+	    var buildingId = $routeParams.buildingId;
 	    person.hired = true;
+	    
+	    var building = getBuildingById(buildingId, $scope.player.estates);
+	    debugger;
+	    
+	    // add to department
+	    building.departments[person.departmentType].personnel.push(person);
 	    
 	    // add to actions
 	    $scope.player.actions.push({type: 5, personId: personId, buildingId: buildingId});
@@ -179,6 +192,16 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    for (var i=0;i < list.length;i++) {
 		if(list[i].id === id) {
 		    return list[i];
+		}
+	    }
+	    
+	    return undefined;
+	}
+	
+	function getBuildingById(id, estates) {
+	    for (var i=0;i < estates.length;i++) {
+		if(estates[i].building.id === id) {
+		    return estates[i].building;
 		}
 	    }
 	    
