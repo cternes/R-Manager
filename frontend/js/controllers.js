@@ -123,7 +123,7 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	
 	$scope.buyEstate = function(estateId) {
 	    var estate = getItemById(estateId, $scope.currentCity.estates);
-	    estate.isSold = true;
+	    estate.sold = true;
 	    
 	    // reduce money
 	    $scope.player.money = $scope.player.money - estate.totalPrice;

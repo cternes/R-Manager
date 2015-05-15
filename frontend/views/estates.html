@@ -9,14 +9,14 @@
     <h2>Estates</h2>
 
     <div class="row">
-	<div class="col-md-5 estate-box" ng-class="{sold: estate.isSold}" ng-repeat="estate in currentCity.estates">
+	<div class="col-md-5 estate-box" ng-class="{sold: estate.sold}" ng-repeat="estate in currentCity.estates">
 	    <div>
 		<label>Estate</label>
 		<h5>Square meter: {{estate.squareMeter}}</h5>
 		<h5>Price/m²: {{estate.pricePerSquareMeter}} $</h5>
 		<span class="lead">Total price: {{estate.totalPrice | money}} $</span>
-		<button class="btn btn-danger" role="button" ng-click="buyEstate(estate.id)" ng-hide="estate.isSold">Buy</button>
-		<div class="label-sold" ng-show="estate.isSold">SOLD</div>
+		<button class="btn btn-danger" role="button" ng-click="buyEstate(estate.id)" ng-hide="estate.sold">Buy</button>
+		<div class="label-sold" ng-show="estate.sold">SOLD</div>
 	    </div>
 	</div>
     </div>
