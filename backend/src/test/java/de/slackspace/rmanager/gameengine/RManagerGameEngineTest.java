@@ -2,6 +2,7 @@ package de.slackspace.rmanager.gameengine;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.slackspace.rmanager.gameengine.action.BuyEstateAction;
 import de.slackspace.rmanager.gameengine.action.GameAction;
 import de.slackspace.rmanager.gameengine.action.SellEstateAction;
+import de.slackspace.rmanager.gameengine.domain.GameState;
 
 
 public class RManagerGameEngineTest {
@@ -32,6 +34,20 @@ public class RManagerGameEngineTest {
 		byte[] turnData = serialize(actions);
 		
 		cut.makeTurn(gameState, turnData, "p1");
+	}
+	
+	@Test
+	public void whenStartingNewGameTryToSerializeGameState() {
+		GameState gameState = GameControllerFactory.getGameControllerInstance().startNewGame("p1", "p2");
+		
+		StringWriter stringWriter = new StringWriter();
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			mapper.writeValue(stringWriter, gameState);
+			System.out.println(stringWriter.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private byte[] serialize(List<GameAction> data) {

@@ -1,0 +1,28 @@
+<div class="container">
+
+    <div ng-include src="'views/player.html'"></div>
+    
+    <div class="margin-top-10px">
+	<a class="btn btn-default" href="#match/{{matchId}}/employees" role="button">&laquo; Back</a>
+    </div>
+    
+    <h2>Hire Employees</h2>
+
+    <div class="row">
+	<div class="col-md-5 estate-box" ng-class="{sold: person.hired}" ng-repeat="person in currentCity.availablePersonnel">
+	    <div>
+		<label>Person</label>
+		<h5>Department: {{person.departmentType}}</h5>
+		<h5>Age: {{person.age}}</h5>
+		<h5>Power: {{person.power}}</h5>
+		<h5>Quality: {{person.quality}}</h5>
+		<span class="lead">Sallary/month: {{person.monthlyCosts | money}} $</span>
+		<button class="btn btn-danger" role="button" ng-click="hirePerson(person.id)" ng-hide="person.hired">Hire</button>
+		<div class="label-sold" ng-show="person.hired">HIRED</div>
+	    </div>
+	</div>
+    </div>
+
+</div>
+
+

@@ -72,6 +72,10 @@ public class City {
 		availableCabinet.put(type, cabinets);
 	}
 	
+	public Map<DepartmentType, List<Cabinet>> getAvailableCabinet() {
+		return availableCabinet;
+	}
+	
 	public Cabinet getAvailableCabinetById(String id) {
 		Iterator<Entry<DepartmentType, List<Cabinet>>> iter = availableCabinet.entrySet().iterator();
 		while(iter.hasNext()) {

@@ -1,0 +1,1 @@
+ALTER TABLE game_match MODIFY COLUMN match_data LONGBLOB;

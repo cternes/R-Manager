@@ -1,0 +1,1 @@
+java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=1337,suspend=n -jar target/r-manager-0.0.1-SNAPSHOT.jar

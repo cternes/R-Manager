@@ -29,7 +29,12 @@ public class Cabinet {
 	}
 
 	public BigDecimal getMonthlyCosts() {
-		return monthlyCosts.multiply(new BigDecimal(quantity));
+		if(quantity == 0) {
+			return monthlyCosts;
+		}
+		else {
+			return monthlyCosts.multiply(new BigDecimal(quantity));
+		}
 	}
 
 	public void setMonthlyCosts(BigDecimal monthlyCosts) {
