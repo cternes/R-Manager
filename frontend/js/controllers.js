@@ -115,6 +115,10 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 		}
 	    }
 	    $scope.player.numBuildings = numBuildings;
+	    
+	    if($scope.player.actions === undefined) {
+		$scope.player.actions = [];	
+	    }
 	});
 	
 	$scope.buyEstate = function(estateId) {
@@ -128,10 +132,6 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    $scope.player.estates.push(estate);
 	    
 	    // add to actions
-	    if($scope.player.actions === undefined) {
-		$scope.player.actions = [];
-	    }
-	     
 	    $scope.player.actions.push({type: 1, id: estateId});
 	};
 	
@@ -182,6 +182,7 @@ appControllers.controller('TurnSummaryController', ['$scope', '$http', '$locatio
     function($scope, $http, $location, $routeParams, matchService) {
 	
 	$scope.matchId = $routeParams.matchId;
+	
 	matchService.getMatch($routeParams.matchId).then(function() {
 	    // set match
 	    $scope.currentMatch = matchService.currentMatch();
