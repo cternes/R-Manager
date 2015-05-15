@@ -119,7 +119,7 @@ public class GameController {
 			player.getTurnStatistics().increasePersonnelCosts(building.getMonthlyPersonnelCosts());
 			
 			player.pay(building.getMonthlyCabinetCosts());
-			player.getTurnStatistics().increaseRunningCosts(building.getMonthlyPersonnelCosts());
+			player.getTurnStatistics().increaseRunningCosts(building.getMonthlyCabinetCosts());
 			
 			logger.debug("Monthly costs of building '" + building.getId() + "' = " + building.getMonthlyPersonnelCosts().add(building.getMonthlyCabinetCosts()));
 		}

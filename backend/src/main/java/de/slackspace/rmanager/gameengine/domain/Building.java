@@ -17,16 +17,13 @@ public class Building {
 	protected Building() {
 	}
 	
-	protected Building(int parcels) {
-		departments.put(DepartmentType.Dininghall, new Department(DepartmentType.Dininghall, parcels * 4));
-		departments.put(DepartmentType.Facilities, new Department(DepartmentType.Facilities, parcels));
-		departments.put(DepartmentType.Kitchen, new Department(DepartmentType.Kitchen, parcels));
-		departments.put(DepartmentType.Laundry, new Department(DepartmentType.Laundry, parcels));
-		departments.put(DepartmentType.Reefer, new Department(DepartmentType.Reefer, parcels * 2));
-	}
-	
 	public Building(String id, BuildingType type, String cityId) {
-		this(type.getRequiredParcels());
+		departments.put(DepartmentType.Dininghall, new Department(DepartmentType.Dininghall, type.getRequiredParcels() * 4));
+		departments.put(DepartmentType.Facilities, new Department(DepartmentType.Facilities, type.getRequiredParcels()));
+		departments.put(DepartmentType.Kitchen, new Department(DepartmentType.Kitchen, type.getRequiredParcels()));
+		departments.put(DepartmentType.Laundry, new Department(DepartmentType.Laundry, type.getRequiredParcels()));
+		departments.put(DepartmentType.Reefer, new Department(DepartmentType.Reefer, type.getRequiredParcels() * 2));
+		
 		setBuildingType(type);
 		setCityId(cityId);
 		this.id = id;
@@ -107,5 +104,9 @@ public class Building {
 	public void setCityId(String cityId) {
 		this.cityId = cityId;
 	}
-	
+
+	public Map<DepartmentType, Department> getDepartments() {
+		return departments;
+	}
+
 }
