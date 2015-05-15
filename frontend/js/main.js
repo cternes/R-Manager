@@ -46,6 +46,14 @@ app.config(['$routeProvider',
 		  templateUrl: 'views/hire-employees.html',
 		  controller: 'MatchController'
 		}).
+		when('/match/:matchId/inventory', {
+		  templateUrl: 'views/inventory.html',
+		  controller: 'MatchController'
+		}).
+		when('/match/:matchId/inventory/:buildingId/buy', {
+		  templateUrl: 'views/buy-inventory.html',
+		  controller: 'MatchController'
+		}).
 		otherwise({
 		    redirectTo: '/'
 		});

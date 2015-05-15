@@ -6,20 +6,19 @@
 	<a class="btn btn-default" href="#match/{{matchId}}" role="button">&laquo; Back</a>
     </div>
     
-    <h2>Employees</h2>
+    <h2>Inventory</h2>
 
     <div class="row">
 	<div ng-repeat="estate in player.estates">
 	    <div class="col-md-8 estate-box" ng-show="estate.building !== null">
 		<label>{{estate.building.buildingType.name}}</label>
 		<p>Square meter: {{estate.building.buildingType.squareMeters}}</p>
-		<p>Dininghall: {{estate.building.departments['Dininghall'].personnel.length}}</p>
-		<p>Reefer: {{estate.building.departments['Reefer'].personnel.length}}</p>
-		<p>Laundry: {{estate.building.departments['Laundry'].personnel.length}}</p>
-		<p>Facilities: {{estate.building.departments['Facilities'].personnel.length}}</p>
-		<p>Kitchen: {{estate.building.departments['Kitchen'].personnel.length}}</p>
-		<a href="#" class="btn btn-default" role="button">View Employees</a>
-		<a href="#match/{{matchId}}/employees/{{estate.building.id}}/hire" class="btn btn-default" role="button">Hire Employees</a>
+		<p>Dininghall: {{estate.building.departments['Dininghall'].cabinets.length}}</p>
+		<p>Reefer: {{estate.building.departments['Reefer'].cabinets.length}}</p>
+		<p>Laundry: {{estate.building.departments['Laundry'].cabinets.length}}</p>
+		<p>Facilities: {{estate.building.departments['Facilities'].cabinets.length}}</p>
+		<p>Kitchen: {{estate.building.departments['Kitchen'].cabinets.length}}</p>
+		<a href="#match/{{matchId}}/inventory/{{estate.building.id}}/buy" class="btn btn-default" role="button">Buy equipment</a>
 	    </div>
 	</div>
 	
