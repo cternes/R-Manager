@@ -63,5 +63,10 @@ public class TurnStatistic {
 		earnings = earnings.add(earn);
 	}
 
+	@Override
+	public String toString() {
+		return "TurnStatistic [constructionCost=" + constructionCost + ", personnelCosts=" + personnelCosts + ", runningCosts=" + runningCosts + ", misc=" + misc + ", customers=" + customers
+				+ ", earnings=" + earnings + "]";
+	}
 
 }

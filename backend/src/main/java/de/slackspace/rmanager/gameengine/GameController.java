@@ -99,6 +99,8 @@ public class GameController {
 		
 		logger.debug("Ending turn for player '" + playerName +"'");
 		
+		logger.debug("Found '" + actions.size() + "' actions for player '" + playerName + "'");
+		
 		// player actions
 		for (GameAction gameAction : actions) {
 			for (GameActionHandler handler : actionHandlers) {
@@ -139,6 +141,8 @@ public class GameController {
 			
 			logger.debug("Monthly income of building '" + building.getId() + "' = " + earnings);
 		}
+		
+		logger.debug("TurnStatistics: " + player.getTurnStatistics().toString());
 		
 		return state;
 	}

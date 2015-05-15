@@ -182,6 +182,8 @@ public class GameControllerTest {
 		
 		Assert.assertEquals(1, updatedState.getPlayerOne().getEstates().size());
 		Assert.assertEquals(estate.getId(), updatedState.getPlayerOne().getEstates().iterator().next().getId());
+		Assert.assertEquals(true, estate.isSold());
+		Assert.assertEquals(true, updatedState.getEstateById(estate.getId()).isSold());
 		
 		Assert.assertEquals(1, updatedState.getPlayerOne().getBuildings().size());
 		Assert.assertNotNull(updatedState.getPlayerOne().getBuildingById("abc"));

@@ -49,6 +49,7 @@ public class BuyEstateActionHandlerTest {
 		Assert.assertEquals(expectedMoney, player.getMoney());
 		Assert.assertEquals(estate.getId(), player.getEstates().iterator().next().getId());
 		Assert.assertEquals(1, player.getEstates().size());
+		Assert.assertEquals(true, state.getEstateById(estate.getId()).isSold());
 	}
 	
 	@Test(expected=GameException.class)
