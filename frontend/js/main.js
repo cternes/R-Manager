@@ -38,6 +38,14 @@ app.config(['$routeProvider',
 		  templateUrl: 'views/turnsummary.html',
 		  controller: 'TurnSummaryController'
 		}).
+		when('/match/:matchId/employees', {
+		  templateUrl: 'views/employees.html',
+		  controller: 'MatchController'
+		}).
+		when('/match/:matchId/employees/:buildingId/hire', {
+		  templateUrl: 'views/hire-employees.html',
+		  controller: 'MatchController'
+		}).
 		otherwise({
 		    redirectTo: '/'
 		});

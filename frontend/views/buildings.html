@@ -9,16 +9,18 @@
     <h2>Buildings</h2>
 
     <div class="row">
-	<div class="col-lg-9 estate-box" ng-class="{sold: estate.building !== null}" ng-repeat="estate in player.estates">
+	<div class="col-lg-12 estate-box" ng-class="{sold: estate.building !== null}" ng-repeat="estate in player.estates">
 	    <div>
 		<label>Estate</label>
 		<h5>Square meter: {{estate.squareMeter}}</h5>
 		
-		<div class="col-md-2 estate-box" ng-repeat="buildingType in currentMatch.data.buildingTypes" ng-show="estate.building === null">
-		    <span>{{buildingType.name}}</span>
-		    <p>Square meter: {{buildingType.squareMeters}}</p>
-		    <p>Price: {{buildingType.price | money}} $</p>
-		    <button class="btn btn-danger" role="button" ng-click="buyBuilding(estate.id, buildingType.id)">Buy</button>
+		<div class="row">
+		    <div class="col-md-2 estate-box" ng-repeat="buildingType in currentMatch.data.buildingTypes" ng-show="estate.building === null">
+			<span>{{buildingType.name}}</span>
+			<p>Square meter: {{buildingType.squareMeters}}</p>
+			<p>Price: {{buildingType.price | money}} $</p>
+			<button class="btn btn-danger" role="button" ng-click="buyBuilding(estate.id, buildingType.id)" ng-show="estate.squareMeter >= buildingType.squareMeters">Buy</button>
+		    </div>
 		</div>
 		
 		<div class="col-md-8 estate-box" ng-show="estate.building !== null">

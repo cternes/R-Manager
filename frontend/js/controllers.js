@@ -152,6 +152,14 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    $scope.player.actions.push({type: 3, estateId: estateId, buildingId: buildingId, buildingTypeId: buildingType.id});
 	};
 	
+	$scope.hirePerson = function(personId) {
+	    var person = getItemById(personId, $scope.currentCity.availablePersonnel);
+	    person.hired = true;
+	    
+	    // add to actions
+	    $scope.player.actions.push({type: 5, personId: personId, buildingId: buildingId});
+	};
+	
 	$scope.endTurn = function() {
 	    var matchId = $scope.currentMatch.id;
 	    var turnData = btoa(angular.toJson($scope.player.actions));
