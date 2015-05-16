@@ -50,7 +50,12 @@ public class Cabinet {
 	}
 
 	public int getCapacity() {
-		return capacity * quantity;
+		if(quantity == 0) {
+			return capacity;
+		}
+		else {
+			return capacity * quantity;
+		}
 	}
 
 	public void setCapacity(int capacity) {
@@ -87,5 +92,9 @@ public class Cabinet {
 
 	public void setRequiredSpaceUnits(int requiredSpaceUnits) {
 		this.requiredSpaceUnits = requiredSpaceUnits;
+	}
+	
+	public int getQuantityToBuy() {
+		return 1;
 	}
 }
