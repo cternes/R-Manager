@@ -3,22 +3,25 @@
     <div ng-include src="'views/player.html'"></div>
     
     <div class="margin-top-10px">
-	<a class="btn btn-default" href="#match/{{matchId}}/employees" role="button">&laquo; Back</a>
+	<a class="btn btn-default" href="#match/{{matchId}}/inventory" role="button">&laquo; Back</a>
     </div>
     
     <h2>Buy Inventory</h2>
 
     <div class="row">
 	<h4>Dininghall</h4>
-	<div class="col-md-5 estate-box" ng-class="{sold: person.hired}" ng-repeat="person in currentCity.availablePersonnel">
+	<div class="col-md-5 estate-box" ng-repeat="cabinet in currentCity.availableCabinet['Dininghall']">
 	    <div>
-		<label>Person</label>
-		<h5>Department: {{person.departmentType}}</h5>
-		<h5>Age: {{person.age}}</h5>
-		<h5>Power: {{person.power}}</h5>
-		<h5>Quality: {{person.quality}}</h5>
-		<span class="lead">Sallary/month: {{person.monthlyCosts | money}} $</span>
-		<button class="btn btn-danger" role="button" ng-click="hirePerson(person.id)" ng-hide="person.hired">Hire</button>
+		<label>Dining table</label>
+		<h5>Owning: {{cabinet.quantity}}</h5>
+		<h5>Max. output: {{cabinet.capacity}}</h5>
+		<h5>Costs/month: {{cabinet.monthlyCosts | money}} $</h5>
+		<span class="lead">Price: {{cabinet.price | money}} $</span>
+		<h5 class="lead">Quantity:</h5>
+		<button class="btn btn-default" role="button" ng-click="decreaseCabinetQuantity(cabinet)">-</button>
+		<span>{{cabinet.quantityToBuy}}</span>
+		<button class="btn btn-default" role="button" ng-click="increaseCabinetQuantity(cabinet)">+</button>
+		<button class="btn btn-danger" role="button" ng-click="buyCabinet(cabinet)" ng-hide="cabinet.sold">Buy</button>
 		<div class="label-sold" ng-show="person.hired">HIRED</div>
 	    </div>
 	</div>

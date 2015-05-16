@@ -160,17 +160,45 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	
 	$scope.hirePerson = function(personId) {
 	    var person = getItemById(personId, $scope.currentCity.availablePersonnel);
-	    var buildingId = $routeParams.buildingId;
 	    person.hired = true;
 	    
+	    var buildingId = $routeParams.buildingId;
 	    var building = getBuildingById(buildingId, $scope.player.estates);
-	    debugger;
 	    
 	    // add to department
 	    building.departments[person.departmentType].personnel.push(person);
 	    
 	    // add to actions
 	    $scope.player.actions.push({type: 5, personId: personId, buildingId: buildingId});
+	};
+	
+	$scope.increaseCabinetQuantity = function(cabinet) {
+	    cabinet.quantityToBuy = cabinet.quantityToBuy + 1;
+	};
+	
+	$scope.decreaseCabinetQuantity = function(cabinet) {
+	    if(cabinet.quantityToBuy >= 1) {
+		cabinet.quantityToBuy = cabinet.quantityToBuy - 1;	
+	    }
+	};
+	
+	$scope.buyCabinet = function(cabinet) {
+	    var buildingId = $routeParams.buildingId;
+	    var building = getBuildingById(buildingId, $scope.player.estates);
+	    
+	    cabinet.quantity = cabinet.quantity + cabinet.quantityToBuy;
+	    
+	    // add to department
+	    building.departments[cabinet.departmentType].cabinets.push(cabinet);
+	    
+	    // add to actions
+	    $scope.player.actions.push({type: 7, buildingId: buildingId, cabinetId: cabinet.id,	quantity: cabinet.quantity});
+	    
+	    // reduce money
+	    $scope.player.money = $scope.player.money - (cabinet.quantity * cabinet.price);
+	    
+	    // reset quantity
+	    cabinet.quantityToBuy = 0;
 	};
 	
 	$scope.endTurn = function() {
