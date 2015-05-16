@@ -18,7 +18,7 @@ public class Department {
 	
 	public Department(DepartmentType type, int maxSpaceUnits) {
 		setType(type);
-		setMaxSpaceunits(maxSpaceUnits);
+		setMaxSpaceUnits(maxSpaceUnits);
 	}
 	
 	public BigDecimal getMonthlyCosts() {
@@ -94,11 +94,11 @@ public class Department {
 		this.type = type;
 	}
 
-	public int getMaxSpaceunits() {
+	public int getMaxSpaceUnits() {
 		return maxSpaceUnits;
 	}
 
-	public void setMaxSpaceunits(int maxSpaceunits) {
+	public void setMaxSpaceUnits(int maxSpaceunits) {
 		this.maxSpaceUnits = maxSpaceunits;
 	}
 	
@@ -114,4 +114,15 @@ public class Department {
 		
 		return false;
 	}
+	
+	public int getNumberOfCabinets() {
+		int numCabinets = 0;
+		
+		for (Cabinet cabinet : cabinets) {
+			numCabinets += cabinet.getQuantity();
+		}
+		
+		return numCabinets;
+	}
+	
 }
