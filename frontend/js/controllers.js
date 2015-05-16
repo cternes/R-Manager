@@ -93,8 +93,8 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$
 	}
     }]);
 
-appControllers.controller('MatchController', ['$scope', '$http', '$location', '$routeParams', 'matchService', 'playerService',
-    function($scope, $http, $location, $routeParams, matchService, playerService) {
+appControllers.controller('MatchController', ['$scope', '$http', '$location', '$routeParams', '$timeout', 'matchService', 'playerService',
+    function($scope, $http, $location, $routeParams, $timeout, matchService, playerService) {
 	
 	$scope.matchId = $routeParams.matchId;
 	matchService.getMatch($routeParams.matchId).then(function() {
@@ -201,6 +201,11 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	$scope.buyCabinet = function(cabinet) {
 	    var buildingId = $routeParams.buildingId;
 	    var building = getBuildingById(buildingId, $scope.player.estates);
+	    
+	    if((cabinet.quantity + cabinet.quantityToBuy) > building.departments[cabinet.departmentType].maxSpaceUnits) {
+		showError($scope, $timeout, 'You cannot buy more equipment than you have capacity!');
+		return;
+	    }
 	    
 	    cabinet.quantity = cabinet.quantity + cabinet.quantityToBuy;
 	    

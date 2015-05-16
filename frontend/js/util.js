@@ -8,5 +8,5 @@ function showError($scope, $timeout, text) {
     
     $timeout(function() {
 	$scope.error.showError = false;
-    }, 5000);
+    }, 8000);
 }
