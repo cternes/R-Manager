@@ -14,7 +14,8 @@
 	<li ng-repeat="match in myMatches">
 	    <a href="#/match/{{match.id}}" ng-show="{{playerToken === match.currentPlayer.id}}">Match agains {{match.opponent.name}}</a>
 	    <span ng-show="{{playerToken !== match.currentPlayer.id}}">Match agains {{match.opponent.name}}</span>
-	    <span ng-show="{{playerToken !== match.currentPlayer.id}}">Status: Waiting for other players turn</span>
+	    <span ng-show="{{playerToken !== match.currentPlayer.id && match.status === 'RUNNING'}}">Status: Waiting for other players turn</span>
+	    <span ng-show="{{playerToken !== match.currentPlayer.id && match.status === 'WAITINGFORPLAYERS'}}">Status: Waiting for players...</span>
 	    <span ng-show="{{playerToken === match.currentPlayer.id}}">Status: {{match.status}}</span>
 	    <button class="btn btn-default btn-danger btn-xs" ng-click="deleteMatch(match.id)">Delete</button>
 	</li>

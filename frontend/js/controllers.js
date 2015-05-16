@@ -19,12 +19,14 @@ appControllers.controller('LoginController', ['$scope', '$http', '$location',
 	};
     }]);
 
-appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$timeout', 'playerService', 
-    function($scope, $http, $location, $timeout, playerService) {
+appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$timeout', '$interval', 'playerService', 
+    function($scope, $http, $location, $timeout, $interval, playerService) {
 	
 	$scope.playerToken = playerService.checkPlayerToken();
-	
+
 	getActiveMatches();
+	// call every 5s
+	$interval(function(){getActiveMatches();}, 5000);
 
 	$scope.createMatch = function() {
 	    $http.post('http://localhost:8080/matches', 'playerToken=' + $scope.playerToken)
@@ -50,7 +52,7 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$
 			});
 		})
 		.error(function(data, status, headers, config) {
-		    // todo
+		    showError($scope, $timeout, 'Could not find any open matches to join. Consider creating one.');
 		});
 	};
 	
@@ -73,7 +75,12 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$
 			var match = $scope.myMatches[i];
 		    
 			if(match.player1.id === $scope.playerToken) {
-			    match.opponent = {name: match.player2.name};
+			    if(match.player2 === null) {
+				match.opponent = {name: '?'};	
+			    }
+			    else {
+				match.opponent = {name: match.player2.name};	
+			    }
 			}
 			else {
 			    match.opponent = {name: match.player1.name};
