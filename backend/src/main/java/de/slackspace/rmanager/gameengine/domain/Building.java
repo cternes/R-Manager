@@ -81,7 +81,7 @@ public class Building {
 		BigDecimal monthlyCosts = BigDecimal.ZERO;
 		
 		for (Cabinet cabinet : getCabinets()) {
-			monthlyCosts = monthlyCosts.add(cabinet.getMonthlyCosts());
+			monthlyCosts = monthlyCosts.add(cabinet.getTotalMonthlyCosts());
 		}
 		
 		return monthlyCosts;

@@ -29,7 +29,7 @@ public class Department {
 		}
 		
 		for (Cabinet cabinet : cabinets) {
-			costs = costs.add(cabinet.getMonthlyCosts());
+			costs = costs.add(cabinet.getTotalMonthlyCosts());
 		}
 		
 		return costs;
@@ -105,7 +105,7 @@ public class Department {
 	public boolean canAddCabinet(int requiredSpaceUnits) {
 		int spaceUnitsInUse = 0;
 		for (Cabinet cabinet : getCabinets()) {
-			spaceUnitsInUse += cabinet.getRequiredSpaceUnits();
+			spaceUnitsInUse += cabinet.getTotalRequiredSpaceUnits();
 		}
 		
 		if(spaceUnitsInUse + requiredSpaceUnits <= maxSpaceUnits) {

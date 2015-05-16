@@ -27,14 +27,13 @@ public class Cabinet {
 		setDepartmentType(departmentType);
 		this.quantity = quantity;
 	}
-
+	
 	public BigDecimal getMonthlyCosts() {
-		if(quantity == 0) {
-			return monthlyCosts;
-		}
-		else {
-			return monthlyCosts.multiply(new BigDecimal(quantity));
-		}
+		return monthlyCosts;
+	}
+	
+	public BigDecimal getTotalMonthlyCosts() {
+		return monthlyCosts.multiply(new BigDecimal(quantity));
 	}
 
 	public void setMonthlyCosts(BigDecimal monthlyCosts) {
@@ -50,12 +49,11 @@ public class Cabinet {
 	}
 
 	public int getCapacity() {
-		if(quantity == 0) {
-			return capacity;
-		}
-		else {
-			return capacity * quantity;
-		}
+		return capacity;
+	}
+	
+	public int getTotalCapacity() {
+		return capacity * quantity;
 	}
 
 	public void setCapacity(int capacity) {
@@ -89,6 +87,10 @@ public class Cabinet {
 	public int getRequiredSpaceUnits() {
 		return requiredSpaceUnits;
 	}
+	
+	public int getTotalRequiredSpaceUnits() {
+		return requiredSpaceUnits * quantity;
+	}
 
 	public void setRequiredSpaceUnits(int requiredSpaceUnits) {
 		this.requiredSpaceUnits = requiredSpaceUnits;
@@ -96,5 +98,33 @@ public class Cabinet {
 	
 	public int getQuantityToBuy() {
 		return 1;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((departmentType == null) ? 0 : departmentType.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cabinet other = (Cabinet) obj;
+		if (departmentType != other.departmentType)
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 }

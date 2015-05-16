@@ -3,7 +3,9 @@ package de.slackspace.rmanager.gameengine.action.handler;
 import java.math.BigDecimal;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import de.slackspace.rmanager.gameengine.action.BuyCabinetAction;
@@ -19,6 +21,9 @@ import de.slackspace.rmanager.gameengine.exception.GameException;
 
 public class BuyCabinetActionHandlerTest {
 
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
+	
 	BuyCabinetActionHandler cut = new BuyCabinetActionHandler();
 	
 	@Test
@@ -109,7 +114,7 @@ public class BuyCabinetActionHandlerTest {
 
 	@Test
 	public void whenBuyingMultipleCabinetsShouldCalculateCorrectPrice() {
-		Cabinet cabinet = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
+		Cabinet cabinet = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Dininghall);
 		
 		BuildingType buildingType = new BuildingType(4, new BigDecimal(1_600_000));
 		Building building = new Building("abc", buildingType, "123");
@@ -127,14 +132,14 @@ public class BuyCabinetActionHandlerTest {
 		
 		cut.handle(action, player, state);
 		
-		Assert.assertEquals(1, building.getDepartmentByType(DepartmentType.Kitchen).getCabinets().size());
-		Assert.assertEquals(10, building.getDepartmentByType(DepartmentType.Kitchen).getCabinets().iterator().next().getQuantity());
+		Assert.assertEquals(1, building.getDepartmentByType(DepartmentType.Dininghall).getCabinets().size());
+		Assert.assertEquals(10, building.getDepartmentByType(DepartmentType.Dininghall).getCabinets().iterator().next().getQuantity());
 		Assert.assertEquals(new BigDecimal(2000), player.getMoney());
 	}
 	
 	@Test
 	public void whenBuyingMoreOfACabinetShouldIncreaseQuantityOfCabinet() {
-		Cabinet cabinet = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
+		Cabinet cabinet = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Dininghall);
 		
 		BuildingType buildingType = new BuildingType(4, new BigDecimal(1_600_000));
 		Building building = new Building("abc", buildingType, "123");
@@ -159,23 +164,23 @@ public class BuyCabinetActionHandlerTest {
 		BuyCabinetAction actionTwo = new BuyCabinetAction(building.getId(), cabinet.getId(), 3);
 		cut.handle(actionTwo, player, state);
 		
-		Assert.assertEquals(1, building.getDepartmentByType(DepartmentType.Kitchen).getCabinets().size());
-		Assert.assertEquals(8, building.getDepartmentByType(DepartmentType.Kitchen).getCabinets().iterator().next().getQuantity());
+		Assert.assertEquals(1, building.getDepartmentByType(DepartmentType.Dininghall).getCabinets().size());
+		Assert.assertEquals(8, building.getDepartmentByType(DepartmentType.Dininghall).getCabinets().iterator().next().getQuantity());
 		Assert.assertEquals(new BigDecimal(3400), player.getMoney());
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenBuyingMoreCabinetThanCapacityInDepartmentShouldThrowException() {
-		Cabinet cabinetOne = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
-		Cabinet cabinetTwo = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Kitchen);
+		Cabinet cabinetOne = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Dininghall);
+		Cabinet cabinetTwo = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Dininghall);
 		
 		BuildingType buildingType = new BuildingType(1, new BigDecimal(500_000));
 		Building building = new Building("abc", buildingType, "123");
-		BuyCabinetAction actionOne = new BuyCabinetAction(building.getId(), cabinetOne.getId(), 1);
-		BuyCabinetAction actionTwo = new BuyCabinetAction(building.getId(), cabinetTwo.getId(), 1);
+		BuyCabinetAction actionOne = new BuyCabinetAction(building.getId(), cabinetOne.getId(), 2);
+		BuyCabinetAction actionTwo = new BuyCabinetAction(building.getId(), cabinetTwo.getId(), 3);
 		
 		RManagerPlayer player = new RManagerPlayer();
-		player.setMoney(new BigDecimal(400));
+		player.setMoney(new BigDecimal(4000));
 		
 		Estate estate = new Estate(EstateType.FOUR_PARCEL, BigDecimal.ONE, BigDecimal.ONE, "123");
 		estate.setBuilding(building);
@@ -186,6 +191,10 @@ public class BuyCabinetActionHandlerTest {
 		Mockito.when(state.getAvailableCabinetById(cabinetTwo.getId())).thenReturn(cabinetTwo);
 		
 		cut.handle(actionOne, player, state);
+		
+		exception.expect(GameException.class);
+		exception.expectMessage("Not enough free space units in department to add cabinet with");
+		
 		cut.handle(actionTwo, player, state);
 	}
 }

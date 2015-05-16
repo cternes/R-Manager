@@ -149,7 +149,7 @@ public class GameControllerTest {
 		List<Estate> estates = new ArrayList<>();
 		estates.add(estate);
 		
-		Cabinet cabinet = new Cabinet(new BigDecimal(500), new BigDecimal(250), 5, DepartmentType.Kitchen);
+		Cabinet cabinet = new Cabinet(new BigDecimal(500), new BigDecimal(250), 5, DepartmentType.Dininghall);
 		List<Cabinet> cabinets = new ArrayList<>();
 		cabinets.add(cabinet);
 		
@@ -176,7 +176,7 @@ public class GameControllerTest {
 		actions.add(new BuyEstateAction(estate.getId()));
 		actions.add(new BuyBuildingAction(estate.getId(), "abc", buildingTypeOne.getId()));
 		actions.add(new HirePersonAction("abc", person.getId()));
-		actions.add(new BuyCabinetAction("abc", cabinet.getId(), 10));
+		actions.add(new BuyCabinetAction("abc", cabinet.getId(), 2));
 		
 		GameState updatedState = cut.endTurn(gameState, "p1", actions);
 		
@@ -189,10 +189,11 @@ public class GameControllerTest {
 		Assert.assertNotNull(updatedState.getPlayerOne().getBuildingById("abc"));
 		
 		Assert.assertEquals(person.getId(), updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getPersonnel().get(0).getId());
-		Assert.assertEquals(cabinet.getId(), updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getCabinets().iterator().next().getId());
-		Assert.assertEquals(1, updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getCabinets().size());
+		Assert.assertEquals(cabinet.getId(), updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Dininghall).getCabinets().iterator().next().getId());
+		Assert.assertEquals(1, updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Dininghall).getCabinets().size());
+		Assert.assertEquals(2, updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Dininghall).getCabinets().iterator().next().getQuantity());
 		
-		Assert.assertEquals(new BigDecimal(942750), updatedState.getPlayerOne().getMoney());
+		Assert.assertEquals(new BigDecimal(948250), updatedState.getPlayerOne().getMoney());
 	}
 	
 	@Test
@@ -259,7 +260,7 @@ public class GameControllerTest {
 		actions.add(new BuyCabinetAction("abc", fridge.getId(), 1));
 		actions.add(new BuyCabinetAction("abc", stove.getId(), 1));
 		actions.add(new BuyCabinetAction("abc", sanitary.getId(), 1));
-		actions.add(new BuyCabinetAction("abc", table.getId(), 20));
+		actions.add(new BuyCabinetAction("abc", table.getId(), 3));
 		
 		GameState updatedState = cut.endTurn(gameState, "p1", actions);
 		
@@ -272,6 +273,6 @@ public class GameControllerTest {
 		Assert.assertEquals(personOne.getId(), updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getPersonnel().get(0).getId());
 		Assert.assertEquals(1, updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getCabinets().size());
 		
-		Assert.assertEquals(new BigDecimal("353900.00"), updatedState.getPlayerOne().getMoney());
+		Assert.assertEquals(new BigDecimal("356500.00"), updatedState.getPlayerOne().getMoney());
 	}
 }
