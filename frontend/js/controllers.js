@@ -26,7 +26,7 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$
 
 	getActiveMatches();
 	// call every 5s
-	$interval(function(){getActiveMatches();}, 5000);
+	// $interval(function(){getActiveMatches();}, 5000);
 
 	$scope.createMatch = function() {
 	    $http.post('http://localhost:8080/matches', 'playerToken=' + $scope.playerToken)
@@ -115,6 +115,7 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    // set current city
 	    $scope.currentCity = getItemById($scope.player.currentCity.id, $scope.currentMatch.data.cities);
 	    
+	    // set number of owned buildings
 	    var numBuildings = 0;
 	    for (var i=0;i < $scope.player.estates.length;i++) {
 		if($scope.player.estates[i].building !== null) {
@@ -123,6 +124,13 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    }
 	    $scope.player.numBuildings = numBuildings;
 	    
+	    // set current building if available
+	    var buildingId = $routeParams.buildingId;
+	    if(buildingId !== undefined) {
+		$scope.building = getBuildingById(buildingId, $scope.player.estates);	
+	    }
+	    
+	    // define action list
 	    if($scope.player.actions === undefined) {
 		$scope.player.actions = [];	
 	    }
@@ -154,10 +162,11 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    
 	    // add to estate
 	    var departments = [];
-	    departments['Dininghall'] = { cabinets: [], personnel: [], type: 'Dininghall', maxSpaceUnits: 4 };
-	    departments['Facilities'] = { cabinets: [], personnel: [], type: 'Facilities', maxSpaceUnits: 1 };
-	    departments['Kitchen'] = { cabinets: [], personnel: [], type: 'Kitchen', maxSpaceUnits: 1 };
-	    departments['Reefer'] = { cabinets: [], personnel: [], type: 'Reefer', maxSpaceUnits: 2 };
+	    departments['Dininghall'] = { cabinets: [], personnel: [], type: 'Dininghall', maxSpaceUnits: 4, numberOfCabinets: 0 };
+	    departments['Facilities'] = { cabinets: [], personnel: [], type: 'Facilities', maxSpaceUnits: 1, numberOfCabinets: 0 };
+	    departments['Kitchen'] = { cabinets: [], personnel: [], type: 'Kitchen', maxSpaceUnits: 1, numberOfCabinets: 0 };
+	    departments['Reefer'] = { cabinets: [], personnel: [], type: 'Reefer', maxSpaceUnits: 2, numberOfCabinets: 0 };
+	    departments['Laundry'] = { cabinets: [], personnel: [], type: 'Laundry', maxSpaceUnits: 1, numberOfCabinets: 0 };
 		
 	    estate.building = {id: buildingId, buildingType: buildingType, departments: departments};
 	    
@@ -184,7 +193,7 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	};
 	
 	$scope.decreaseCabinetQuantity = function(cabinet) {
-	    if(cabinet.quantityToBuy >= 1) {
+	    if(cabinet.quantityToBuy !== 1) {
 		cabinet.quantityToBuy = cabinet.quantityToBuy - 1;	
 	    }
 	};
@@ -196,7 +205,11 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    cabinet.quantity = cabinet.quantity + cabinet.quantityToBuy;
 	    
 	    // add to department
-	    building.departments[cabinet.departmentType].cabinets.push(cabinet);
+	    var existingCabinet = getItemById(cabinet.id, building.departments[cabinet.departmentType].cabinets);
+	    
+	    if(existingCabinet === undefined) {
+		building.departments[cabinet.departmentType].cabinets.push(cabinet);	
+	    }
 	    
 	    // add to actions
 	    $scope.player.actions.push({type: 7, buildingId: buildingId, cabinetId: cabinet.id,	quantity: cabinet.quantity});
@@ -204,8 +217,11 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    // reduce money
 	    $scope.player.money = $scope.player.money - (cabinet.quantity * cabinet.price);
 	    
+	    // increase cabinet number in department
+	    building.departments[cabinet.departmentType].numberOfCabinets = building.departments[cabinet.departmentType].numberOfCabinets + cabinet.quantityToBuy;
+	    
 	    // reset quantity
-	    cabinet.quantityToBuy = 0;
+	    cabinet.quantityToBuy = 1;
 	};
 	
 	$scope.endTurn = function() {

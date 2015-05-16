@@ -13,11 +13,11 @@
 	    <div class="col-md-8 estate-box" ng-show="estate.building !== null">
 		<label>{{estate.building.buildingType.name}}</label>
 		<p>Square meter: {{estate.building.buildingType.squareMeters}}</p>
-		<p>Dininghall: {{estate.building.departments['Dininghall'].cabinets.length}}</p>
-		<p>Reefer: {{estate.building.departments['Reefer'].cabinets.length}}</p>
-		<p>Laundry: {{estate.building.departments['Laundry'].cabinets.length}}</p>
-		<p>Facilities: {{estate.building.departments['Facilities'].cabinets.length}}</p>
-		<p>Kitchen: {{estate.building.departments['Kitchen'].cabinets.length}}</p>
+		<p>Dininghall: {{estate.building.departments['Dininghall'].numberOfCabinets}} / {{estate.building.departments['Dininghall'].maxSpaceUnits}}</p>
+		<p>Reefer: {{estate.building.departments['Reefer'].numberOfCabinets}} / {{estate.building.departments['Reefer'].maxSpaceUnits}}</p>
+		<p>Laundry: {{estate.building.departments['Laundry'].numberOfCabinets}} / {{estate.building.departments['Laundry'].maxSpaceUnits}}</p>
+		<p>Facilities: {{estate.building.departments['Facilities'].numberOfCabinets}} / {{estate.building.departments['Facilities'].maxSpaceUnits}}</p>
+		<p>Kitchen: {{estate.building.departments['Kitchen'].numberOfCabinets}} / {{estate.building.departments['Kitchen'].maxSpaceUnits}}</p>
 		<a href="#match/{{matchId}}/inventory/{{estate.building.id}}/buy" class="btn btn-default" role="button">Buy equipment</a>
 	    </div>
 	</div>
