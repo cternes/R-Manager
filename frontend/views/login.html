@@ -1,12 +1,16 @@
 <div class="container">
 
+    <p class="bg-danger error-box" ng-show="error.showError">
+        {{error.text}}
+    </p>
+    
     <form class="form-signin">
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="user" class="sr-only">Email address</label>
         <input type="text" id="user" class="form-control" placeholder="Username" required autofocus ng-model="user.username">
         <label for="pwd" class="sr-only">Password</label>
         <input type="password" id="pwd" class="form-control" placeholder="Password" required ng-model="user.password">
-        <button class="btn btn-lg btn-primary btn-block" ng-click="getPlayer(user.username)">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" ng-click="login(user.username, user.password)">Sign in</button>
     </form>
 
 </div>

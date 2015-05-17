@@ -4,17 +4,18 @@
 
 var appControllers = angular.module('appControllers', []);
 
-appControllers.controller('LoginController', ['$scope', '$http', '$location',
-    function($scope, $http, $location) {
+appControllers.controller('LoginController', ['$scope', '$http', '$location', '$timeout',
+    function($scope, $http, $location, $timeout) {
 	
-	$scope.getPlayer = function(name) {
-	     $http.get('http://localhost:8080/players/' + name)
+	$scope.login = function(name, password) {
+	     $http.post('http://localhost:8080/players/login', 'name=' + name + '&password=' + password)
 	    .success(function(data, status, headers, config) {
+		debugger;
 		localStorage.setItem('playerToken', angular.toJson(data.id));
 		$location.url('/lobby');
 	    })
 	    .error(function(data, status, headers, config) {
-		// todo
+		showError($scope, $timeout, data.message);
 	    });
 	};
     }]);
