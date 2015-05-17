@@ -8,15 +8,28 @@ appControllers.controller('LoginController', ['$scope', '$http', '$location', '$
     function($scope, $http, $location, $timeout) {
 	
 	$scope.login = function(name, password) {
-	     $http.post('http://localhost:8080/players/login', 'name=' + name + '&password=' + password)
-	    .success(function(data, status, headers, config) {
-		debugger;
-		localStorage.setItem('playerToken', angular.toJson(data.id));
-		$location.url('/lobby');
-	    })
-	    .error(function(data, status, headers, config) {
-		showError($scope, $timeout, data.message);
-	    });
+	    $http.post('http://localhost:8080/players/login', 'name=' + name + '&password=' + password)
+		.success(function(data, status, headers, config) {
+		    localStorage.setItem('playerToken', angular.toJson(data.id));
+		    $location.url('/lobby');
+		})
+		.error(function(data, status, headers, config) {
+		    showError($scope, $timeout, data.message);
+		});
+	};
+	
+	$scope.createAccount = function(name, password) {
+	    if(name === undefined || password === undefined) {
+		return;
+	    }
+	    
+	    $http.post('http://localhost:8080/players', 'name=' + name + '&password=' + password)
+		.success(function(data, status, headers, config) {
+		    $location.url('/login');
+		})
+		.error(function(data, status, headers, config) {
+		    showError($scope, $timeout, data.message);
+		});
 	};
     }]);
 

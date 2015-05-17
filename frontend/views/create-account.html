@@ -5,14 +5,17 @@
     </p>
     
     <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
+	<div class="margin-top-10px">
+	    <a class="btn btn-default" href="#/login" role="button">&laquo; Back</a>
+	</div>
+	
+        <h2 class="form-signin-heading">Create account</h2>
         <label for="user" class="sr-only">Username</label>
         <input type="text" id="user" class="form-control" placeholder="Username" required autofocus ng-model="user.username">
         <label for="pwd" class="sr-only">Password</label>
         <input type="password" id="pwd" class="form-control" placeholder="Password" required ng-model="user.password">
-        <button class="btn btn-lg btn-primary btn-block" ng-click="login(user.username, user.password)">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" ng-click="createAccount(user.username, user.password)">Create account</button>
 	
-	<a href="#/create-account" class="btn btn-default btn-lg btn-block">Create account</a>
     </form>
     
 </div>
