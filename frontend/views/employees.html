@@ -9,6 +9,8 @@
     <h2>Employees</h2>
 
     <div class="row">
+	<span class="lead" ng-show="player.numBuildings === 0">Construct a building to buy equipment.</span>
+	
 	<div ng-repeat="estate in player.estates">
 	    <div class="col-md-8 estate-box" ng-show="estate.building !== null">
 		<label>{{estate.building.buildingType.name}}</label>

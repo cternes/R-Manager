@@ -50,7 +50,7 @@ app.config(['$routeProvider',
 		  templateUrl: 'views/inventory.html',
 		  controller: 'MatchController'
 		}).
-		when('/match/:matchId/inventory/:buildingId/buy', {
+		when('/match/:matchId/inventory/:buildingId/buy/:departmentId', {
 		  templateUrl: 'views/buy-inventory.html',
 		  controller: 'MatchController'
 		}).

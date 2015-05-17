@@ -9,16 +9,27 @@
     <h2>Inventory</h2>
 
     <div class="row">
+	<span class="lead" ng-show="player.numBuildings === 0">Construct a building to buy equipment.</span>
+	
 	<div ng-repeat="estate in player.estates">
 	    <div class="col-md-8 estate-box" ng-show="estate.building !== null">
 		<label>{{estate.building.buildingType.name}}</label>
 		<p>Square meter: {{estate.building.buildingType.squareMeters}}</p>
-		<p>Dininghall: {{estate.building.departments['Dininghall'].numberOfCabinets}} / {{estate.building.departments['Dininghall'].maxSpaceUnits}}</p>
-		<p>Reefer: {{estate.building.departments['Reefer'].numberOfCabinets}} / {{estate.building.departments['Reefer'].maxSpaceUnits}}</p>
-		<p>Laundry: {{estate.building.departments['Laundry'].numberOfCabinets}} / {{estate.building.departments['Laundry'].maxSpaceUnits}}</p>
-		<p>Facilities: {{estate.building.departments['Facilities'].numberOfCabinets}} / {{estate.building.departments['Facilities'].maxSpaceUnits}}</p>
-		<p>Kitchen: {{estate.building.departments['Kitchen'].numberOfCabinets}} / {{estate.building.departments['Kitchen'].maxSpaceUnits}}</p>
-		<a href="#match/{{matchId}}/inventory/{{estate.building.id}}/buy" class="btn btn-default" role="button">Buy equipment</a>
+		<p>Dininghall: {{estate.building.departments['Dininghall'].numberOfCabinets}} / {{estate.building.departments['Dininghall'].maxSpaceUnits}}
+		    <a href="#match/{{matchId}}/inventory/{{estate.building.id}}/buy/Dininghall" class="btn btn-default btn-xs" role="button">Buy equipment</a>
+		</p>
+		<p>Reefer: {{estate.building.departments['Reefer'].numberOfCabinets}} / {{estate.building.departments['Reefer'].maxSpaceUnits}}
+		    <a href="#match/{{matchId}}/inventory/{{estate.building.id}}/buy/Reefer" class="btn btn-default btn-xs" role="button">Buy equipment</a>
+		</p>
+		<p>Laundry: {{estate.building.departments['Laundry'].numberOfCabinets}} / {{estate.building.departments['Laundry'].maxSpaceUnits}}
+		    <a href="#match/{{matchId}}/inventory/{{estate.building.id}}/buy/Laundry" class="btn btn-default btn-xs" role="button">Buy equipment</a>
+		</p>
+		<p>Facilities: {{estate.building.departments['Facilities'].numberOfCabinets}} / {{estate.building.departments['Facilities'].maxSpaceUnits}}
+		    <a href="#match/{{matchId}}/inventory/{{estate.building.id}}/buy/Facilities" class="btn btn-default btn-xs" role="button">Buy equipment</a>
+		</p>
+		<p>Kitchen: {{estate.building.departments['Kitchen'].numberOfCabinets}} / {{estate.building.departments['Kitchen'].maxSpaceUnits}}
+		    <a href="#match/{{matchId}}/inventory/{{estate.building.id}}/buy/Kitchen" class="btn btn-default btn-xs" role="button">Buy equipment</a>
+		</p>
 	    </div>
 	</div>
 	

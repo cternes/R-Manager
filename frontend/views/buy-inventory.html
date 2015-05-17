@@ -10,13 +10,13 @@
 	<a class="btn btn-default" href="#match/{{matchId}}/inventory" role="button">&laquo; Back</a>
     </div>
     
-    <h2>Buy Inventory</h2>
+    <h2>Buy equipment</h2>
 
     <div class="row">
-	<h4>Dininghall ({{building.departments['Dininghall'].numberOfCabinets}} / {{building.departments['Dininghall'].maxSpaceUnits}})</h4>
-	<div class="col-md-5 estate-box" ng-repeat="cabinet in currentCity.availableCabinet['Dininghall']">
+	<h4>{{departmentId}} ({{building.departments[departmentId].numberOfCabinets}} / {{building.departments[departmentId].maxSpaceUnits}})</h4>
+	<div class="col-md-5 estate-box" ng-repeat="cabinet in currentCity.availableCabinet[departmentId]">
 	    <div>
-		<label>Dining table</label>
+		<label>{{cabinet.name}}</label>
 		<h5>Owning: {{cabinet.quantity}}</h5>
 		<h5>Max. output: {{cabinet.capacity}}</h5>
 		<h5>Costs/month: {{cabinet.monthlyCosts | money}} $</h5>
@@ -26,7 +26,7 @@
 		<span>{{cabinet.quantityToBuy}}</span>
 		<button class="btn btn-default" role="button" ng-click="increaseCabinetQuantity(cabinet)">+</button>
 		<button class="btn btn-danger" role="button" ng-click="buyCabinet(cabinet)" 
-			ng-hide="building.departments['Dininghall'].numberOfCabinets === building.departments['Dininghall'].maxSpaceUnits">Buy</button>
+			ng-hide="building.departments[departmentId].numberOfCabinets === building.departments[departmentId].maxSpaceUnits">Buy</button>
 	    </div>
 	</div>
     </div>

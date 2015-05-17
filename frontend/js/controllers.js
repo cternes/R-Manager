@@ -97,6 +97,7 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
     function($scope, $http, $location, $routeParams, $timeout, matchService, playerService) {
 	
 	$scope.matchId = $routeParams.matchId;
+	$scope.departmentId = $routeParams.departmentId;
 	matchService.getMatch($routeParams.matchId).then(function() {
 	    // set match
 	    $scope.currentMatch = matchService.currentMatch();
