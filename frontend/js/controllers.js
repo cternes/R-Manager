@@ -26,7 +26,12 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$
 
 	getActiveMatches();
 	// call every 5s
-	// $interval(function(){getActiveMatches();}, 5000);
+	var promise = $interval(function(){getActiveMatches();}, 5000);
+
+	// stop calling getActiveMatches when scope is destroyed (e.g. on navigation)
+	$scope.$on('$destroy', function() {
+	    $interval.cancel(promise);
+	});
 
 	$scope.createMatch = function() {
 	    $http.post('http://localhost:8080/matches', 'playerToken=' + $scope.playerToken)
