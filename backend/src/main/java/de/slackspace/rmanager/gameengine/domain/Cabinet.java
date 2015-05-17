@@ -6,6 +6,7 @@ import java.util.UUID;
 public class Cabinet {
 
 	private String id = UUID.randomUUID().toString();
+	private String name;
 	private BigDecimal price;
 	private BigDecimal monthlyCosts;
 	private int capacity;
@@ -126,5 +127,21 @@ public class Cabinet {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public String getName() {
+		switch(departmentType.toString()) {
+			case "Laundry": return "Washing machine";
+			case "Kitchen": return "Kitchen";
+			case "Reefer": return "Refrigerator";
+			case "Facilities": return "Lavatory";
+			case "Dininghall": return "Dining table";
+		}
+		
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
