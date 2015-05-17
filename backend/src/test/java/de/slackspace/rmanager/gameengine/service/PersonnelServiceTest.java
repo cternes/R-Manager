@@ -19,7 +19,7 @@ public class PersonnelServiceTest {
 			Person person = cut.createPerson(new BigDecimal("1.2"));
 			
 			Assert.assertTrue(person.getAge() <= 65);
-			Assert.assertTrue(person.getAge() >= 1);
+			Assert.assertTrue(person.getAge() >= 16);
 			
 			Assert.assertTrue(person.getPower() <= 10);
 			Assert.assertTrue(person.getPower() >= 1);

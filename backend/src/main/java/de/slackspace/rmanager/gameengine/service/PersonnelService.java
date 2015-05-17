@@ -25,7 +25,7 @@ public class PersonnelService {
 	protected Person createPerson(BigDecimal rateOfPriceIncrease) {
 		int power = random.nextInt(10) + 1;
 		int quality = random.nextInt(10) + 1;
-		int age = random.nextInt(65) + 1;
+		int age = random.nextInt(49) + 16;
 		
 		BigDecimal monthlyCosts = new BigDecimal(power + quality).multiply(new BigDecimal(100)).multiply(rateOfPriceIncrease);
 		
