@@ -27,7 +27,7 @@ public class MatchResourceTest {
 		MatchResource cut = createMatchResource();
 		String playerToken = UUID.randomUUID().toString();
 		
-		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(new Player(""));
+		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(new Player("", "testPwd"));
 		
 		MatchRepository matchRepository = Mockito.mock(MatchRepository.class);
 		cut.matchRepo = matchRepository;
@@ -53,7 +53,7 @@ public class MatchResourceTest {
 	public void whenGetMatchWithValidIdShouldReturnMatch() {
 		MatchResource cut = createMatchResource();
 		
-		GameMatch mockMatch = new GameMatch(new Player(""));
+		GameMatch mockMatch = new GameMatch(new Player("", "testPwd"));
 		Mockito.when(cut.matchRepo.findByToken(mockMatch.getToken())).thenReturn(mockMatch);
 		
 		GameMatch match = cut.getMatch(mockMatch.getToken());
@@ -90,7 +90,7 @@ public class MatchResourceTest {
 		MatchResource cut = createMatchResource();
 		String playerToken = UUID.randomUUID().toString();
 		
-		Player player = new Player("test");
+		Player player = new Player("test", "testPwd");
 		GameMatch match = new GameMatch(player);
 		Mockito.when(cut.matchRepo.findByToken(match.getToken())).thenReturn(match);
 		
@@ -104,7 +104,7 @@ public class MatchResourceTest {
 	public void whenJoinMatchWithPlayerNull() {
 		MatchResource cut = createMatchResource();
 		
-		Player player = new Player("test");
+		Player player = new Player("test", "testPwd");
 		GameMatch match = new GameMatch(player);
 		
 		Mockito.when(cut.matchRepo.findByToken(match.getToken())).thenReturn(match);
@@ -120,8 +120,8 @@ public class MatchResourceTest {
 		MatchResource cut = createMatchResource();
 		String matchToken = UUID.randomUUID().toString();
 		
-		Player playerOne = new Player("test");
-		Player playerTwo = new Player("p2");
+		Player playerOne = new Player("test", "testPwd");
+		Player playerTwo = new Player("p2", "testPwd");
 		
 		GameMatch match = new GameMatch(playerOne);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(match);
@@ -140,7 +140,7 @@ public class MatchResourceTest {
 		MatchResource cut = createMatchResource();
 		String matchToken = UUID.randomUUID().toString();
 		
-		Player player = new Player("test");
+		Player player = new Player("test", "testPwd");
 		GameMatch match = new GameMatch(player);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(match);
 		Mockito.when(cut.playerRepo.findByToken(player.getToken())).thenReturn(player);
@@ -157,10 +157,10 @@ public class MatchResourceTest {
 		String matchId = UUID.randomUUID().toString();
 		String playerThreeToken = UUID.randomUUID().toString();
 		
-		Player playerOne = new Player("test");
+		Player playerOne = new Player("test", "testPwd");
 		GameMatch match = new GameMatch(playerOne);
 		
-		Player playerTwo = new Player("test two");
+		Player playerTwo = new Player("test two", "testPwd");
 		match.setPlayer2(playerTwo);
 
 		Mockito.when(cut.matchRepo.findByToken(matchId)).thenReturn(match);
@@ -176,8 +176,8 @@ public class MatchResourceTest {
 		MatchResource cut = createMatchResource();
 		String matchId = UUID.randomUUID().toString();
 		
-		Player playerOne = new Player("test");
-		Player playerTwo = new Player("test 2");
+		Player playerOne = new Player("test", "testPwd");
+		Player playerTwo = new Player("test 2", "testPwd");
 		GameMatch match = new GameMatch(playerOne);
 		match.setPlayer2(playerTwo);
 		match.setStatus(MatchStatus.RUNNING);
@@ -216,7 +216,7 @@ public class MatchResourceTest {
 		exception.expect(UnknownObjectException.class);
 		exception.expectMessage("The requested player");
 		
-		GameMatch match = new GameMatch(new Player("test"));
+		GameMatch match = new GameMatch(new Player("test", "testPwd"));
 		Mockito.when(cut.matchRepo.findByToken(match.getToken())).thenReturn(match);
 		
 		cut.deleteMatch(match.getToken(), "xyz");
@@ -227,7 +227,7 @@ public class MatchResourceTest {
 		MatchResource cut = createMatchResource();
 		String matchId = UUID.randomUUID().toString();
 		
-		Player playerOne = new Player("test");
+		Player playerOne = new Player("test", "testPwd");
 		GameMatch match = new GameMatch(playerOne);
 		match.setStatus(MatchStatus.WAITINGFORPLAYERS);
 		

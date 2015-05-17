@@ -42,7 +42,7 @@ public class TurnResourceTest {
 		
 		String playerToken = UUID.randomUUID().toString();
 		
-		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(new Player("test"));
+		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(new Player("test", "testPwd"));
 		
 		exception.expect(UnknownObjectException.class);
 		exception.expectMessage("The match");
@@ -58,7 +58,7 @@ public class TurnResourceTest {
 		String playerToken = UUID.randomUUID().toString();
 		String matchToken = UUID.randomUUID().toString();
 		
-		Player player = new Player("test");
+		Player player = new Player("test", "testPwd");
 		GameMatch gameMatch = new GameMatch(player);
 		gameMatch.setStatus(MatchStatus.RUNNING);
 		gameMatch.setCurrentPlayer(player);
@@ -78,7 +78,7 @@ public class TurnResourceTest {
 		String playerToken = UUID.randomUUID().toString();
 		String matchToken = UUID.randomUUID().toString();
 		
-		Player player = new Player("test");
+		Player player = new Player("test", "testPwd");
 		GameMatch gameMatch = new GameMatch(player);
 		gameMatch.setMatchData(new byte[0]);
 		gameMatch.setCurrentPlayer(player);
@@ -101,7 +101,7 @@ public class TurnResourceTest {
 		String playerToken = UUID.randomUUID().toString();
 		String matchToken = UUID.randomUUID().toString();
 		
-		Player player = new Player("test");
+		Player player = new Player("test", "testPwd");
 		GameMatch gameMatch = new GameMatch(player);
 		gameMatch.setMatchData(new byte[0]);
 		gameMatch.setCurrentPlayer(player);
@@ -124,7 +124,7 @@ public class TurnResourceTest {
 		String playerToken = UUID.randomUUID().toString();
 		String matchToken = UUID.randomUUID().toString();
 		
-		Player player = new Player("test");
+		Player player = new Player("test", "testPwd");
 		GameMatch gameMatch = new GameMatch(player);
 		
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
@@ -143,9 +143,9 @@ public class TurnResourceTest {
 		String playerOneToken = UUID.randomUUID().toString();
 		String matchToken = UUID.randomUUID().toString();
 		
-		Player playerOne = new Player("p1");
+		Player playerOne = new Player("p1", "testPwd");
 		playerOne.setId(1001);
-		Player playerTwo = new Player("p2");
+		Player playerTwo = new Player("p2", "testPwd");
 		playerTwo.setId(1002);
 		GameMatch gameMatch = new GameMatch(playerOne);
 		gameMatch.setStatus(MatchStatus.RUNNING);

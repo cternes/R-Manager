@@ -35,7 +35,7 @@ public class MatchResourceIT {
 	
 	@Test
 	public void whenCreateMatchWithValidPlayerShouldStoreMatch() {
-		Player playerOne = playerResource.createPlayer("p1");
+		Player playerOne = playerResource.createPlayer("p1", "testPwd");
 		
 		GameMatch match = cut.createMatch(playerOne.getToken());
 		
@@ -46,8 +46,8 @@ public class MatchResourceIT {
 	
 	@Test
 	public void whenJoinMatchWithValidPlayerShouldSetPlayerTwo() {
-		Player playerOne = playerResource.createPlayer("player1");
-		Player playerTwo = playerResource.createPlayer("player2");
+		Player playerOne = playerResource.createPlayer("player1", "testPwd");
+		Player playerTwo = playerResource.createPlayer("player2", "testPwd");
 		
 		GameMatch match = cut.createMatch(playerOne.getToken());
 		match = cut.joinMatch(match.getToken(), playerTwo.getToken());
@@ -60,7 +60,7 @@ public class MatchResourceIT {
 	
 	@Test
 	public void whenSingleMatchIsWaitingForPlayerGetMatchesShouldReturnOne() {
-		Player playerOne = playerResource.createPlayer("p1");
+		Player playerOne = playerResource.createPlayer("p1", "testPwd");
 		GameMatch match = cut.createMatch(playerOne.getToken());
 		
 		assertThat(match.getId(), is(equalTo(cut.getMatchesWaitingForPlayer().getId())));
@@ -68,7 +68,7 @@ public class MatchResourceIT {
 	
 	@Test
 	public void whenMultipleMatchesWaitingForPlayerGetMatchesShouldReturnOne() {
-		Player playerOne = playerResource.createPlayer("p1");
+		Player playerOne = playerResource.createPlayer("p1", "testPwd");
 		GameMatch matchOne = cut.createMatch(playerOne.getToken());
 		cut.createMatch(playerOne.getToken());
 		cut.createMatch(playerOne.getToken());

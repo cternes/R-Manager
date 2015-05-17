@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,17 @@ public class PlayerResourceIT {
 	private PlayerResource cut;
 	
 	@Test
+	public void whenCreatePlayerShouldEncryptPassword() {
+		Player player = cut.createPlayer("p1", "testPwd");
+		
+		Assert.assertEquals("p1", player.getName());
+		Assert.assertEquals("8kiTENvnwhY8jPnlzzEW9yKoHVSiw1WC+n++PMIBhBE=", player.getPassword());
+	}
+	
+	@Test
 	public void whenTwoMatchesAreAvailableForPlayerGetActiveMatchesShouldReturnTwoMatches() {
-		Player playerOne = cut.createPlayer("p1");
-		Player playerTwo = cut.createPlayer("p2");
+		Player playerOne = cut.createPlayer("p1", "testPwd");
+		Player playerTwo = cut.createPlayer("p2", "testPwd");
 		
 		matchResource.createMatch(playerOne.getToken());
 		matchResource.createMatch(playerOne.getToken());

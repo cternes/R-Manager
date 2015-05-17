@@ -1,6 +1,7 @@
 package de.slackspace.rmanager.web;
 
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -8,6 +9,7 @@ import org.mockito.Mockito;
 
 import de.slackspace.rmanager.database.PlayerRepository;
 import de.slackspace.rmanager.domain.Player;
+import de.slackspace.rmanager.exception.GeneralWebException;
 import de.slackspace.rmanager.exception.InvalidOperationException;
 
 public class PlayerResourceTest {
@@ -18,11 +20,11 @@ public class PlayerResourceTest {
 	private PlayerResource cut = new PlayerResource();
 	
 	@Test
-	public void whenNameIsGivenShouldCreatePlayer() {
+	public void whenValidShouldCreatePlayer() {
 		PlayerRepository playerRepository = Mockito.mock(PlayerRepository.class);
 		cut.playerRepo = playerRepository;
 		
-		cut.createPlayer("test");
+		cut.createPlayer("test", "testPwd");
 		
 		Mockito.verify(playerRepository).save(Mockito.any(Player.class));
 	}
@@ -35,7 +37,7 @@ public class PlayerResourceTest {
 		exception.expect(InvalidOperationException.class);
 		exception.expectMessage("A player must have a name");
 		
-		cut.createPlayer("");
+		cut.createPlayer("", "test");
 	}
 	
 	@Test
@@ -46,7 +48,29 @@ public class PlayerResourceTest {
 		exception.expect(InvalidOperationException.class);
 		exception.expectMessage("A player must have a name");
 		
-		cut.createPlayer(null);
+		cut.createPlayer(null, "test");
+	}
+	
+	@Test
+	public void whenPasswordIsNullShouldThrowException() {
+		PlayerRepository playerRepository = Mockito.mock(PlayerRepository.class);
+		cut.playerRepo = playerRepository;
+		
+		exception.expect(InvalidOperationException.class);
+		exception.expectMessage("A player must have a password");
+		
+		cut.createPlayer("test", null);
+	}
+	
+	@Test
+	public void whenPasswordIsEmptyShouldThrowException() {
+		PlayerRepository playerRepository = Mockito.mock(PlayerRepository.class);
+		cut.playerRepo = playerRepository;
+		
+		exception.expect(InvalidOperationException.class);
+		exception.expectMessage("A player must have a password");
+		
+		cut.createPlayer("test", "");
 	}
 	
 	@Test
@@ -54,11 +78,36 @@ public class PlayerResourceTest {
 		PlayerRepository playerRepository = Mockito.mock(PlayerRepository.class);
 		cut.playerRepo = playerRepository;
 
-		Mockito.when(playerRepository.findByName("abc")).thenReturn(new Player("abc"));
+		Mockito.when(playerRepository.findByName("abc")).thenReturn(new Player("abc", "testPwd"));
 		
 		exception.expect(InvalidOperationException.class);
-		exception.expectMessage("A player with this name already exists");
+		exception.expectMessage("A player with name 'abc' already exists");
 		
-		cut.createPlayer("abc");
+		cut.createPlayer("abc", "test");
+	}
+	
+	@Test
+	public void whenLoginPlayerWithValidPasswordShouldReturnPlayer() {
+		PlayerRepository playerRepository = Mockito.mock(PlayerRepository.class);
+		cut.playerRepo = playerRepository;
+		
+		Player player = new Player("abc", cut.encryptPassword("testPwd"));
+		Mockito.when(playerRepository.findByName("abc")).thenReturn(player);		
+		
+		Assert.assertNotNull(cut.loginPlayer("abc", "testPwd"));
+	}
+	
+	@Test
+	public void whenLoginPlayerWithWrongPasswordShouldThrowException() {
+		PlayerRepository playerRepository = Mockito.mock(PlayerRepository.class);
+		cut.playerRepo = playerRepository;
+		
+		Player player = new Player("abc", cut.encryptPassword("testPwd"));
+		Mockito.when(playerRepository.findByName("abc")).thenReturn(player);		
+		
+		exception.expect(GeneralWebException.class);
+		exception.expectMessage("Could not login player");
+		
+		Assert.assertNotNull(cut.loginPlayer("abc", "wrongPassword"));
 	}
 }

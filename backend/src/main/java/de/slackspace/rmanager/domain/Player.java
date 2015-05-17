@@ -25,8 +25,13 @@ public class Player {
 	@JsonProperty(value="id")
 	private String token;
 	
+	@NotNull
 	@Size(max=255)
 	private String name;
+	
+	@NotNull
+	@Size(max=55)
+	private String password;
 	
 	@NotNull
 	private int wins;
@@ -40,8 +45,9 @@ public class Player {
 	protected Player() {
 	}
 	
-	public Player(String name) {
+	public Player(String name, String password) {
 		setName(name);
+		setPassword(password);
 		setToken(UUID.randomUUID().toString());
 	}
 
@@ -103,5 +109,13 @@ public class Player {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }
