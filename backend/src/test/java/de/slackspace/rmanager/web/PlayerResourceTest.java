@@ -1,7 +1,9 @@
 package de.slackspace.rmanager.web;
 
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import de.slackspace.rmanager.database.PlayerRepository;
@@ -10,6 +12,9 @@ import de.slackspace.rmanager.exception.InvalidOperationException;
 
 public class PlayerResourceTest {
 
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
+	
 	private PlayerResource cut = new PlayerResource();
 	
 	@Test
@@ -22,28 +27,38 @@ public class PlayerResourceTest {
 		Mockito.verify(playerRepository).save(Mockito.any(Player.class));
 	}
 	
-	@Test(expected=InvalidOperationException.class)
+	@Test
 	public void whenNameIsEmptyShouldThrowException() {
 		PlayerRepository playerRepository = Mockito.mock(PlayerRepository.class);
 		cut.playerRepo = playerRepository;
 		
+		exception.expect(InvalidOperationException.class);
+		exception.expectMessage("A player must have a name");
+		
 		cut.createPlayer("");
 	}
 	
-	@Test(expected=InvalidOperationException.class)
+	@Test
 	public void whenNameIsNullShouldThrowException() {
 		PlayerRepository playerRepository = Mockito.mock(PlayerRepository.class);
 		cut.playerRepo = playerRepository;
 		
+		exception.expect(InvalidOperationException.class);
+		exception.expectMessage("A player must have a name");
+		
 		cut.createPlayer(null);
 	}
 	
-	@Test(expected=InvalidOperationException.class)
+	@Test
 	public void whenDuplicateNameIsGivenShouldThrowException() {
 		PlayerRepository playerRepository = Mockito.mock(PlayerRepository.class);
 		cut.playerRepo = playerRepository;
 
 		Mockito.when(playerRepository.findByName("abc")).thenReturn(new Player("abc"));
+		
+		exception.expect(InvalidOperationException.class);
+		exception.expectMessage("A player with this name already exists");
+		
 		cut.createPlayer("abc");
 	}
 }

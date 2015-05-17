@@ -6,7 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import de.slackspace.rmanager.gameengine.action.BuyBuildingAction;
 import de.slackspace.rmanager.gameengine.action.BuyCabinetAction;
@@ -26,6 +28,9 @@ import de.slackspace.rmanager.gameengine.exception.GameException;
 
 public class GameControllerTest {
 
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
+	
 	@Test
 	public void whenStartingNewGameShouldReturnValidGameState() {
 		GameState gameState = GameControllerFactory.getGameControllerInstance().startNewGame("p1", "p2");
@@ -81,7 +86,7 @@ public class GameControllerTest {
 		Assert.assertEquals(1, updatedState.getPlayerOne().getEstates().size());
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenEndingTurnWithInvalidIdInCommandShouldThrowException() {
 		GameController cut = GameControllerFactory.getGameControllerInstance();
 		GameState gameState = cut.startNewGame("p1", "p2");
@@ -89,10 +94,13 @@ public class GameControllerTest {
 		List<GameAction> actions = new ArrayList<>();
 		actions.add(new BuyEstateAction("abcd"));
 		
+		exception.expect(GameException.class);
+		exception.expectMessage("The estate with id 'abcd' could not be found");
+		
 		cut.endTurn(gameState, "p1", actions);
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenEndingTurnWithNegativeMoneyShouldThrowException() {
 		GameController cut = GameControllerFactory.getGameControllerInstance();
 		GameState gameState = cut.startNewGame("p1", "p2");
@@ -107,10 +115,13 @@ public class GameControllerTest {
 		actions.add(new BuyEstateAction(gameState.getCities().get(6).getEstates().get(3).getId()));
 		actions.add(new BuyEstateAction(gameState.getCities().get(7).getEstates().get(3).getId()));
 		
+		exception.expect(GameException.class);
+		exception.expectMessage("is not enough to pay");
+		
 		cut.endTurn(gameState, "p1", actions);
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenEndingTurnWithDuplicateEstatesShouldThrowException() {
 		GameController cut = GameControllerFactory.getGameControllerInstance();
 		GameState gameState = cut.startNewGame("p1", "p2");
@@ -118,6 +129,9 @@ public class GameControllerTest {
 		List<GameAction> actions = new ArrayList<>();
 		actions.add(new BuyEstateAction(gameState.getCities().get(0).getEstates().get(3).getId()));
 		actions.add(new BuyEstateAction(gameState.getCities().get(0).getEstates().get(3).getId()));
+		
+		exception.expect(GameException.class);
+		exception.expectMessage("The player owns already the estate");
 		
 		cut.endTurn(gameState, "p1", actions);
 	}

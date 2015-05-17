@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import de.slackspace.rmanager.gameengine.action.BuyEstateAction;
@@ -19,6 +21,9 @@ import de.slackspace.rmanager.gameengine.exception.GameException;
 public class BuyEstateActionHandlerTest {
 
 	BuyEstateActionHandler cut = new BuyEstateActionHandler();
+	
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
 	
 	@Test
 	public void whenCanHandleIsCalledWithCorrectClassShouldReturnTrue() {
@@ -52,7 +57,7 @@ public class BuyEstateActionHandlerTest {
 		Assert.assertEquals(true, state.getEstateById(estate.getId()).isSold());
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenBuyDuplicateEstateShouldThrowException() {
 		RManagerPlayer player = new RManagerPlayer();
 		player.setMoney(new BigDecimal(1_500_000));
@@ -64,6 +69,9 @@ public class BuyEstateActionHandlerTest {
 		Mockito.when(state.getEstateById(estate.getId())).thenReturn(estate);
 		
 		BuyEstateAction action = new BuyEstateAction(estate.getId());
+		
+		exception.expect(GameException.class);
+		exception.expectMessage("The player owns already the estate");
 		
 		cut.handle(action, player, state);
 	}

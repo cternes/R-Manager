@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import de.slackspace.rmanager.gameengine.action.BuyShareAction;
@@ -15,6 +17,9 @@ import de.slackspace.rmanager.gameengine.exception.GameException;
 
 public class BuyShareActionHandlerTest {
 
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
+	
 	BuyShareActionHandler cut = new BuyShareActionHandler();
 	
 	@Test
@@ -36,7 +41,7 @@ public class BuyShareActionHandlerTest {
 		Assert.assertEquals(15, share.getSharePercent());
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenInvalidShareShouldThrowException() {
 		RManagerPlayer player = new RManagerPlayer();
 		player.setMoney(new BigDecimal(1_500_000));
@@ -45,10 +50,13 @@ public class BuyShareActionHandlerTest {
 		
 		GameState state = Mockito.mock(GameState.class);
 		
+		exception.expect(GameException.class);
+		exception.expectMessage("could not be found");
+		
 		cut.handle(action, player, state);
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenBuyNegativeSharePercentShouldThrowException() {
 		RManagerPlayer player = new RManagerPlayer();
 		player.setMoney(new BigDecimal(1_500_000));
@@ -59,10 +67,13 @@ public class BuyShareActionHandlerTest {
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getShareById(share.getId())).thenReturn(share);
 		
+		exception.expect(GameException.class);
+		exception.expectMessage("Cannot buy less than 1% of a share");
+		
 		cut.handle(action, player, state);
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenBuyOver100SharePercentShouldThrowException() {
 		RManagerPlayer player = new RManagerPlayer();
 		player.setMoney(new BigDecimal(1_500_000));
@@ -73,10 +84,13 @@ public class BuyShareActionHandlerTest {
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getShareById(share.getId())).thenReturn(share);
 		
+		exception.expect(GameException.class);
+		exception.expectMessage("Cannot buy more than 100% of a share");
+		
 		cut.handle(action, player, state);
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenBuyTooMuchShareShouldThrowException() {
 		RManagerPlayer player = new RManagerPlayer();
 		player.setMoney(new BigDecimal(1_500_000));
@@ -86,6 +100,9 @@ public class BuyShareActionHandlerTest {
 		
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getShareById(share.getId())).thenReturn(share);
+		
+		exception.expect(GameException.class);
+		exception.expectMessage("because only '50' percent are available");
 		
 		cut.handle(action, player, state);
 	}

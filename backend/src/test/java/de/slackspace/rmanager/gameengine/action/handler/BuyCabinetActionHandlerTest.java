@@ -55,7 +55,7 @@ public class BuyCabinetActionHandlerTest {
 		Assert.assertEquals(new BigDecimal(200), player.getMoney());
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenPlayerHasNotEnoughMoneyShouldThrowException() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(500), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
@@ -73,10 +73,13 @@ public class BuyCabinetActionHandlerTest {
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getAvailableCabinetById(cabinet.getId())).thenReturn(cabinet);
 		
+		exception.expect(GameException.class);
+		exception.expectMessage("not enough to pay");
+		
 		cut.handle(action, player, state);
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenBuildingIsInvalidShouldThrowException() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(500), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
@@ -87,10 +90,13 @@ public class BuyCabinetActionHandlerTest {
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getAvailableCabinetById(cabinet.getId())).thenReturn(cabinet);
 		
+		exception.expect(GameException.class);
+		exception.expectMessage("The player does not own a building");
+		
 		cut.handle(action, player, state);
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenCabinetIsUnknownShouldThrowException() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(500), BigDecimal.TEN, 5, DepartmentType.Kitchen);
 		
@@ -104,6 +110,9 @@ public class BuyCabinetActionHandlerTest {
 		player.getEstates().add(estate);
 		
 		GameState state = Mockito.mock(GameState.class);
+		
+		exception.expect(GameException.class);
+		exception.expectMessage("does not exist on free market");
 		
 		cut.handle(action, player, state);
 	}

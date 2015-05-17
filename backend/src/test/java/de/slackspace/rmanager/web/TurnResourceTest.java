@@ -3,7 +3,9 @@ package de.slackspace.rmanager.web;
 import java.util.UUID;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import de.slackspace.rmanager.database.MatchRepository;
@@ -20,14 +22,21 @@ import de.slackspace.rmanager.game.TurnResult;
 
 public class TurnResourceTest {
 
-	@Test(expected=UnknownObjectException.class)
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
+	
+	@Test
 	public void whenPlayerIsUnknownShouldThrowException() {
 		TurnResource cut = createTurnResource();
+		
+		exception.expect(UnknownObjectException.class);
+		exception.expectMessage("The player");
+		exception.expectMessage("could not be found");
 		
 		cut.takeTurn(UUID.randomUUID().toString(), UUID.randomUUID().toString(), new byte[0]);
 	}
 	
-	@Test(expected=UnknownObjectException.class)
+	@Test
 	public void whenMatchIsUnknownShouldThrowException() {
 		TurnResource cut = createTurnResource();
 		
@@ -35,10 +44,14 @@ public class TurnResourceTest {
 		
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(new Player("test"));
 		
+		exception.expect(UnknownObjectException.class);
+		exception.expectMessage("The match");
+		exception.expectMessage("could not be found");
+		
 		cut.takeTurn(UUID.randomUUID().toString(), playerToken, new byte[0]);
 	}
 	
-	@Test(expected=InvalidOperationException.class)
+	@Test
 	public void whenGameEngineReturnsNullShouldThrowException() {
 		TurnResource cut = createTurnResource();
 		
@@ -46,8 +59,14 @@ public class TurnResourceTest {
 		String matchToken = UUID.randomUUID().toString();
 		
 		Player player = new Player("test");
+		GameMatch gameMatch = new GameMatch(player);
+		gameMatch.setStatus(MatchStatus.RUNNING);
+		gameMatch.setCurrentPlayer(player);
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
-		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(new GameMatch(player));
+		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
+		
+		exception.expect(InvalidOperationException.class);
+		exception.expectMessage("GameEngine has returned an unexpected result");
 		
 		cut.takeTurn(matchToken, playerToken, new byte[0]);
 	}
@@ -98,7 +117,7 @@ public class TurnResourceTest {
 		Assert.assertEquals(gameMatch.getMatchResult(), MatchResult.DRAW);
 	}
 	
-	@Test(expected=InvalidOperationException.class)
+	@Test
 	public void whenMatchIsWaitingForPlayersShouldThrowException() {
 		TurnResource cut = createTurnResource();
 		
@@ -111,10 +130,13 @@ public class TurnResourceTest {
 		Mockito.when(cut.playerRepo.findByToken(playerToken)).thenReturn(player);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
 		
+		exception.expect(InvalidOperationException.class);
+		exception.expectMessage("is waiting for players");
+		
 		cut.takeTurn(matchToken, playerToken, new byte[0]);
 	}
 	
-	@Test(expected=InvalidOperationException.class)
+	@Test
 	public void whenWrongPlayerIsTakingATurnShouldThrowException() {
 		TurnResource cut = createTurnResource();
 		
@@ -122,14 +144,20 @@ public class TurnResourceTest {
 		String matchToken = UUID.randomUUID().toString();
 		
 		Player playerOne = new Player("p1");
+		playerOne.setId(1001);
 		Player playerTwo = new Player("p2");
+		playerTwo.setId(1002);
 		GameMatch gameMatch = new GameMatch(playerOne);
+		gameMatch.setStatus(MatchStatus.RUNNING);
 		gameMatch.setPlayer2(playerTwo);
 		gameMatch.setCurrentPlayer(playerTwo);
 		
 		Mockito.when(cut.playerRepo.findByToken(playerOneToken)).thenReturn(playerOne);
 		Mockito.when(cut.matchRepo.findByToken(matchToken)).thenReturn(gameMatch);
 		Mockito.when(cut.gameEngine.makeTurn(new byte[0], new byte[0], "p1")).thenReturn(new TurnResult(new byte[0], MatchResult.DRAW));
+		
+		exception.expect(InvalidOperationException.class);
+		exception.expectMessage("is expecting another player to take a turn");
 		
 		cut.takeTurn(matchToken, playerOneToken, new byte[0]);
 	}

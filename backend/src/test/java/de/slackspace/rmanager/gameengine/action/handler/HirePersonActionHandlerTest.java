@@ -3,7 +3,9 @@ package de.slackspace.rmanager.gameengine.action.handler;
 import java.math.BigDecimal;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import de.slackspace.rmanager.gameengine.action.HirePersonAction;
@@ -19,7 +21,10 @@ import de.slackspace.rmanager.gameengine.exception.GameException;
 
 public class HirePersonActionHandlerTest {
 
-	@Test(expected=GameException.class)
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
+	
+	@Test
 	public void whenPlayerHasNoEstateShouldThrowException() {
 		HirePersonActionHandler cut = new HirePersonActionHandler();
 		
@@ -28,10 +33,13 @@ public class HirePersonActionHandlerTest {
 		RManagerPlayer player = new RManagerPlayer();
 		GameState state = Mockito.mock(GameState.class);
 		
+		exception.expect(GameException.class);
+		exception.expectMessage("The player does not own a building");
+		
 		cut.handle(action, player, state);
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenPersonDoesNotExistsThrowException() {
 		HirePersonActionHandler cut = new HirePersonActionHandler();
 		
@@ -45,6 +53,9 @@ public class HirePersonActionHandlerTest {
 		player.getEstates().add(estate);
 		
 		GameState state = Mockito.mock(GameState.class);
+		
+		exception.expect(GameException.class);
+		exception.expectMessage("does not exist on free market");
 		
 		cut.handle(action, player, state);
 	}
@@ -73,7 +84,7 @@ public class HirePersonActionHandlerTest {
 		Assert.assertEquals(person, building.getDepartmentByType(DepartmentType.Kitchen).getPersonnel().get(0));
 	}
 	
-	@Test(expected=GameException.class)
+	@Test
 	public void whenHireDuplicatePersonShouldThrowException() {
 		HirePersonActionHandler cut = new HirePersonActionHandler();
 		
@@ -93,8 +104,9 @@ public class HirePersonActionHandlerTest {
 		GameState state = Mockito.mock(GameState.class);
 		Mockito.when(state.getAvailablePersonnelById(person.getId())).thenReturn(person);
 		
-		cut.handle(action, player, state);
+		exception.expect(GameException.class);
+		exception.expectMessage("is already hired");
 		
-		Assert.assertEquals(1, building.getDepartmentByType(DepartmentType.Kitchen).getPersonnel().size());
+		cut.handle(action, player, state);
 	}
 }
