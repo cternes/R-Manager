@@ -237,7 +237,7 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    }
 	    
 	    // add to actions
-	    $scope.player.actions.push({type: 7, buildingId: buildingId, cabinetId: cabinet.id,	quantity: cabinet.quantity});
+	    $scope.player.actions.push({type: 7, buildingId: buildingId, cabinetId: cabinet.id,	quantity: cabinet.quantityToBuy});
 	    
 	    // reduce money
 	    $scope.player.money = $scope.player.money - (cabinet.quantity * cabinet.price);
@@ -260,7 +260,7 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 		    $location.url('/match/' + matchId + '/turnsummary');
 		})
 		.error(function(data, status, headers, config) {
-		    // todo
+		    showError($scope, $timeout, data.message);
 		});
 	};
 	
