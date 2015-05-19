@@ -202,7 +202,7 @@ public class BuyCabinetActionHandlerTest {
 		cut.handle(actionOne, player, state);
 		
 		exception.expect(GameException.class);
-		exception.expectMessage("Not enough free space units in department to add cabinet with");
+		exception.expectMessage("Not enough free space units in department 'Dininghall' to add cabinet with");
 		
 		cut.handle(actionTwo, player, state);
 	}

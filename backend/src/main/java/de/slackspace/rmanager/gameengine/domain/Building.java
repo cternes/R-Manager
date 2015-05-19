@@ -7,8 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class Building {
 
+	private Log logger = LogFactory.getLog(getClass());
+	
 	private String id;
 	private BuildingType buildingType;
 	private Map<DepartmentType, Department> departments = new HashMap<>();
@@ -91,6 +96,8 @@ public class Building {
 		BigDecimal meals = BigDecimal.ZERO;
 		
 		for (Entry<DepartmentType, Department> entry : departments.entrySet()) {
+			logger.debug("Building: " + id + " Department" + entry.getKey() + ": " + entry.getValue().getMonthlyOutput());
+			 
 			meals = meals.add(entry.getValue().getMonthlyOutput());
 		}
 		
