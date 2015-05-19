@@ -41,7 +41,7 @@ public class BuyCabinetActionHandler implements GameActionHandler {
 		
 		Department department = building.getDepartmentByType(cabinet.getDepartmentType());
 		if(!department.canAddCabinet(cabinet.getRequiredSpaceUnits() * buyAction.getQuantity())) {
-			throw new GameException("Not enough free space units in department to add cabinet with '" + cabinet.getRequiredSpaceUnits() * buyAction.getQuantity() + "' required space units");
+			throw new GameException("Not enough free space units in department '" + cabinet.getDepartmentType() + "' to add cabinet with '" + cabinet.getRequiredSpaceUnits() * buyAction.getQuantity() + "' required space units");
 		}
 		
 		BigDecimal totalPrice = calculateTotalPrice(cabinet.getPrice(), buyAction.getQuantity());
