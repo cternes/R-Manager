@@ -33,8 +33,8 @@ appControllers.controller('LoginController', ['$scope', '$http', '$location', '$
 	};
     }]);
 
-appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$timeout', '$interval', 'playerService', 
-    function($scope, $http, $location, $timeout, $interval, playerService) {
+appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$timeout', '$interval', 'playerService', 'matchService',
+    function($scope, $http, $location, $timeout, $interval, playerService, matchService) {
 	
 	$scope.playerToken = playerService.checkPlayerToken();
 
@@ -83,6 +83,14 @@ appControllers.controller('LobbyController', ['$scope', '$http', '$location', '$
 		.error(function(data, status, headers, config) {
 		    // todo
 		});
+	};
+	
+	$scope.openMatch = function(matchId) {
+	    matchService.clearMatch(matchId);
+	    
+	    matchService.getMatch(matchId).then(function() {
+		$location.url('#/match/' + matchId);
+	    });
 	};
 	
 	function getActiveMatches() {
