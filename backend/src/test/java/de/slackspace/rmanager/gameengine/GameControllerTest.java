@@ -287,6 +287,6 @@ public class GameControllerTest {
 		Assert.assertEquals(personOne.getId(), updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getPersonnel().get(0).getId());
 		Assert.assertEquals(1, updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getCabinets().size());
 		
-		Assert.assertEquals(new BigDecimal("356500.00"), updatedState.getPlayerOne().getMoney());
+		Assert.assertEquals(new BigDecimal("358650.00"), updatedState.getPlayerOne().getMoney());
 	}
 }

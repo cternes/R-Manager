@@ -110,9 +110,6 @@ public class GameController {
 			}
 		}
 		
-		// refresh personnel in cities
-		refreshCityPersonnel(state);
-		
 		// pay monthly costs
 		for (Building building : player.getBuildings()) {
 			player.pay(building.getMonthlyPersonnelCosts());
@@ -135,7 +132,7 @@ public class GameController {
 			player.getTurnStatistics().increaseCustomers(meals);
 			logger.debug("Monthly output of building '" + building.getId() + "' = " + meals);
 			
-			BigDecimal earnings = meals.multiply(new BigDecimal(10).multiply(city.getRateOfPriceIncrease())); // meal price = 10
+			BigDecimal earnings = meals.multiply(new BigDecimal(20).multiply(city.getRateOfPriceIncrease())); // meal price = 10
 			player.earn(earnings);
 			player.getTurnStatistics().increaseEarnings(earnings);
 			
@@ -143,6 +140,9 @@ public class GameController {
 		}
 		
 		logger.debug("TurnStatistics: " + player.getTurnStatistics().toString());
+		
+		// refresh personnel in cities
+		refreshCityPersonnel(state);
 		
 		return state;
 	}
