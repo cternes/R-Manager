@@ -6,6 +6,7 @@ import java.util.List;
 import de.slackspace.rmanager.gameengine.action.handler.BuyBuildingActionHandler;
 import de.slackspace.rmanager.gameengine.action.handler.BuyCabinetActionHandler;
 import de.slackspace.rmanager.gameengine.action.handler.BuyEstateActionHandler;
+import de.slackspace.rmanager.gameengine.action.handler.FirePersonActionHandler;
 import de.slackspace.rmanager.gameengine.action.handler.GameActionHandler;
 import de.slackspace.rmanager.gameengine.action.handler.HirePersonActionHandler;
 import de.slackspace.rmanager.gameengine.service.BuildingTypeService;
@@ -26,6 +27,7 @@ public class GameControllerFactory {
 		actionHandlers.add(new BuyBuildingActionHandler());
 		actionHandlers.add(new HirePersonActionHandler());
 		actionHandlers.add(new BuyCabinetActionHandler());
+		actionHandlers.add(new FirePersonActionHandler());
 		
 		return new GameController(cityService, personnelService, cabinetService, buildingTypeService, actionHandlers);
 	}

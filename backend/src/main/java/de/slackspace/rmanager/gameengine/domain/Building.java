@@ -115,5 +115,17 @@ public class Building {
 	public Map<DepartmentType, Department> getDepartments() {
 		return departments;
 	}
+	
+	public Person getPersonById(String id) {
+		List<Person> personnel = getPersonnel();
+		
+		for (Person person : personnel) {
+			if(person.getId().equals(id)) {
+				return person;
+			}
+		}
+		
+		return null;
+	}
 
 }
