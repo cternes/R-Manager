@@ -216,6 +216,21 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    $scope.player.actions.push({type: 5, personId: personId, buildingId: buildingId});
 	};
 	
+	$scope.firePerson = function(personId) {
+	    debugger;
+	    var person = getItemById(personId, $scope.building.personnel);
+	    
+	    var buildingId = $routeParams.buildingId;
+	    var building = getBuildingById(buildingId, $scope.player.estates);
+	    
+	    // remove from department
+	    removeItemById(personId, building.departments[person.departmentType].personnel);
+	    removeItemById(personId, building.personnel);
+	    
+	    // add to actions
+	    $scope.player.actions.push({type: 6, personId: personId, buildingId: buildingId});
+	};
+	
 	$scope.increaseCabinetQuantity = function(cabinet) {
 	    cabinet.quantityToBuy = cabinet.quantityToBuy + 1;
 	};
@@ -280,6 +295,21 @@ appControllers.controller('MatchController', ['$scope', '$http', '$location', '$
 	    }
 	    
 	    return undefined;
+	}
+	
+	function removeItemById(id, list) {
+	    var idx = -1;
+	    
+	    // get index of item with id
+	    for (var i=0;i < list.length;i++) {
+		if(list[i].id === id) {
+		    idx = i;
+		}
+	    }
+	    
+	    if(idx !== -1) {
+		list.splice(idx, 1);
+	    }
 	}
 	
 	function getBuildingById(id, estates) {

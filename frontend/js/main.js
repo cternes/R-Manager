@@ -46,6 +46,10 @@ app.config(['$routeProvider',
 		  templateUrl: 'views/employees.html',
 		  controller: 'MatchController'
 		}).
+		when('/match/:matchId/employees/:buildingId/current', {
+		  templateUrl: 'views/current-employees.html',
+		  controller: 'MatchController'
+		}).
 		when('/match/:matchId/employees/:buildingId/hire', {
 		  templateUrl: 'views/hire-employees.html',
 		  controller: 'MatchController'
