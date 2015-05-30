@@ -38,7 +38,7 @@ public class RManagerGameEngineTest {
 	
 	@Test
 	public void whenStartingNewGameTryToSerializeGameState() {
-		GameState gameState = GameControllerFactory.getGameControllerInstance().startNewGame("p1", "p2");
+		GameState gameState = ObjectFactory.getGameControllerInstance().startNewGame("p1", "p2");
 		
 		StringWriter stringWriter = new StringWriter();
 		ObjectMapper mapper = new ObjectMapper();

@@ -24,7 +24,8 @@ public class RManagerGameEngine implements GameEngine {
 
 	private Log logger = LogFactory.getLog(getClass());
 	
-	GameController controller = GameControllerFactory.getGameControllerInstance();
+	GameActionDeserializer actionDeserializer = ObjectFactory.getGameActionDeserializer();
+	GameController controller = ObjectFactory.getGameControllerInstance();
 	
 	@Override
 	public byte[] startNewGame(String playerOneName, String playerTwoName) {
@@ -75,7 +76,7 @@ public class RManagerGameEngine implements GameEngine {
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			
 			SimpleModule module = new SimpleModule();
-			module.addDeserializer(List.class, new GameActionDeserializer());
+			module.addDeserializer(List.class, actionDeserializer);
 			mapper.registerModule(module);
 			
 			return mapper.readValue(matchData, List.class);

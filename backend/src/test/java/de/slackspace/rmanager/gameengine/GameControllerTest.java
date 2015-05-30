@@ -33,7 +33,7 @@ public class GameControllerTest {
 	
 	@Test
 	public void whenStartingNewGameShouldReturnValidGameState() {
-		GameState gameState = GameControllerFactory.getGameControllerInstance().startNewGame("p1", "p2");
+		GameState gameState = ObjectFactory.getGameControllerInstance().startNewGame("p1", "p2");
 		
 		RManagerPlayer playerOne = gameState.getPlayerOne();
 		Assert.assertEquals(new BigDecimal(1_500_000), playerOne.getMoney());
@@ -70,7 +70,7 @@ public class GameControllerTest {
 	
 	@Test
 	public void whenEndingTurnWithCommandsShouldValidateCommandsAndExecute() {
-		GameController cut = GameControllerFactory.getGameControllerInstance();
+		GameController cut = ObjectFactory.getGameControllerInstance();
 		GameState gameState = cut.startNewGame("p1", "p2");
 		
 		Estate estateToBuy = gameState.getCities().get(4).getEstates().get(2);
@@ -88,7 +88,7 @@ public class GameControllerTest {
 	
 	@Test
 	public void whenEndingTurnWithInvalidIdInCommandShouldThrowException() {
-		GameController cut = GameControllerFactory.getGameControllerInstance();
+		GameController cut = ObjectFactory.getGameControllerInstance();
 		GameState gameState = cut.startNewGame("p1", "p2");
 		
 		List<GameAction> actions = new ArrayList<>();
@@ -102,7 +102,7 @@ public class GameControllerTest {
 	
 	@Test
 	public void whenEndingTurnWithNegativeMoneyShouldThrowException() {
-		GameController cut = GameControllerFactory.getGameControllerInstance();
+		GameController cut = ObjectFactory.getGameControllerInstance();
 		GameState gameState = cut.startNewGame("p1", "p2");
 		
 		List<GameAction> actions = new ArrayList<>();
@@ -123,7 +123,7 @@ public class GameControllerTest {
 	
 	@Test
 	public void whenEndingTurnWithDuplicateEstatesShouldThrowException() {
-		GameController cut = GameControllerFactory.getGameControllerInstance();
+		GameController cut = ObjectFactory.getGameControllerInstance();
 		GameState gameState = cut.startNewGame("p1", "p2");
 		
 		List<GameAction> actions = new ArrayList<>();
@@ -138,7 +138,7 @@ public class GameControllerTest {
 	
 	@Test
 	public void whenEndingTurnShouldSetNewAvailablePersonnel() {
-		GameController cut = GameControllerFactory.getGameControllerInstance();
+		GameController cut = ObjectFactory.getGameControllerInstance();
 		GameState gameState = cut.startNewGame("p1", "p2");
 		
 		String personId = gameState.getCities().get(0).getAvailablePersonnel().get(0).getId();
@@ -150,7 +150,7 @@ public class GameControllerTest {
 	
 	@Test
 	public void whenEndingTurnShouldExecuteAllBuyCommands() {
-		GameController cut = GameControllerFactory.getGameControllerInstance();
+		GameController cut = ObjectFactory.getGameControllerInstance();
 		GameState gameState = cut.startNewGame("p1", "p2");
 
 		Person person = new Person(new BigDecimal(250), 30, 5, 5, DepartmentType.Kitchen);
@@ -212,7 +212,7 @@ public class GameControllerTest {
 	
 	@Test
 	public void simulateATurn() {
-		GameController cut = GameControllerFactory.getGameControllerInstance();
+		GameController cut = ObjectFactory.getGameControllerInstance();
 		GameState gameState = cut.startNewGame("p1", "p2");
 
 		Person personOne = new Person(new BigDecimal(2550), 30, 8, 8, DepartmentType.Kitchen);
