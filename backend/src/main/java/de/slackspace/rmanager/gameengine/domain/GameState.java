@@ -1,6 +1,7 @@
 package de.slackspace.rmanager.gameengine.domain;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -82,13 +83,10 @@ public class GameState {
 	}
 	
 	public boolean isBuildingIdExisting(String id) {
-		for (String buildingId : buildingIds) {
-			if(buildingId.equals(id)) {
-				return true; 
-			}
-		}
-		
-		return false;
+		return buildingIds.stream()
+			.filter(i -> i.equals(id))
+			.findFirst()
+			.isPresent();
 	}
 	
 	public City getCityById(String id) {
@@ -116,13 +114,7 @@ public class GameState {
 	}
 	
 	public Share getShareById(String id) {
-		for (Share share : shares) {
-			if(share.getId().equals(id)) {
-				return share;
-			}
-		}
-		
-		return null;
+		return findById(shares, id);
 	}
 
 	public List<BuildingType> getBuildingTypes() {
@@ -137,7 +129,7 @@ public class GameState {
 		return findById(buildingTypes, id);
 	}
 	
-	public <T extends GameEntity> T findById(List<T> list, String id) {
+	public <T extends GameEntity> T findById(Collection<T> list, String id) {
 		return list.stream()
 				.filter(i -> i.getId().equals(id))
 				.findFirst()
