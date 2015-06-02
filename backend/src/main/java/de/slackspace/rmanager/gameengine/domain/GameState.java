@@ -92,12 +92,7 @@ public class GameState {
 	}
 	
 	public City getCityById(String id) {
-		for (City city : cities) {
-			if(city.getId().equals(id)) {
-				return city;
-			}
-		}
-		return null;
+		return findById(cities, id);
 	}
 
 	public List<String> getBuildingIds() {
@@ -139,12 +134,14 @@ public class GameState {
 	}
 
 	public BuildingType getBuildingTypeById(String id) {
-		for (BuildingType buildingType : buildingTypes) {
-			if(buildingType.getId().equals(id)) {
-				return buildingType;
-			}
-		}
-		return null;
+		return findById(buildingTypes, id);
+	}
+	
+	public <T extends GameEntity> T findById(List<T> list, String id) {
+		return list.stream()
+				.filter(i -> i.getId().equals(id))
+				.findFirst()
+				.get();
 	}
 
 }

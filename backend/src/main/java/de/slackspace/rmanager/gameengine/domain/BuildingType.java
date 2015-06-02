@@ -3,7 +3,7 @@ package de.slackspace.rmanager.gameengine.domain;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class BuildingType {
+public class BuildingType implements GameEntity {
 
 	private String id = UUID.randomUUID().toString();
 	private String name;

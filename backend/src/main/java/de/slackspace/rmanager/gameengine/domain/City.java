@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-public class City {
+public class City implements GameEntity {
 
 	private String id = UUID.randomUUID().toString();
 	private String name;

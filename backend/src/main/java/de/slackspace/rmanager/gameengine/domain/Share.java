@@ -2,7 +2,7 @@ package de.slackspace.rmanager.gameengine.domain;
 
 import java.math.BigDecimal;
 
-public class Share {
+public class Share implements GameEntity {
 
 	private String id;
 	private int sharePercent;
