@@ -1,5 +1,8 @@
 package de.slackspace.rmanager.gameengine;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,36 +39,28 @@ public class GameControllerTest {
 		GameState gameState = ObjectFactory.getGameControllerInstance().startNewGame("p1", "p2");
 		
 		RManagerPlayer playerOne = gameState.getPlayerOne();
-		Assert.assertEquals(new BigDecimal(1_500_000), playerOne.getMoney());
-		Assert.assertEquals("Munich", playerOne.getCurrentCity().getName());
-		Assert.assertEquals("p1", playerOne.getName());
+		assertThat(new BigDecimal(1_500_000), equalTo(playerOne.getMoney()));
+		assertThat("Munich", equalTo(playerOne.getCurrentCity().getName()));
+		assertThat("p1", equalTo(playerOne.getName()));
 		
 		RManagerPlayer playerTwo = gameState.getPlayerTwo();
-		Assert.assertEquals(new BigDecimal(1_500_000), playerTwo.getMoney());
-		Assert.assertEquals("Munich", playerTwo.getCurrentCity().getName());
-		Assert.assertEquals("p2", playerTwo.getName());
+		assertThat(new BigDecimal(1_500_000), equalTo(playerTwo.getMoney()));
+		assertThat("Munich", equalTo(playerTwo.getCurrentCity().getName()));
+		assertThat("p2", equalTo(playerTwo.getName()));
 		
 		int numEstates = 0;
 		for (City city : gameState.getCities()) {
-			Assert.assertEquals(6, city.getAvailablePersonnel().size());
+			assertThat(6, equalTo(city.getAvailablePersonnel().size()));
 			numEstates += city.getEstates().size();
-			
-			Assert.assertEquals(10, city.getAvailableCabinetByType(DepartmentType.Kitchen).size());
-			Assert.assertEquals(9, city.getAvailableCabinetByType(DepartmentType.Dininghall).size());
-			Assert.assertEquals(7, city.getAvailableCabinetByType(DepartmentType.Facilities).size());
-			Assert.assertEquals(10, city.getAvailableCabinetByType(DepartmentType.Laundry).size());
-			Assert.assertEquals(10, city.getAvailableCabinetByType(DepartmentType.Reefer).size());
-			
-//			System.out.println("");
-//			System.out.println(city.getName());
-//			System.out.println("===========");
-//			
-//			for (Estate estate: city.getEstates()) {
-//				System.out.println("" + estate.getEstateType() + ":" + estate.getTotalPrice());
-//			}
+
+			assertThat(10, equalTo(city.getAvailableCabinetByType(DepartmentType.Kitchen).size()));
+			assertThat(9, equalTo(city.getAvailableCabinetByType(DepartmentType.Dininghall).size()));
+			assertThat(7, equalTo(city.getAvailableCabinetByType(DepartmentType.Facilities).size()));
+			assertThat(10, equalTo(city.getAvailableCabinetByType(DepartmentType.Laundry).size()));
+			assertThat(10, equalTo(city.getAvailableCabinetByType(DepartmentType.Reefer).size()));
 		}
-		
-		Assert.assertEquals(numEstates, gameState.getBuildingIds().size());
+
+		assertThat(numEstates, equalTo(gameState.getBuildingIds().size()));
 	}
 	
 	@Test
