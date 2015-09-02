@@ -1,14 +1,19 @@
 package de.slackspace.rmanager.gameengine;
 
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -18,6 +23,7 @@ import de.slackspace.rmanager.gameengine.action.BuyCabinetAction;
 import de.slackspace.rmanager.gameengine.action.BuyEstateAction;
 import de.slackspace.rmanager.gameengine.action.GameAction;
 import de.slackspace.rmanager.gameengine.action.HirePersonAction;
+import de.slackspace.rmanager.gameengine.domain.Building;
 import de.slackspace.rmanager.gameengine.domain.BuildingType;
 import de.slackspace.rmanager.gameengine.domain.Cabinet;
 import de.slackspace.rmanager.gameengine.domain.City;
@@ -50,17 +56,17 @@ public class GameControllerTest {
 		
 		int numEstates = 0;
 		for (City city : gameState.getCities()) {
-			assertThat(6, equalTo(city.getAvailablePersonnel().size()));
+			assertThat(city.getAvailablePersonnel(), hasSize(6));
 			numEstates += city.getEstates().size();
 
-			assertThat(10, equalTo(city.getAvailableCabinetByType(DepartmentType.Kitchen).size()));
-			assertThat(9, equalTo(city.getAvailableCabinetByType(DepartmentType.Dininghall).size()));
-			assertThat(7, equalTo(city.getAvailableCabinetByType(DepartmentType.Facilities).size()));
-			assertThat(10, equalTo(city.getAvailableCabinetByType(DepartmentType.Laundry).size()));
-			assertThat(10, equalTo(city.getAvailableCabinetByType(DepartmentType.Reefer).size()));
+			assertThat(city.getAvailableCabinetByType(DepartmentType.Kitchen), hasSize(10));
+			assertThat(city.getAvailableCabinetByType(DepartmentType.Dininghall), hasSize(9));
+			assertThat(city.getAvailableCabinetByType(DepartmentType.Facilities), hasSize(7));
+			assertThat(city.getAvailableCabinetByType(DepartmentType.Laundry), hasSize(10));
+			assertThat(city.getAvailableCabinetByType(DepartmentType.Reefer), hasSize(10));
 		}
 
-		assertThat(numEstates, equalTo(gameState.getBuildingIds().size()));
+		assertThat(gameState.getBuildingIds(), hasSize(numEstates));
 	}
 	
 	@Test
@@ -76,9 +82,9 @@ public class GameControllerTest {
 		GameState updatedState = cut.endTurn(gameState, "p1", actions);
 		
 		BigDecimal expectedMoney = new BigDecimal(1_500_000).subtract(estateToBuy.getTotalPrice());
-		Assert.assertEquals(expectedMoney, updatedState.getPlayerOne().getMoney());
-		Assert.assertEquals(estateToBuy.getId(), updatedState.getPlayerOne().getEstates().iterator().next().getId());
-		Assert.assertEquals(1, updatedState.getPlayerOne().getEstates().size());
+		assertThat(expectedMoney, equalTo(updatedState.getPlayerOne().getMoney()));
+		assertThat(estateToBuy.getId(), equalTo(updatedState.getPlayerOne().getEstates().iterator().next().getId()));
+		assertThat(updatedState.getPlayerOne().getEstates(), hasSize(1));
 	}
 	
 	@Test
@@ -139,8 +145,8 @@ public class GameControllerTest {
 		String personId = gameState.getCities().get(0).getAvailablePersonnel().get(0).getId();
 		
 		GameState updatedState = cut.endTurn(gameState, "p1", new ArrayList<GameAction>());
-		Assert.assertNull(updatedState.getAvailablePersonnelById(personId));
-		Assert.assertEquals(6, updatedState.getCities().get(0).getAvailablePersonnel().size());
+		assertThat(updatedState.getAvailablePersonnelById(personId), is(nullValue()));
+		assertThat(6, equalTo(updatedState.getCities().get(0).getAvailablePersonnel().size()));
 	}
 	
 	@Test
@@ -188,21 +194,23 @@ public class GameControllerTest {
 		actions.add(new BuyCabinetAction("abc", cabinet.getId(), 2));
 		
 		GameState updatedState = cut.endTurn(gameState, "p1", actions);
+
+		assertThat(updatedState.getPlayerOne().getEstates(), hasSize(1));
+		assertThat(estate.getId(), equalTo(updatedState.getPlayerOne().getEstates().iterator().next().getId()));
+		assertTrue(estate.isSold());
+		assertTrue(updatedState.getEstateById(estate.getId()).isSold());
 		
-		Assert.assertEquals(1, updatedState.getPlayerOne().getEstates().size());
-		Assert.assertEquals(estate.getId(), updatedState.getPlayerOne().getEstates().iterator().next().getId());
-		Assert.assertEquals(true, estate.isSold());
-		Assert.assertEquals(true, updatedState.getEstateById(estate.getId()).isSold());
+		assertThat(1, equalTo(updatedState.getPlayerOne().getBuildings().size()));
+		assertThat(updatedState.getPlayerOne().getBuildingById("abc"), not(nullValue()));
 		
-		Assert.assertEquals(1, updatedState.getPlayerOne().getBuildings().size());
-		Assert.assertNotNull(updatedState.getPlayerOne().getBuildingById("abc"));
-		
-		Assert.assertEquals(person.getId(), updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getPersonnel().get(0).getId());
-		Assert.assertEquals(cabinet.getId(), updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Dininghall).getCabinets().iterator().next().getId());
-		Assert.assertEquals(1, updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Dininghall).getCabinets().size());
-		Assert.assertEquals(2, updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Dininghall).getCabinets().iterator().next().getQuantity());
-		
-		Assert.assertEquals(new BigDecimal(948250), updatedState.getPlayerOne().getMoney());
+		Building building = updatedState.getPlayerOne().getBuildingById("abc");
+		assertThat(building.getDepartmentByType(DepartmentType.Kitchen).getPersonnel(), hasItem(person));
+		assertThat(building.getDepartmentByType(DepartmentType.Dininghall).getCabinets(), hasItem(cabinet));
+
+		assertThat(building.getDepartmentByType(DepartmentType.Dininghall).getCabinets(), hasSize(1));
+		assertThat(2, equalTo(building.getDepartmentByType(DepartmentType.Dininghall).getCabinets().iterator().next().getQuantity()));
+
+		assertThat(new BigDecimal(948250), equalTo(updatedState.getPlayerOne().getMoney()));
 	}
 	
 	@Test
@@ -273,15 +281,17 @@ public class GameControllerTest {
 		
 		GameState updatedState = cut.endTurn(gameState, "p1", actions);
 		
-		Assert.assertEquals(1, updatedState.getPlayerOne().getEstates().size());
-		Assert.assertEquals(estate.getId(), updatedState.getPlayerOne().getEstates().iterator().next().getId());
+		assertThat(updatedState.getPlayerOne().getEstates(), hasSize(1));
+		assertThat(updatedState.getPlayerOne().getEstates(), hasItem(estate));
 		
-		Assert.assertEquals(1, updatedState.getPlayerOne().getBuildings().size());
-		Assert.assertNotNull(updatedState.getPlayerOne().getBuildingById("abc"));
-		
-		Assert.assertEquals(personOne.getId(), updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getPersonnel().get(0).getId());
-		Assert.assertEquals(1, updatedState.getPlayerOne().getBuildingById("abc").getDepartmentByType(DepartmentType.Kitchen).getCabinets().size());
-		
-		Assert.assertEquals(new BigDecimal("358650.00"), updatedState.getPlayerOne().getMoney());
+		assertThat(updatedState.getPlayerOne().getBuildings(), hasSize(1));
+
+		Building building = updatedState.getPlayerOne().getBuildingById("abc");
+		assertThat(building, not(nullValue()));
+
+		assertThat(building.getDepartmentByType(DepartmentType.Kitchen).getPersonnel(), hasItem(personOne));
+		assertThat(building.getDepartmentByType(DepartmentType.Kitchen).getCabinets(), hasSize(1));
+
+		assertThat(new BigDecimal("358650.00"), equalTo(updatedState.getPlayerOne().getMoney()));
 	}
 }
