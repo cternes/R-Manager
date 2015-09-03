@@ -1,5 +1,10 @@
 package de.slackspace.rmanager.gameengine.action.handler;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +15,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
+import de.slackspace.rmanager.gameengine.action.BuyCabinetAction;
 import de.slackspace.rmanager.gameengine.action.BuyEstateAction;
 import de.slackspace.rmanager.gameengine.domain.City;
 import de.slackspace.rmanager.gameengine.domain.Estate;
@@ -27,7 +33,7 @@ public class BuyEstateActionHandlerTest {
 	
 	@Test
 	public void whenCanHandleIsCalledWithCorrectClassShouldReturnTrue() {
-		Assert.assertTrue(cut.canHandle(new BuyEstateAction("1234")));
+		assertThat(cut.canHandle(new BuyEstateAction("1234")), equalTo(true));
 	}
 	
 	@Test
@@ -51,10 +57,10 @@ public class BuyEstateActionHandlerTest {
 		cut.handle(action, player, state);
 		
 		BigDecimal expectedMoney = new BigDecimal(1_500_000).subtract(estate.getTotalPrice());
-		Assert.assertEquals(expectedMoney, player.getMoney());
-		Assert.assertEquals(estate.getId(), player.getEstates().iterator().next().getId());
-		Assert.assertEquals(1, player.getEstates().size());
-		Assert.assertEquals(true, state.getEstateById(estate.getId()).isSold());
+		assertThat(expectedMoney, equalTo(player.getMoney()));
+		assertThat(player.getEstates(), hasItem(estate));
+		assertThat(player.getEstates(), hasSize(1));
+		assertThat(state.getEstateById(estate.getId()).isSold(), equalTo(true));
 	}
 	
 	@Test

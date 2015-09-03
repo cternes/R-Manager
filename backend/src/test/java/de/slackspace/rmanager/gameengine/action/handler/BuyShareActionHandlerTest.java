@@ -1,5 +1,10 @@
 package de.slackspace.rmanager.gameengine.action.handler;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -35,10 +40,10 @@ public class BuyShareActionHandlerTest {
 		
 		cut.handle(action, player, state);
 		
-		Assert.assertEquals(1, player.getShares().size());
-		Assert.assertEquals(share.getId(), player.getShares().iterator().next().getId());
-		Assert.assertEquals(10, player.getShares().iterator().next().getSharePercent());
-		Assert.assertEquals(15, share.getSharePercent());
+		assertThat(player.getShares(), hasSize(1));
+		assertThat(share.getId(), equalTo(player.getShares().iterator().next().getId()));
+		assertThat(10, equalTo(player.getShares().iterator().next().getSharePercent()));
+		assertThat(15, equalTo(share.getSharePercent()));
 	}
 	
 	@Test
