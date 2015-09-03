@@ -1,9 +1,11 @@
 package de.slackspace.rmanager.gameengine.action.handler;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -27,7 +29,7 @@ public class BuyBuildingActionHandlerTest {
 	
 	@Test
 	public void whenCanHandleIsCalledWithCorrectClassShouldReturnTrue() {
-		Assert.assertTrue(cut.canHandle(new BuyBuildingAction("", "", "")));
+		assertThat(cut.canHandle(new BuyBuildingAction("", "", "")), equalTo(true));
 	}
 	
 	@Test
@@ -48,10 +50,10 @@ public class BuyBuildingActionHandlerTest {
 		BuyBuildingAction action = new BuyBuildingAction(estate.getId(), "abc", buildingType.getId());
 		
 		cut.handle(action, player, state);
-		
-		Assert.assertEquals(new BigDecimal(1_000_000), player.getMoney());
-		Assert.assertEquals(1, player.getEstates().iterator().next().getBuilding().getBuildingType().getRequiredParcels());
-		Assert.assertEquals("1234", player.getEstates().iterator().next().getBuilding().getCityId());
+
+		assertThat(new BigDecimal(1_000_000), equalTo(player.getMoney()));
+		assertThat(1, equalTo(player.getEstates().iterator().next().getBuilding().getBuildingType().getRequiredParcels()));
+		assertThat("1234", equalTo(player.getEstates().iterator().next().getBuilding().getCityId()));
 		Mockito.verify(state).removeBuildingId("abc");
 	}
 	
@@ -69,9 +71,9 @@ public class BuyBuildingActionHandlerTest {
 		exception.expectMessage("could not be found");
 		
 		cut.handle(action, player, state);
-		
-		Assert.assertEquals(new BigDecimal(1_000_000), player.getMoney());
-		Assert.assertEquals(1, player.getEstates().iterator().next().getBuilding().getBuildingType());
+
+		assertThat(new BigDecimal(1_000_000), equalTo(player.getMoney()));
+		assertThat(1, equalTo(player.getEstates().iterator().next().getBuilding().getBuildingType()));
 	}
 	
 	@Test

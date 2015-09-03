@@ -1,5 +1,9 @@
 package de.slackspace.rmanager.gameengine.action.handler;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
+
 import java.math.BigDecimal;
 
 import org.junit.Assert;
@@ -28,7 +32,7 @@ public class BuyCabinetActionHandlerTest {
 	
 	@Test
 	public void whenCanHandleIsCalledWithCorrectClassShouldReturnTrue() {
-		Assert.assertTrue(cut.canHandle(new BuyCabinetAction("123", "456", 10)));
+		assertThat(cut.canHandle(new BuyCabinetAction("123", "456", 10)), equalTo(true));
 	}
 	
 	@Test
@@ -51,8 +55,8 @@ public class BuyCabinetActionHandlerTest {
 		
 		cut.handle(action, player, state);
 		
-		Assert.assertEquals(1, building.getDepartmentByType(DepartmentType.Kitchen).getCabinets().size());
-		Assert.assertEquals(new BigDecimal(200), player.getMoney());
+		assertThat(building.getDepartmentByType(DepartmentType.Kitchen).getCabinets(), hasSize(1));
+		assertThat(new BigDecimal(200), equalTo(player.getMoney()));
 	}
 	
 	@Test
@@ -117,10 +121,6 @@ public class BuyCabinetActionHandlerTest {
 		cut.handle(action, player, state);
 	}
 	
-	public void whenDepartmentIsFullThrowException() {
-		
-	}
-
 	@Test
 	public void whenBuyingMultipleCabinetsShouldCalculateCorrectPrice() {
 		Cabinet cabinet = new Cabinet(new BigDecimal(200), BigDecimal.TEN, 5, DepartmentType.Dininghall);
@@ -140,10 +140,10 @@ public class BuyCabinetActionHandlerTest {
 		Mockito.when(state.getAvailableCabinetById(cabinet.getId())).thenReturn(cabinet);
 		
 		cut.handle(action, player, state);
-		
-		Assert.assertEquals(1, building.getDepartmentByType(DepartmentType.Dininghall).getCabinets().size());
-		Assert.assertEquals(10, building.getDepartmentByType(DepartmentType.Dininghall).getCabinets().iterator().next().getQuantity());
-		Assert.assertEquals(new BigDecimal(2000), player.getMoney());
+
+		assertThat(building.getDepartmentByType(DepartmentType.Dininghall).getCabinets(), hasSize(1));
+		assertThat(10, equalTo(building.getDepartmentByType(DepartmentType.Dininghall).getCabinets().iterator().next().getQuantity()));
+		assertThat(new BigDecimal(2000), equalTo(player.getMoney()));
 	}
 	
 	@Test
@@ -172,10 +172,10 @@ public class BuyCabinetActionHandlerTest {
 		player.setMoney(new BigDecimal(4000));
 		BuyCabinetAction actionTwo = new BuyCabinetAction(building.getId(), cabinet.getId(), 3);
 		cut.handle(actionTwo, player, state);
-		
-		Assert.assertEquals(1, building.getDepartmentByType(DepartmentType.Dininghall).getCabinets().size());
-		Assert.assertEquals(8, building.getDepartmentByType(DepartmentType.Dininghall).getCabinets().iterator().next().getQuantity());
-		Assert.assertEquals(new BigDecimal(3400), player.getMoney());
+
+		assertThat(building.getDepartmentByType(DepartmentType.Dininghall).getCabinets(), hasSize(1));
+		assertThat(building.getDepartmentByType(DepartmentType.Dininghall).getCabinets().iterator().next().getQuantity(), equalTo(8));
+		assertThat(new BigDecimal(3400), equalTo(player.getMoney()));
 	}
 	
 	@Test
