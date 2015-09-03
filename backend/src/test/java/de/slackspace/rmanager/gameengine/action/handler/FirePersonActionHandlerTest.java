@@ -1,8 +1,10 @@
 package de.slackspace.rmanager.gameengine.action.handler;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
+
 import java.math.BigDecimal;
 
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -79,11 +81,11 @@ public class FirePersonActionHandlerTest {
 		
 		GameState state = Mockito.mock(GameState.class);
 		
-		Assert.assertEquals(1, building.getDepartmentByType(DepartmentType.Kitchen).getPersonnel().size());
+		assertThat(building.getDepartmentByType(DepartmentType.Kitchen).getPersonnel(), hasSize(1));
 		
 		cut.handle(action, player, state);
 		
-		Assert.assertEquals(0, building.getDepartmentByType(DepartmentType.Kitchen).getPersonnel().size());
+		assertThat(building.getDepartmentByType(DepartmentType.Kitchen).getPersonnel(), hasSize(0));
 	}
 	
 }
