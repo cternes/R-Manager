@@ -5,7 +5,6 @@ import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 public class PersonTest {

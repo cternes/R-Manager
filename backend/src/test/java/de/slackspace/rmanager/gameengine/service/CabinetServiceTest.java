@@ -1,8 +1,10 @@
 package de.slackspace.rmanager.gameengine.service;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
+
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import de.slackspace.rmanager.gameengine.domain.Cabinet;
@@ -16,34 +18,34 @@ public class CabinetServiceTest {
 	public void whenCreateKitchenCabinetShouldReturnCabinet() {
 		List<Cabinet> cabinets = cut.createCabinet(DepartmentType.Kitchen);
 		
-		Assert.assertEquals(10, cabinets.size());
+		assertThat(cabinets, hasSize(10));
 	}
 	
 	@Test
 	public void whenCreateDiningHallCabinetShouldReturnCabinet() {
 		List<Cabinet> cabinets = cut.createCabinet(DepartmentType.Dininghall);
 		
-		Assert.assertEquals(9, cabinets.size());
+		assertThat(cabinets, hasSize(9));
 	}
 	
 	@Test
 	public void whenCreateLaundryCabinetShouldReturnCabinet() {
 		List<Cabinet> cabinets = cut.createCabinet(DepartmentType.Laundry);
-		
-		Assert.assertEquals(10, cabinets.size());
+
+		assertThat(cabinets, hasSize(10));
 	}
 	
 	@Test
 	public void whenCreateFacilitiesCabinetShouldReturnCabinet() {
 		List<Cabinet> cabinets = cut.createCabinet(DepartmentType.Facilities);
-		
-		Assert.assertEquals(7, cabinets.size());
+
+		assertThat(cabinets, hasSize(7));
 	}
 	
 	@Test
 	public void whenCreateReeferCabinetShouldReturnCabinet() {
 		List<Cabinet> cabinets = cut.createCabinet(DepartmentType.Reefer);
 		
-		Assert.assertEquals(10, cabinets.size());
+		assertThat(cabinets, hasSize(10));
 	}
 }

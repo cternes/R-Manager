@@ -1,9 +1,15 @@
 package de.slackspace.rmanager.gameengine.service;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
+
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import de.slackspace.rmanager.gameengine.domain.City;
@@ -18,9 +24,9 @@ public class CityServiceTest {
 	public void whenCreateCityShouldReturnCityWithEstates() {
 		City city = cut.createCity("Test", new BigDecimal("1.0"));
 		
-		Assert.assertEquals("Test", city.getName());
-		Assert.assertTrue(new BigDecimal("1.0").equals(city.getRateOfPriceIncrease()));
-		Assert.assertNotNull(city.getEstates());
+		assertThat(city.getName(), equalTo("Test"));
+		assertThat(new BigDecimal("1.0"), equalTo(city.getRateOfPriceIncrease()));
+		assertThat(city.getEstates(), not(equalTo(nullValue())));
 	}
 	
 	@Test
@@ -28,21 +34,21 @@ public class CityServiceTest {
 		City city = cut.createCity("Test", new BigDecimal("1.0"));
 		
 		List<Estate> estates = city.getEstates();
-		
-		Assert.assertNotNull(getEstateByType(estates, EstateType.ONE_PARCEL));
-		Assert.assertNotNull(getEstateByType(estates, EstateType.TWO_PARCEL));
-		Assert.assertNotNull(getEstateByType(estates, EstateType.THREE_PARCEL));
-		Assert.assertNotNull(getEstateByType(estates, EstateType.FOUR_PARCEL));
+
+		assertThat(getEstateByType(estates, EstateType.ONE_PARCEL), not(equalTo(nullValue())));
+		assertThat(getEstateByType(estates, EstateType.TWO_PARCEL), not(equalTo(nullValue())));
+		assertThat(getEstateByType(estates, EstateType.THREE_PARCEL), not(equalTo(nullValue())));
+		assertThat(getEstateByType(estates, EstateType.FOUR_PARCEL), not(equalTo(nullValue())));
 	}
 	
 	@Test
 	public void whenCreateCitiesShouldReturnEightCities() {
 		List<City> cities = cut.createCities();
 		
-		Assert.assertEquals(8, cities.size());
-		
+		assertThat(cities, hasSize(8));
+
 		for (City city : cities) {
-			Assert.assertTrue(city.getEstates().size() >= 4);
+			assertThat(city.getEstates(), hasSize(greaterThanOrEqualTo(4)));	
 		}
 	}
 	
