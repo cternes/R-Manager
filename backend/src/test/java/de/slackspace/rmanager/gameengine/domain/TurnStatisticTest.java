@@ -1,8 +1,10 @@
 package de.slackspace.rmanager.gameengine.domain;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.math.BigDecimal;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 public class TurnStatisticTest {
@@ -12,7 +14,7 @@ public class TurnStatisticTest {
 		TurnStatistic cut = new TurnStatistic();
 		cut.increaseConstructionCosts(new BigDecimal(1000));
 		
-		Assert.assertEquals(new BigDecimal(-1000), cut.getConstructionCost());
+		assertThat(new BigDecimal(-1000), equalTo(cut.getConstructionCost()));
 	}
 	
 	@Test
@@ -20,7 +22,7 @@ public class TurnStatisticTest {
 		TurnStatistic cut = new TurnStatistic();
 		cut.increasePersonnelCosts(new BigDecimal(1000));
 		
-		Assert.assertEquals(new BigDecimal(-1000), cut.getPersonnelCosts());
+		assertThat(new BigDecimal(-1000), equalTo(cut.getPersonnelCosts()));
 	}
 	
 	@Test
@@ -28,7 +30,7 @@ public class TurnStatisticTest {
 		TurnStatistic cut = new TurnStatistic();
 		cut.increaseRunningCosts(new BigDecimal(1000));
 		
-		Assert.assertEquals(new BigDecimal(-1000), cut.getRunningCosts());
+		assertThat(new BigDecimal(-1000), equalTo(cut.getRunningCosts()));
 	}
 	
 	@Test
@@ -39,7 +41,7 @@ public class TurnStatisticTest {
 		cut.increaseRunningCosts(new BigDecimal("1250"));
 		
 		cut.increaseEarnings(new BigDecimal("2000"));
-		
-		Assert.assertEquals(new BigDecimal("-2750.50"), cut.getProfit());
+
+		assertThat(new BigDecimal("-2750.50"), equalTo(cut.getProfit()));
 	}
 }

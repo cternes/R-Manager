@@ -1,9 +1,11 @@
 package de.slackspace.rmanager.gameengine.domain;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 public class GameStateTest {
@@ -15,6 +17,6 @@ public class GameStateTest {
 		List<String> buildingIds = Arrays.asList("abc", "def", "123456789");
 		cut.setBuildingIds(buildingIds);
 		
-		Assert.assertTrue(cut.isBuildingIdExisting("def"));
+		assertThat(cut.isBuildingIdExisting("def"), equalTo(true));
 	}
 }

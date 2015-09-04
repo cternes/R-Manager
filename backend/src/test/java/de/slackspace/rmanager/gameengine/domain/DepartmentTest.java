@@ -1,8 +1,10 @@
 package de.slackspace.rmanager.gameengine.domain;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.math.BigDecimal;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 public class DepartmentTest {
@@ -15,7 +17,7 @@ public class DepartmentTest {
 		department.getPersonnel().add(new Person(BigDecimal.TEN, 0, 0, 0, DepartmentType.Kitchen));
 		department.getPersonnel().add(new Person(BigDecimal.ONE, 0, 0, 0, DepartmentType.Kitchen));
 		
-		Assert.assertEquals(new BigDecimal(31), department.getMonthlyCosts());
+		assertThat(new BigDecimal(31), equalTo(department.getMonthlyCosts()));
 	}
 	
 	@Test
@@ -25,7 +27,7 @@ public class DepartmentTest {
 		cabinet.increaseQuantity(2);
 		department.getCabinets().add(cabinet);
 		
-		Assert.assertEquals(new BigDecimal(2), department.getMonthlyCosts());
+		assertThat(new BigDecimal(2), equalTo(department.getMonthlyCosts()));
 	}
 	
 	@Test
@@ -38,7 +40,7 @@ public class DepartmentTest {
 		cabinet.increaseQuantity(2);
 		department.getCabinets().add(cabinet);
 		
-		Assert.assertEquals(new BigDecimal(13), department.getMonthlyCosts());
+		assertThat(new BigDecimal(13), equalTo(department.getMonthlyCosts()));
 	}
 	
 }

@@ -1,8 +1,10 @@
 package de.slackspace.rmanager.gameengine.domain;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.math.BigDecimal;
 
-import org.junit.Assert;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
@@ -25,8 +27,8 @@ public class EstateTest {
 	public void whenCreateEstateShouldCalculateCorrectPrices(PriceTestData testData) {
 		Estate cut = new Estate(EstateType.ONE_PARCEL, new BigDecimal(testData.getRateOfPriceIncrease()), new BigDecimal(testData.getRateOfPriceVariation()), "12345");
 		
-		Assert.assertTrue("Price was: " + cut.getPricePerSquareMeter() + "Expected: " + testData.getExpected(), new BigDecimal(testData.getExpected()).equals(cut.getPricePerSquareMeter()));
-		Assert.assertTrue("Total Price was: " + cut.getTotalPrice() + "Expected: " + testData.getExpectedTotal(), new BigDecimal(testData.getExpectedTotal()).equals(cut.getTotalPrice()));
+		assertThat(new BigDecimal(testData.getExpected()), equalTo(cut.getPricePerSquareMeter()));
+		assertThat(new BigDecimal(testData.getExpectedTotal()), equalTo(cut.getTotalPrice()));
 	}
 	
 	@DataPoints
@@ -60,7 +62,7 @@ public class EstateTest {
 	public void whenCanBuildShouldValidateSize(ParcelTestData testData) {
 		Estate estate = new Estate(testData.estateType, BigDecimal.ONE, BigDecimal.ONE, "");
 		
-		Assert.assertEquals(testData.getExpected(), estate.canBuild(testData.buildingType));
+		assertThat(testData.getExpected(), equalTo(estate.canBuild(testData.buildingType)));
 	}
 	
 	static class ParcelTestData {

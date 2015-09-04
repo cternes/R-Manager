@@ -1,8 +1,10 @@
 package de.slackspace.rmanager.gameengine.domain;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.math.BigDecimal;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 public class RManagerPlayerTest {
@@ -32,6 +34,6 @@ public class RManagerPlayerTest {
 		estateTwo.setBuilding(building);
 		player.getEstates().add(estateTwo);
 		
-		Assert.assertEquals(new BigDecimal("1730000.0"), player.getCapital());
+		assertThat(new BigDecimal("1730000.0"), equalTo(player.getCapital()));
 	}
 }
